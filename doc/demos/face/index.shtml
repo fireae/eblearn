@@ -1,0 +1,150 @@
+<html>
+  <head>
+    <title>EBLearn: Face detection Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" type="text/css" href="../../web/styles.css" 
+	  media="all">
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+    <div id="globalWrapper">
+      <h1 id="firstHeading" class="firstHeading">Face detection demo
+      </h1> 
+      <h3 id="siteSub">By <a href="http://sermanet.free.fr" target="_blank">
+	  Pierre Sermanet</a></h3><br><br> 
+      
+      <p>This face detection demo was trained using a cropped version of the
+	<a href="http://vis-www.cs.umass.edu/lfw/" target="_blank">
+	  Labeled Faces in the Wild</a> face dataset.
+      </p>
+      <a href="http://cs.nyu.edu/~sermanet/face/cmumit/class.png">
+	<img src="http://cs.nyu.edu/~sermanet/face/cmumit/class_small.png"></a>
+
+      <h2>Compiling the demo</h2>
+      This demo relies on the generic object detection demo located in
+      eblearn/tools/demos/obj. To compile the detector (from the tools
+      directory), call:
+      <br>
+      <code>make release prj=detect</code>
+      
+      <h2>Running the demo</h2>
+      To run the demo on a webcam, run from the tools directory:<br>
+      <code>../bin/detect demos/face/trained/best_webcam.conf
+	</code><br><br>
+      To run the demo on a folder of images, run from the tools directory:<br>
+      <code>../bin/detect demos/face/trained/best_directory.conf
+	your-image-folder
+	</code><br>
+      <p>One can change the type of input detect reads by changing the
+	'camera' variable in the .conf file. The input can be a directory
+	containing images, a video file, a webcam or a shared-memory.
+	Update the 'camera' variable as described below to
+	change your input type.</p>
+      <p>One can also change the number of threads or CPUs used for the demo.
+	Increasing the number of threads will not increase the latency of the
+	detection, but will increase the frequency, yielding a smoother video
+	with the 'webcam' setting, or processing more images in the 'directory'
+	setting. Change variable 'nthreads' to the number of free CPUs
+	available on your machine.</p>
+      <h3>Recommended parameters for webcam setting</h3>
+      <p>Simply add the following code at the end of your .conf file (last
+	variable assignments will override previous ones):</p>
+	<code>camera = opencv # get frames from opencv webcam<br>
+	  threshold = 0.0 # play with this parameter from -1.0 to 1.0<br>
+	  scaling = 1.4 # can reduce up to 1.1 but more expensive<br>
+	  input_max = 160 # this limits input to 120x160<br>
+	  save_detections = 0<br>
+	  save_video = 0<br>
+	  display = 1<br>
+	  minimal_display = 1<br>
+	  precamera = 0<br>
+	  retrain = 0<br>
+	  </code>
+	
+      <h2>Tweaking parameters</h2>
+      <p>
+      The parameters of the demo can be tweaked by changing variables
+      in the .conf file.
+      <h3>Main tweakable parameters</h3>
+      <ul><li><b>camera</b>={directory,video,opencv,shmem}<br>
+	  This variable defines the type of input ('your-data-input').
+	  Possible values are:
+	  <ul><li><b>directory</b>:
+	      This will process all images found recursively
+	    in the directory given as second argument to detect.</li>
+	    <li><b>video</b>: This will process all frames found in video file
+	    specified as second argument to detect and encode the output
+	    frames as a new video if 'save_video' is set.</li>
+	    <li><b>opencv</b>: This is taking input frames from your webcam,
+	      using opencv to connect to the webcam (requires opencv).</li>
+	    <li><b>shmem</b>: Grab video frames in a shared memory.</li>
+	  </li>
+	</ul>
+	<li><b>threshold</b>=[double d, from -1.0 to 1.0]<br>
+	  Outputs lower than this threshold are ignored.</li>
+	<li><b>scaling</b>=[double d, > 1.0]<br>
+	  The scaling ratio between each scale of the multi-resolution detector.
+	  A lower scaling ratio will prevent more false negatives, but will
+	  be more computationally expensive.
+	  </li>
+      </ul>
+      <h3>Other tweakable parameters</h3>
+      <ul>
+	<li><b>input_max</b>=[integer n]<br>
+	    Limit the input size to nxn.
+	<li><b>save_detections</b>={0,1}<br>
+	  Save detected regions (both original and preprocessed version)
+	  into directory 'detections_[date]' if equal to 1.</li>
+	<li><b>save_video</b>={0,1}<br>
+	  Save processed frames and encode them into a video
+	  into directory 'video_[date]' if equal to 1.</li>	 
+	<li><b>save_video_fps</b>=[integer n]<br>
+	  Set the number of frames per second in the output video.</li>	 
+	<li><b>input_video_max_duration</b>=[integer n]<br>
+	  When camera=video, process only the first n seconds of the video.</li>
+	<li><b>input_video_sstep</b>=[integer n]<br>
+	  When camera=video, process only frames every n seconds.</li>
+	</ul>
+      </p>
+      <h2>Training the demo</h2>
+      <h3>Prepare dataset</h3>
+      <p>Call the dataset preparation script (uncomment region as you need,
+	fetching data and compiling non-face samples is currently commented):
+	<br>
+	<code>./bin/face_dsprepare.sh</code>
+	</p>
+      <h3>Compile trainer</h3>
+      <p>This demo relies on the generic object detection demo located in
+      eblearn/demos/obj. To compile the detector trainer
+      (from the eblearn root), call:
+      <br>
+      <code>make release prj=train</code>
+      </p>
+      <p>Also compile the meta trainer which generates multiple jobs based on
+	the multiple-value variables in face_meta.conf and reports results by
+	email. Call:
+      <br>
+      <code>make release prj=metarun</code>
+      </p>
+      <h3>Train</h3>
+      <p>Modify training parameters in bin/face_meta.conf as necessary.
+	Variables can accept multiple values, the meta trainer will produce
+	multiple configurations and email you the must successful combination.
+	<br>
+	Now start training:<br>
+	<code>./bin/metarun bin/face_meta.conf</code>
+	</p>
+      <h3>Train on false positives</h3>
+      <p>It is important to train on false positives to get rid of false
+	detections. Call the script 'bin/face_train.sh' to automatically
+	run multiple passes of false positives training.
+	</p>
+      
+      
+  </body>
+</html>

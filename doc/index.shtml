@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>EBLearn: Energy-Based Learning, a C++ Machine Learning Library</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="http://eblearn.sourceforge.net/web/main.css" 
+	  type="text/css" media="screen">
+    <link rel="stylesheet" 
+	  href="http://eblearn.sourceforge.net/web/index_004.css" 
+	  type="text/css" media="screen">
+    <link rel="stylesheet" type="text/css" 
+	  href="http://eblearn.sourceforge.net/web/styles.css" media="all">
+    <link rel="shortcut icon" 
+	  href="http://eblearn.sourceforge.net/web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="nav.html" --> 
+
+    <div id="globalWrapper">
+     <h2>What is the eblearn project ?</h2>
+
+     <p>
+Eblearn is an object-oriented C++ library that implements various
+machine learning models, including energy-based learning,
+gradient-based learning for machine composed of multiple heterogeneous
+modules. In particular, the library provides a complete set of tools
+for building, training, and running convolutional networks.</p>
+
+     <p>
+In Eblearn, a learning machine is constructed by assembling modules.
+Each module can be a functional module of a factor. Each module has at
+least two methods: fprop, which computes the output(s) from the
+input(s), and bprop, which computes the gradient of a loss function
+with respect to the input(s) and internal parameters given the gradient
+of the loss function with respect to the output(s). Functional modules
+implement simple deterministic dependencies between inputs and outputs.
+Factor modules implement non-deterministic dependencies between inputs:
+the takes one or several input objects and output a scalar energy,
+which can be interpreted as a negative log-likelihood. Factor modules
+also have an infer method that produce the combination of unknown
+inputs with the lowest energy. This design allows semi-automatic
+differentiation of complex architectures for gradient-based learning,
+as well as efficient MAP inference algorithms for factor graphs.
+Eblearn uses a similar model and API as the machine learning library
+distributed with the Lush language. All the trainable parameters are
+collected in a single vector, which facilitates the implementation of
+fancy optimization algorithms independently of the structure of the
+learning machine.</p>
+
+     <p> Eblearn implements convolutional
+networks for invariant recognition of images and temporal sequences. It
+implements all the known tricks to make gradient-based learning fast,
+including the stochastic diagonal Levenberg-Marquardt method.</p>
+
+     <p>
+Eblearn also provides utility functions to preprocess images and access
+and manipulate datasets. It comes with a portable GUI toolkit built on
+top of Qt, which enables the graphic visualization of internal
+variables and other data. The library has been used successfully to
+train face detectors, and object recognizers.</p>
+
+     <h2>Mailing list</h2>
+     <p>To get updated about important information, 
+       <a href="https://lists.sourceforge.net/lists/listinfo/eblearn-general">
+	 subscribe</a> to the
+       <a href="https://sourceforge.net/mailarchive/forum.php?forum_name=eblearn-general">eblearn-general</a> mailing list.
+     
+     <h2>Who are we ?</h2>
+     <p>
+The Eblearn project is currently under development at the Computational
+and Biological Learning Laboratory, New York University's machine
+learning lab, led by <a href="http://yann.lecun.com/">Yann Lecun</a>. You can find more about us on the <a href="http://www.cs.nyu.edu/%7Eyann/index.html" target="new_page">lab's homepage</a>.</p>
+
+
+     <h2>Some useful links</h2>
+     <ul>
+       <li><a href="http://yann.lecun.com/exdb/publis/index.html" target="new_page">Articles about convolutional networks and machine learning</a>, from the CBLL; </li>
+       <li><a href="http://www.cs.nyu.edu/%7Eyann/research/norb/index.html" target="new_page">The NORB project</a>, which uses the eblearn library</li>
+     </ul>
+ 
+   </div>
+
+   </body></html>

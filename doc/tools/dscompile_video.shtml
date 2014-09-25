@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>EBLearn: dscompile</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>dscompile</h2>
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (January 10th, 2011)</h4><br><br> 
+      <p>
+	Below is an example of dscompile output. The left hand side shows
+      extracted (preprocessed) windows, the middle is the input pictures
+      with bounding boxes around samples to be extracted.</p>
+      
+      <h4>Output</h4>
+
+     <div id="container3">
+        <a href="http://www.macromedia.com/go/getflashplayer">Get the
+               Flash Player</a> to see this player.
+               </div>
+     <script type="text/javascript" src="../swfobject.js"></script>
+     <script type="text/javascript">
+       var s3 = new SWFObject("../mediaplayer.swf","mediaplayer","800","600","8");
+       s3.addParam("allowfullscreen","true");
+       s3.addVariable("width","800");
+       s3.addVariable("height","600");
+       s3.addVariable("file","http://cs.nyu.edu/~sermanet/videos/pedestrians/caltech_dscompile.flv");
+       s3.addVariable("image","http://cs.nyu.edu/~sermanet/videos/pedestrians/caltech_dscompile.png");
+       s3.write("container3");
+    </script>
+
+	  
+    </div>
+   </body></html>

@@ -1,0 +1,492 @@
+<html>
+  <head>
+    <title>EBLearn: detect</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>detect</h2> 
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (January 10th, 2011)</h4><br><br> 
+      <p>
+	detect finds objects in images at multiple scales and outputs
+	corresponding bounding boxes, given a trained model and variables
+	definitions found a configuration file.</p>
+      
+      <h4>Calls</h4>
+      <ul>
+	<li><code>./detect pedestrians.conf</code><br><br></li>
+	<li>When variable 'input_dir' is not defined and the inputs are image
+	  files (camera = directory), one can pass the image path as
+	  second argument, e.g.:<br><br>
+	  <code>./detect pedestrians.conf /images/pedestrians/</code><br><br>
+	  </li>
+	<li>When the input is a video file (camera = video),
+	  one must pass the file path as second argument, e.g.:<br><br>
+	  <code>./detect pedestrians.conf /videos/pedestrians.flv</code></li>
+	</ul>
+
+      <h4>Outputs</h4>
+      <p>All outputs are saved in a directory named 'out_[timestamp]'
+	  created in the calling directory.</p>
+      <ul>
+	<li>When variable 'save_detections' equals 1, each detected region
+	  in the original image is saved in a single image file in subdirectory
+	  'detections/originals', and the exact input to the model
+	  (usually preprocessed
+	  and scaled) is saved as a matrix file in subdirectory
+	  'detections/preprocessed'.</li>
+	<li>When variable 'save_video' equals 1, original images with bounding
+	  boxes overlaid are saved in subdirectory 'video'.</li>
+	<li>When variable 'bbox_saving' is different than 0, bounding boxes
+	  coordinates are saved in file 'bbox.txt'. Different values for
+	  'bbox_saving' correspond to different saving formats:
+	  <ul><li>1: save in all formats (in different files)</li>
+	    <li>2: save in eblearn format</li>
+	    <li>3: save in caltech format</li>
+	  </ul>
+      </ul>
+	  
+      <h4>Required configuration variables</h4>
+      <ul>
+	<li><strong>weights:</strong>
+	  weights file of the trained model.</li>
+	<li><strong>classes:</strong>
+	  names of each output class in a matrix file.</li>
+	<li><strong>camera:</strong>
+	  the type of input. Possible inputs are:
+	  <ul>
+	    <li><strong>directory</strong>: inputs are images from a
+	      directory, which path
+	      can be defined by variable 'input_dir' or as second argument
+	      in the command line.</li>
+	    <li><strong>video</strong>: take a video file as input,
+	      which path must be given
+	      as second argument in the command line.</li>
+	    <li><strong>v4l2</strong>: use v4l2 camera interface (linux only).
+	      User must
+	      also defined variable 'device' to select the v4l2 device, e.g.
+	      'device = /dev/video0'</li>
+	    <li><strong>kinect</strong>: use Kinect's camera.</li>
+	    <li><strong>opencv</strong>: use OpenCV's camera interface
+	      as video input.</li>
+	    <li><strong>shmem</strong>: use shared memory as video feed.</li>
+	    </ul>
+	</li>
+      </ul>
+
+      <h4>Optional configuration variables</h4>
+      <ul>
+	<li><strong>input_dir:</strong>
+	  the directory containing images, when using images as inputs
+	  (i.e. when 'camera' equals 'directory').</li>
+
+<li><strong>meta_name:</strong> ${name}_${machine} # name of this meta job
+<li><strong>meta_max_jobs:</strong> 12 # maximum number of jobs to run at the same time
+<li><strong>meta_output_dir:</strong> ${root}/../out/ # directory where to write outputs
+<li><strong>meta_gnuplot_params:</strong> "set grid ytics;set ytics;set mytics;set grid mytics;set logscale y; set mxtics; set grid xtics; " # extra gnuplot parameters
+# analyze processes output or not. if 0, the meta_trainer will have no notion
+# of iteration and will only send 1 report at the very end.
+# if 1, meta_trainer will try to find iteration and other variable values
+# in each process' output.
+<li><strong>meta_analyze:</strong> 1
+<li><strong>meta_send_email:</strong> 1 # emailing results or not
+<li><strong>meta_email:</strong> ${myemail} # email to use (use environment variable "myemail")
+# iterations at which to send an email
+<li><strong>meta_email_iters:</strong> 0,1,2,3,4,5,7,10,15,20,30,50,75,100,200
+<li><strong>meta_email_period:</strong> 1 # send email with this freq (if email_iters not defined)
+<li><strong>meta_watch_interval:</strong> 30 # interval sec to analyze outputs and check who's alive
+# variables to minimize, process and iteration with lowest value will
+# be used to report best weights, or start consequent training
+<li><strong>meta_minimize:</strong> test_errors,errors,test_energy,energy,1FPPI,.01FPPI
+<li><strong>meta_ignore_iter0:</strong> 1 # do not take results for i:</strong> 0 into account
+<li><strong>meta_sticky_vars:</strong> job,config,classes # vars to keep around at each iterations
+<li><strong>meta_watch_vars:</strong> #job,1FPPI,.01FPPI # restrict variable watching to those
+<li><strong>meta_nbest:</strong> 5 # number of best answers to show/send
+<li><strong>meta_send_best:</strong> 0 # if 1 send best answers files minimizing meta_minimize's value
+<li><strong>meta_send_logs:</strong> 0 # send logs of all jobs or not
+<li><strong>meta_no_conf_id:</strong> 0 # do not use conf ids for naming
+
+################################################################################
+# local program configuration
+
+<li><strong>name:</strong> inria
+<li><strong>machine:</strong> ${HOSTNAME}a
+<li><strong>ebl:</strong>  ${HOME}/eblpierre/ # eblearn root
+<li><strong>root:</strong> ${HOME}/${machine}data/ped/${name}/ds/ # datasets root
+<li><strong>#root2:</strong> ${ebl}/demos/pedestrians/trained/ # trained weights root
+
+# network high level switches ##################################################
+
+<li><strong>net_type:</strong> cscsc #cscscf
+<li><strong>net:</strong> sr1c #mr1c mr2c # net archictecture
+<li><strong>manual_load:</strong> 1 # manually load weights for individual modules
+<li><strong>color:</strong> 1
+
+# architecture #################################################################
+
+<li><strong>arch:</strong> ${arch_${net}_${net_type}} # global architecture
+<li><strong>mirror:</strong> 0 # mirror instead of zero-padding (default)
+<li><strong>nonlin:</strong> tanh # stdsig # non-linearity module
+
+# machines
+<li><strong>arch_mr1_cscsc:</strong> ${c0},${s1},${c2},${s3},branch5,merge21,${f5}
+<li><strong>arch_mr2_cscsc:</strong> ${c0},${s1},branch2,${c2},${s3},branch5,merge22,${f5}
+<li><strong>arch_sr1c_cscsc:</strong> branch1,${c0},${s1},merge1,${c2},${s3},${c5}
+<li><strong>arch_mr1c_cscsc:</strong> branch1,${c0},${s1},merge1,${c2},${s3},branch5,merge21,${f5}
+<li><strong>#arch_mr2c_cscsc:</strong> branch1,${c0},${s1},merge1,branch2,${c2},${s3},branch5,merge22,${f5}
+#arch_mr2c_cscscf:</strong> branch1,${c0},${s1},merge1,branch2,${c2},${s3},branch5,merge22,${f6},${f7}
+<li><strong>arch_mr2c_cscsc:</strong> branch1,${c0},${s1},merge1,branch2,${c2},${s3},merge22,${f5}
+<li><strong>arch_mr2c_cscscf:</strong> branch1,${c0},${s1},merge1,branch2,${c2},${s3},merge22,${f6},${f7}
+
+<li><strong>branch1:</strong> resize00,${c00} # color branch
+<li><strong>branch2:</strong> ${s20} # 1st multi-scale branch (biggest)
+<li><strong>#branch2:</strong> ${s20},branch3 # 1st multi-scale branch (biggest)
+<li><strong>branch3:</strong> ${s21},${branch4} # 1st multi-scale branch (medium)
+<li><strong>branch4:</strong> ${s22} # 1st multi-scale branch (smallest)
+<li><strong>branch5:</strong> ${s50},branch6 # 2nd multi-scale branch (medium)
+<li><strong>branch6:</strong> ${s51} # 2nd multi-scale branch (smallest)
+
+# main branch layers
+<li><strong>c0:</strong> conv0,addc0,${nonlin},diag0,abs0,wstd0
+<li><strong>s1:</strong> subs1,addc1,${nonlin}
+<li><strong>c2:</strong> conv2,addc2,${nonlin},diag2,abs2,wstd2
+<li><strong>s3:</strong> subs3,addc3,${nonlin}
+<li><strong>c5:</strong> conv5,addc5,${nonlin}
+<li><strong>f5:</strong> linear5,addc5,${nonlin}
+<li><strong>f6:</strong> linear6,addc6,${nonlin}
+<li><strong>f7:</strong> linear7,addc7,${nonlin}
+
+# color branch layers
+<li><strong>c00:</strong> conv00,addc00,${nonlin}00,diag00,abs00,wstd00
+
+# multi scale branches layers
+<li><strong>s20:</strong> subs00,addc,${nonlin}
+<li><strong>s21:</strong> ${s20}
+<li><strong>s22:</strong> ${s20}
+<li><strong>s50:</strong> ${s20}
+<li><strong>s51:</strong> ${s20}
+
+# branches parameters
+<li><strong>branch1_type:</strong> narrow # feed UV color into branch
+<li><strong>branch1_narrow_dim:</strong> 0
+<li><strong>branch1_narrow_size:</strong> 2 # U and V
+<li><strong>branch1_narrow_offset:</strong> 1 
+<li><strong>branch2_type:</strong> copy # feed all features to multi-scale branch
+<li><strong>branch3_type:</strong> copy # keep 1st layer scale 1 data
+<li><strong>branch4_type:</strong> copy # keep 1st layer scale 2 data
+<li><strong>branch5_type:</strong> copy # keep 2nd layer scale 2 data
+<li><strong>branch6_type:</strong> copy # keep 2nd layer scale 3 data
+<li><strong>merge1_type:</strong> concat
+<li><strong>merge1_branches:</strong> branch1
+<li><strong>merge1_concat_dim:</strong> 0
+<li><strong>merge21_type:</strong> flat
+<li><strong>merge21_branches:</strong> branch5,branch6
+<li><strong>merge22_type:</strong> flat
+<li><strong>#merge22_branches:</strong> branch2,branch3,branch4,branch5,branch6
+
+<li><strong>merge22_branches:</strong> branch2
+<li><strong>merge22_inh:</strong> 16
+<li><strong>merge22_inw:</strong> 8
+<li><strong>merge22_branches_inh:</strong> 20
+<li><strong>merge22_branches_inw:</strong> 12
+<li><strong>merge22_strideh:</strong> 1
+<li><strong>merge22_stridew:</strong> ${merge22_strideh}
+<li><strong>merge22_branches_strideh:</strong> 1
+<li><strong>merge22_branches_stridew:</strong> ${merge22_branches_strideh}
+
+# merge22_inh:</strong> 16
+# merge22_inw:</strong> 8
+# merge22_branches_inh:</strong> 20,10,5,8,4
+# merge22_branches_inw:</strong> 12,6,3,4,2
+# merge22_strideh:</strong> 4
+# merge22_stridew:</strong> ${merge22_strideh}
+# merge22_branches_strideh:</strong> 4,2,1,2,1
+# merge22_branches_stridew:</strong> ${merge22_branches_strideh}
+
+<li><strong>conv00_kerh:</strong> 5 # convolution kernel's height
+<li><strong>conv00_kerw:</strong> 5 # convolution kernel's width
+<li><strong>conv00_strideh:</strong> 1 # convolution stride in height
+<li><strong>conv00_stridew:</strong> 1 # convolution stride in width
+<li><strong>conv00_table:</strong> ${table00} # convolution table (optional)
+<li><strong>conv00_table_in:</strong> 2 # conv input max, used if table file not defined
+<li><strong>conv00_table_out:</strong> 6 # features max, used if table file not defined
+<li><strong>conv00_weights:</strong> ${wroot0c}${sp0}_layer1_convolution_kernel.mat
+<li><strong>addc00_weights:</strong> ${wroot0c}${sp0}_layer2_bias_bias.mat
+<li><strong>diag00_weights:</strong> ${wroot0c}${sp0}_layer4_diag_coeff.mat
+<li><strong>wstd00_kerh:</strong> ${conv00_kerh} # normalization kernel's height
+<li><strong>wstd00_kerw:</strong> ${conv00_kerw} # normalization kernel's width
+<li><strong>subs00_kerh:</strong> 2 # subsampling kernel's height
+<li><strong>subs00_kerw:</strong> 2 # subsampling kernel's width
+<li><strong>subs00_strideh:</strong> ${subs00_kerh} # subsampling stride in height
+<li><strong>subs00_stridew:</strong> ${subs00_kerw} # subsampling stride in width
+<li><strong>resize00_hratio:</strong> 0.349206349 # 44 / 126
+<li><strong>resize00_wratio:</strong> 0.358974359 # 28 / 78
+
+# main branch parameters
+<li><strong>inputh:</strong> 126 # input's height
+<li><strong>inputw:</strong> 78 # input's width
+<li><strong>conv0_kerh:</strong> 7 # convolution kernel's height
+<li><strong>conv0_kerw:</strong> 7 # convolution kernel's width
+<li><strong>conv0_strideh:</strong> 1 # convolution stride in height
+<li><strong>conv0_stridew:</strong> 1 # convolution stride in width
+<li><strong>conv0_table:</strong> ${table0_color0} # convolution table (optional)
+<li><strong>conv0_table_in:</strong> 1 # conv input max, used if table file not defined
+<li><strong>conv0_table_out:</strong> ${table0_max} # features max, used if table file not defined
+<li><strong>conv0_weights:</strong> ${wroot0}${sp0}_layer1_convolution_kernel.mat
+<li><strong>addc0_weights:</strong> ${wroot0}${sp0}_layer2_bias_bias.mat
+<li><strong>diag0_weights:</strong> ${wroot0}${sp0}_layer4_diag_coeff.mat
+<li><strong>wstd0_kerh:</strong> 7 # normalization kernel's height
+<li><strong>wstd0_kerw:</strong> 7 # normalization kernel's width
+<li><strong>subs1_kerh:</strong> 3 # subsampling kernel's height
+<li><strong>subs1_kerw:</strong> 3 # subsampling kernel's width
+<li><strong>subs1_strideh:</strong> ${subs1_kerh} # subsampling stride in height
+<li><strong>subs1_stridew:</strong> ${subs1_kerw} # subsampling stride in width
+<li><strong>addc1_weights:</strong> # weights to be loaded if manual_load:</strong> 1
+<li><strong>conv2_kerh:</strong> 9 # convolution kernel's height
+<li><strong>conv2_kerw:</strong> 9 # convolution kernel's width
+<li><strong>conv2_strideh:</strong> 1 # convolution stride in height
+<li><strong>conv2_stridew:</strong> 1 # convolution stride in width
+<li><strong>conv2_table:</strong> ${table1} # convolution table (optional)
+<li><strong>conv2_table_in:</strong> thickness # use current thickness as max table input
+<li><strong>conv2_table_out:</strong> ${table1_max} # features max, used if table file not defined
+<li><strong>conv2_weights:</strong> ${wroot1c}${sp0}${sp1}_layer1_convolution_kernel.mat
+<li><strong>addc2_weights:</strong> ${wroot1c}${sp0}${sp1}_layer2_bias_bias.mat
+<li><strong>diag2_weights:</strong> ${wroot1c}${sp0}${sp1}_layer4_diag_coeff.mat
+<li><strong>wstd2_kerh:</strong> ${conv2_kerh} # normalization kernel's height
+<li><strong>wstd2_kerw:</strong> ${conv2_kerw} # normalization kernel's width
+<li><strong>subs3_kerh:</strong> 2 # subsampling kernel's height
+<li><strong>subs3_kerw:</strong> 2 # subsampling kernel's width
+<li><strong>subs3_strideh:</strong> ${subs3_kerh} # subsampling stride in height
+<li><strong>subs3_stridew:</strong> ${subs3_kerw} # subsampling stride in width
+<li><strong>addc3_weights:</strong> # weights to be loaded if manual_load:</strong> 1
+<li><strong>linear5_in:</strong> ${linear5_in_${net}} #thickness # linear module input features size
+<li><strong>linear5_out:</strong> noutputs # use number of classes as max table output
+<li><strong>linear6_in:</strong> ${linear6_in_${net}} #thickness # linear module input features size
+<li><strong>linear6_out:</strong> 10 # use number of classes as max table output
+<li><strong>linear7_in:</strong> ${linear6_out} #thickness # linear module input features size
+<li><strong>linear7_out:</strong> noutputs # use number of classes as max table output
+<li><strong>conv5_kerh:</strong> 16 # convolution kernel's height
+<li><strong>conv5_kerw:</strong> 8 # convolution kernel's width
+<li><strong>conv5_strideh:</strong> 1 # convolution stride in height
+<li><strong>conv5_stridew:</strong> 1 # convolution stride in width
+<li><strong>conv5_table_in:</strong> thickness # use current thickness as max table input
+<li><strong>conv5_table_out:</strong> noutputs # features max, used if table file not defined
+
+<li><strong>linear5_in_mr1:</strong> 10752
+<li><strong>linear5_in_mr2:</strong> 20832
+<li><strong>linear5_in_mr1c:</strong> 11424
+<li><strong>linear5_in_mr2c:</strong> 23394
+
+<li><strong>linear5_in_mr2c:</strong> 17824
+<li><strong>linear6_in_mr2c:</strong> 17824 #8704
+
+# manual loading ##############################################################
+
+<li><strong>sp0:</strong> 12 #0703 2007 # 0301 1205 #03 07 12 # sparsity layer0
+<li><strong>sp1:</strong> 12 #03 07 12 # sparsity layer1
+
+#wroot0:</strong> /home/pierre/eblpierre/tools/demos/pedestrians/inria/koray/pedmachines/machine5732
+#wroot0:</strong> ${HOME}/koray/color/machine57
+#wroot0:</strong> /data/koray/pedmachines/machine5732
+#wroot1:</strong> /data/koray/pedmachines2/machine95732
+
+<li><strong>wroot0:</strong> /data/koray/pedmachines_Y/machine50732
+<li><strong>wroot0c:</strong> /data/koray/pedmachines_UV/machine50706
+<li><strong>wroot1c:</strong> /data/koray/pedmachines_YUV/machine
+
+# tables #######################################################################
+
+<li><strong>tblroot:</strong> ${ebl}/tools/data/tables/ # location of table files
+
+# conv00
+<li><strong>table00:</strong> ${tblroot}/table_2_6_connect_6_fanin_0_density_0.5_uv0_u3_v6.mat
+
+# conv0
+<li><strong>table0_max:</strong> 32 #64 # full table output max (overridden if table file defined)
+<li><strong>table0_color0:</strong> # no color, use table0_max for full table
+<li><strong>table0_color1:</strong> ${tblroot}/table_3_32_connect_32_fanin_0_density_0.33_yuv0_y26_u29_v32.mat
+
+# conv1
+<li><strong>tbl:</strong> 3
+<li><strong>table1_max:</strong> 64 # 64 96 128 256
+<li><strong>tbl1_mr1:</strong> ${tblroot}/table_32_64_connect_1664_fanin_26_density_0.81_random.mat
+<li><strong>tbl1_mr2:</strong> ${tblroot}/table_32_64_connect_1664_fanin_26_density_0.81_random.mat
+<li><strong>tbl1_2:</strong> ${tblroot}/table_32_96_connect_2496_fanin_26_density_0.81_random.mat
+<li><strong>tbl1_sr1c:</strong> ${tblroot}/table_38_68_connect_2040_fanin_30_density_0.79_random.mat
+<li><strong>tbl1_mr1c:</strong> ${tblroot}/table_38_68_connect_2040_fanin_30_density_0.79_random.mat
+<li><strong>tbl1_mr2c:</strong> ${tblroot}/table_38_68_connect_2040_fanin_30_density_0.79_random.mat
+
+#tbl_mrc:</strong> ${tbl1_3}
+#tbl_mr:</strong> ${tbl1_1}
+
+<li><strong>table1:</strong> ${tbl1_${net}}
+
+# preprocessing ################################################################
+<li><strong>preprocessing:</strong> 1 # 0: none 1: contrast normalization (optional)
+<li><strong>resize:</strong> mean # bilinear
+<li><strong>normalization_size:</strong> 7 # 9
+
+# training #####################################################################
+<li><strong>ds:</strong> 1 # dataset id
+<li><strong>dsname:</strong> ${name}_${resize}${inputh}x${inputw}_ker${normalization_size}_bg
+<li><strong>train:</strong> ${dsname}_train_${ds} # training set
+<li><strong>val:</strong> ${dsname}_val_${ds} # validation set
+
+#root:</strong> /data/pedestrians/small/
+#train:</strong> small
+#val:</strong> small
+
+<li><strong>reg:</strong> 0 .000001
+#reg:</strong> 0 .0001
+#reg:</strong> .000001
+
+#eta:</strong> .000001 .00001  # learning rate
+<li><strong>eta:</strong> .000005 .00001 .00002 # learning rate
+#eta:</strong> .0000001 .0000005 .000001 .0000025 .000005 .0000075 #.00001 #.00002 # learning rate
+#eta:</strong> .0000005 .000005 .00001 # learning rate
+<li><strong>reg_l1:</strong> ${reg} #.0001 # L1 regularization
+<li><strong>reg_l2:</strong> ${reg} #.0001 # L2 regularization
+<li><strong>iterations:</strong> 20 # number of training iterations
+<li><strong>ndiaghessian:</strong> 400 #800 1200 # number of sample for 2nd derivatives estimation
+<li><strong>epoch_mode:</strong> 0 # 0: fixed number 1: show all at least once
+<li><strong>epoch_size:</strong> 4000 # number of training samples per epoch. comment to ignore.
+<li><strong>epoch_show_modulo:</strong> 100 # print message every n training samples
+<li><strong>sample_probabilities:</strong> 0 # use probabilities to pick samples
+<li><strong>hardest_focus:</strong> 1 # 0: focus on easiest samples 1: focus on hardest ones
+<li><strong>ignore_correct:</strong> 1 # If 1, do not train on correctly classified samples
+<li><strong>min_sample_weight:</strong> 0 #.1 .5 1 # minimum probability of each sample
+<li><strong>per_class_norm:</strong> 1 # normalize probabiliy by class (1) or globally (0)
+<li><strong>shuffle_passes:</strong> 1 # shuffle samples between passes
+<li><strong>balanced_training:</strong> 1 # show each class the same amount of samples or not
+<li><strong>no_training_test:</strong> 1 # do not test on training set if 1
+<li><strong>target_factor:</strong> 1 # multiply targets -1 and 1 by:
+<li><strong>save_pickings:</strong> 1 # save sample picking statistics
+<li><strong>binary_target:</strong> 0 # use only 1 output, -1 for negative examples, +1 for positive
+
+# training display #############################################################
+<li><strong>show_train:</strong> 1 # enable/disable all training display
+<li><strong>show_train_ninternals:</strong> 0 # number of internal examples to display
+<li><strong>show_train_errors:</strong> 0 # show worst errors on training set
+<li><strong>show_val_errors:</strong> 1 # show worst errors on validation set
+<li><strong>show_val_correct:</strong> 1 # show worst corrects on validation set
+<li><strong>show_hsample:</strong> 5 # number of samples to show on height axis
+<li><strong>show_wsample:</strong> 18 # number of samples to show on height axis
+
+# retraining ###################################################################
+<li><strong>retrain:</strong> 0
+<li><strong>retrain_weights:</strong> # ${root1}/${job_name_retraining}_net040.mat
+
+# detection ####################################################################
+<li><strong>net_min_height:</strong> ${inputh}
+<li><strong>net_min_width:</strong> ${inputw}
+<li><strong>nthreads:</strong> 1 # number of detection threads
+<li><strong>ipp_cores:</strong> 1 # number of cores used by IPP
+<li><strong>weights:</strong> ${root2}/${weights_file}
+<li><strong>classes:</strong> ${root2}/${job_name}_classes.mat
+<li><strong>threshold:</strong> .1 # confidence detection threshold
+<li><strong>gain:</strong> 1
+<li><strong>input_height:</strong> -1 # use -1 to use original size
+<li><strong>input_width:</strong> -1 # use -1 to use original size
+<li><strong>input_min:</strong> 0 # minimum height or width for minimum scale
+<li><strong>input_max:</strong> 1200 # maximum height or width for maximum scale
+# multi-scaling type. 0: manually set each scale sizes, 1: manually set each
+# scale step, 2: number of scales between min and max, 3: step factor between
+# min and max, 4: 1 scale, the original image size.
+<li><strong>scaling_type:</strong> 3
+<li><strong>scaling:</strong> 1.1 # scaling ratio between scales
+<li><strong>min_scale:</strong> .75 # min scale as factor of minimal network size
+<li><strong>max_scale:</strong> 1.3 # max scale as factor of original resolution
+<li><strong>input_random:</strong> 1 # randomize input list (only works for 'directory' camera).
+<li><strong>input_npasses:</strong> 1 # passes on the input list (only works for 'directory' cam).
+<li><strong>hzpad:</strong> .3 # vertical zero padding on each side as ratio of network's min input
+<li><strong>wzpad:</strong> .3 # horizontal zero padding on each side as ratio of network's min in
+#mem_optimization:</strong> 1
+<li><strong>bbox_saving:</strong> 2 # 0: none 1: all styles 2: eblearn style 3: caltech style
+<li><strong>max_object_hratio:</strong> 0 #13.5 # image's height / object's height, 0 to ignore
+<li><strong>smoothing:</strong> 0 # smooth network outputs
+<li><strong>background_name:</strong> bg # name of background class (optional)
+
+  <h5>non-maximum suppression (nms)</h5>
+<li><strong>nms:</strong> 1 # 0: no pruning 1: ignore overlapping bb 2: pedestrian custom
+<li><strong>bbox_file:</strong> #bbox.txt # ignore processing, feed pre-computed bboxes to nms
+<li><strong>bbhfactor:</strong> .7 # height factor to apply to bounding boxes
+<li><strong>bbwfactor:</strong> .5 # width factor to apply to bounding boxes
+<li><strong>confidence_type:</strong> 2 # 0: sqrdist 1: single output 2: max other (recommended)
+<li><strong>max_bb_overlap:</strong> .5 # minimum ratio with smallest bbox to declare overlap
+<li><strong>min_hcenter_dist:</strong> .4 # centers closer than this ratio over height cancel out
+<li><strong>min_wcenter_dist:</strong> .2 # centers closer than this ratio over width cancel out
+
+
+  <h5>detection display</h5>
+
+<li><strong>skip_frames:</strong> 0 # skip this number of frames before each processed frame
+<li><strong>save_detections:</strong> 0 # output saving and display
+<li><strong>save_max:</strong> 25000 # Exit when this number of objects have been saved
+<li><strong>save_max_per_frame:</strong> 10 # Only save the first n objects per frame
+<li><strong>save_video:</strong> 0 # save each classified frame and make a video out of it
+<li><strong>save_video_fps:</strong> 5
+<li><strong>use_original_fps :</strong> 0
+<li><strong>display:</strong> 1
+<li><strong>display_zoom:</strong> 1 # zooming
+<li><strong>display_min:</strong> -1.7 # minimum data range to display (optional)
+<li><strong>display_max:</strong> 1.7 # maximum data range to display (optional)
+<li><strong>display_in_min:</strong> 0 # input image min display range (optional)
+<li><strong>display_in_max:</strong> 255 # input image max display range (optional)
+<li><strong>display_bb_transparency:</strong> .5 # bbox transp factor (modulated by confidence)
+<li><strong>display_threads:</strong> 0 # each thread displays on its own
+<li><strong>display_states:</strong> 0 # display internal states of 1 resolution
+<li><strong>show_parts:</strong> 0 # show parts composing an object or not
+<li><strong>silent:</strong> 0 # minimize outputs to be printed
+<li><strong>sync_outputs:</strong> 1 # synchronize output between threads
+<li><strong>minimal_display:</strong> 1 # only show classified input
+<li><strong>display_sleep:</strong> 0 # sleep in milliseconds after displaying
+<li><strong>ninternals:</strong> 1
+# demo display variables
+<li><strong>queue1:</strong> 0
+<li><strong>qstep1:</strong> 1
+<li><strong>qheight1:</strong> 5
+<li><strong>qwidth1:</strong> 2
+<li><strong>queue2:</strong> 0
+<li><strong>qstep2:</strong> 50
+<li><strong>qheight2:</strong> 5
+<li><strong>qwidth2:</strong> 5
+<li><strong>precamera:</strong> 0 # pre-camera (used before regular camera)
+<li><strong>precamdir:</strong> ${root2}/
+
+<li><strong>camera:</strong> directory # camera options: opencv shmem video directory
+# specify a custom image search pattern (optional)
+<li><strong>file_pattern:</strong> #".*[.](png|jpg|jpeg|PNG|JPG|JPEG|bmp|BMP|ppm|PPM|pnm|PNM|pgm|PGM|gif|GIF)"
+# limit of input video duration in seconds, 0 means no limit
+<li><strong>input_video_max_duration:</strong> 0 
+# step between input frames in seconds, 0 means no step
+<li><strong>input_video_sstep:</strong> 0
+
+  <h5>evaluation</h5>
+<li><strong>set:</strong> Test
+<li><strong>evaluate:</strong> 1
+<li><strong>evaluate_cmd:</strong> "${visiongrader} ${visiongrader_params}"
+<li><strong>visiongrader:</strong> ${HOME}/visiongrader/src/main.py
+<li><strong>visiongrader_params:</strong> "${input_params} ${groundtruth_params} ${compare_params} ${curve_params} ${ignore} "
+<li><strong>input_params:</strong> "--input bbox.txt --input_parser eblearn --sampling 50 "
+<li><strong>annotations:</strong> ${root}/../INRIAPerson/${set}/annotations/
+<li><strong>groundtruth_params:</strong> "--groundtruth ${annotations} --groundtruth_parser inria --gt_whratio .43 "
+<li><strong>compare_params:</strong> "--comparator overlap50percent --comparator_param .5 "
+<li><strong>curve_params:</strong> "--det --saving-file curve.pickle --show-no-curve "
+<li><strong>input_dir:</strong> /home/sermanet/${machine}data/ped/inria/INRIAPerson/${set}/pos
+<li><strong>ignore:</strong> "--ignore ${HOME}/visiongrader/datasets/pedestrians/inria/ignore/${set}/ "
+
+
+      </ul>
+
+    </div>
+   </body></html>

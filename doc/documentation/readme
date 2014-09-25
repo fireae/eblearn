@@ -1,0 +1,2 @@
+To generate the documentation, call ./generate.sh
+(requires doxygen: sudo apt-get install doxygen)

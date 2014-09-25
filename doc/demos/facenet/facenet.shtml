@@ -1,0 +1,1223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+
+    <title>EBLearn: Facenet Demo</title>
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+
+    <style media="all" type="text/css">
+      .listlevel1WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num3 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num2 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num18 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num17 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num16 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num15 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num9 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num14 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num8 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num13 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num7 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num12 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num6 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num11 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num5 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num10 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel1WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel2WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel3WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel4WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel5WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel6WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+      .listlevel7WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:disc;clear:left}
+      .listlevel8WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:bullet;clear:left}
+      .listlevel9WW8Num4 {margin-top:0;margin-bottom:0;list-style-type:square;clear:left}
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" type="text/css" href="../../web/styles.css" 
+	  media="all">
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+  </head>
+  <body dir="ltr" style="background-color:#ffffff">
+    <!--#include virtual="../../nav.html" --> 
+    Cyril Poulet (<a href="mailto:cyril.poulet@centraliens.net"><span class="Internetlink">cyril.poulet@centraliens.net)</span></a>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">Computational and Biological Learning Lab</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">Courant Institute of Mathematical Studies</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">New-York University</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Titre" dir="ltr" lang="en-US" style="font-size:24.0px" xml:lang="en-US">How to build and train an object detector using the Eblearn library</p>
+    <h2 dir="ltr" id="toc0"><span class="SectionNumber">1.</span>An example of face detector using convolutional nets</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"> This tutorial aims at helping the reader in his first steps using the Eblearn and Eblearn_gui C++ libraries developed by the CBLL at NYU. For this, we will use the example of a face detector called Facenet, and you will have to download the source code before beginning this tutorial. We will also assume that you have installed and compiled the eblearn and eblearn_gui libraries (the gui will require the use of Qt, therefore if you are not familiar with Qt, we recommend to use Eclipse C++ IDE and the Qt plugin, which will simplify the compilation with qmake).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"> Creating an object detector âfrom scratchâ is a 4-steps process : determining the structure of your convolutional net, creating the data to train it, training it, and finally building the associated detector. We will try in this tutorial to explain each step clearly and accurately, and to mention a few common mistakes or bugs that are likely to occur and how to avoid or solve them.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"></p>
+    <h1 dir="ltr" id="toc1"><span class="SectionNumber">I.</span>Structure of your convolutional net</h1>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"> For this first part, you won't need to program : it is important to think about the structure of the net you want to use. We will assume that you know what convolutional networks are (if that's not the case, you might want to look at some of Yann LeCun's article on the subject at <a href="http://yann.lecun.com/exdb/publis/index.html"><span class="Internetlink">http://yann.lecun.com/exdb/publis/index.html</span></a>).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The Eblearn library proposes 3 main types of modules :</p>
+    <ul class="listlevel1WW8Num2">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">convolutional layer modules, which perform multiple convolutions on the input;</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">subsampling layer modules, which perform subsampling on the input</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">full-layers, who provide full connections between the input layer and the output layer.</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Each of these modules are completely tunable and all the connections can be learned (i.e. Â the convolution and subsampling kernels and bias, and the full connections). Let's look at the structure we will use in the facenet detector.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The facenet network is a CSCSCF network :</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <div style="text-align:center">
+      <img alt="graphics1" class="frameGraphics" id="graphics17Cgraphics" src="Howto-img1.png" style="border:none;padding:1.0px;background-color:#ffffff;width:643.1233px;height:168.41278px" />
+    </div>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The input image (42x42 pixels) is first given to a convolutional layer with 7x7 kernels, which extracts 6 feature map (36x36 pixels), then a subsampling layer (2x2 kernel) outputs six 18x18 pixels maps. A second convolutional layer (7x7 kernels) extracts 16 new feature maps (12x12 pixels) then subsampled (2x2 kernel) to 16 6x6 pixels maps. A last convolutional layer (6x6 kernels) outputs 80 1x1 pixel feature maps, who are finally connected to a 2-categories (face and background) layer via a full-layer.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">As you can see, there are multiple parameters that you can play with to customize your network : the number and type of layers, the number of feature maps (each feature map corresponds to one kernel) of each layer and the tables of connections between the inputs and the feature maps, and the size of the kernels. </p>
+    <ul class="listlevel1WW8Num4">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The convolutional layers are learning features which combinations of will enable the detector to find the objects in images. The subsamplers allow to use convolutional layers at different scales, and to find âfeatures of featuresâ, thus enabling the detection of more complex objects. Finally the full layer is a kind of âIf you find this, this and that in an image, then it's a category 1, but with these 3 other ones it's a 2â and are used to connect the final feature maps to the output categories.</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-left:48.0px;margin-right:0;text-indent:0" xml:lang="en-US">If you are detecting simple objects, 2 C-layers may suffice in your network, but for most objects 3 is recommended. With more, it is not clear whether you will improve the detection, but you will surely increase the cost of the training and detection (in time and memory)</p>
+    <ul class="listlevel1WW8Num3">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">As a general rule, the more complex the detection is (multiple types of object, complex objects) the more feature maps you will need, but it will cost more connections (which means more calculations to train them). </p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">As a comparative point, Facenet uses 14571 weights (connections, biases, etc.).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">When you have chosen the architecture, you have to determine the sizes of the kernels. Usually 5x5 to 7x7 kernels for c-layers and 2x2 to 4x4 kernels for s-layers are a good choice:</p>
+    <ul class="listlevel1WW8Num5">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">under 5x5 your c-layer won't find relevant information in the image (the feature map will be small, therefore very generic), and over 8x8 the information will be either to specialized or too computer-costly.</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Over 4x4 your s-layer will subsample too much and you may miss some important informations in the image.</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">You also have to take into account the minimum size of the object you want to detect : since each c or s-layer is performing a convolution, each output is smaller than the corresponding input (you're âloosingâ the borders). For example, Facenet takes an input of at minimum 42x42 pixels, since a 42x42 pixels is transformed into a 1x1 pixel output.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">To calculate the sizes of the kernels and the minimum size of the input, you'll have to :</p>
+    <ul class="listlevel1WW8Num6">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">take as a starting point that the output is 1x1, and so should be the input of the f-layer</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">each convolution (c or s-layer) by a NxN kernel makes you loose N-1 pixels in each dimension</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">your object at its minimum size must still be recognizable, and whole (you have to leave some background around it). In Facenet, we decided for a 42x42 pixels minimum size, with a face 30 pixels high (8 to 10 pixels between the middle of the eyes and the center of the mouth).</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">For another example of CSCSCF architecture, see <a href="http://yann.lecun.com/exdb/publis/pdf/huang-lecun-06.pdf"><span class="Internetlink">http://yann.lecun.com/exdb/publis/pdf/huang-lecun-06.pdf</span></a>.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <h1 dir="ltr" id="toc2"><span class="SectionNumber">II.</span>The training data</h1>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"> When you have finally settled for a structure, it's time to prepare the data you will use to train your network. For that, you will need images and the corresponding data (providing the location of the objects in the images). To have a satisfactory training, you should <span style="font-weight:bold">at least</span> have 1000 to 2000 instances of each type of object you want to train your network to detect : the more you have, the better the training will be (but you should have roughly the same number of instances of each object). You then have to extract these instances from the images and rescale them to the minimum size (as calculated above). </p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : A useful trick if you want to build a detector that will be robust to scale and angle variations is to randomly generate around 10 instances with various scales and angles for each extracted instance of object.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"> To illustrate this, let's use the Facenet code. We had 2 types of objects : face and background (everything else), one directory of images, and a file with the corresponding data : each line corresponded to an instance of face in an image, with the following information : </p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US">"name_of_the_imge_file x_lefteye ylefteye x_righteye y_righteye x_nose y_nose x_leftcornermouth y_leftcornermouth x_centermouth y_centermouth x_rightcornermouth y_rightcornermouth"</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc3"><span class="SectionNumber">1.</span>The parser</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The first thing was to extract useful information from each line of the information file. We decided that we needed the name of the image to open, the coordinates of the middle of the eyes and the coordinates of the center of the mouth : with a rather simple model, this is enough to locate the face in the opened picture and to crop and resize it.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The parser is a rather classical char* parser named <span style="color:#0000ff">lineparser </span><span style="color:#000000">(see the comments of the code for details on how to parse a char*).</span></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc4"><span class="SectionNumber">2.</span>Extracting the instances of faces</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="color:#000000">The function is called </span>
+      <span style="color:#0000ff">extract_faces</span>
+      <span style="color:#000000"> and is based on the following algorithm:</span>
+    </p>
+    <ul class="listlevel1WW8Num10">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">for each line in the information file</p>
+        <ul class="listlevel2WW8Num10">
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">extract the relevant information with lineparser</p>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">open the image and calculate the size and angle of the face</p>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">if the the face is too big (more than twice the minimum size calculated), subsample the image by 2 until it is small enough (this is to prevent clipping if we rescale it at once) and calculate the new size and location of the face in the new image</p>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">do 10 times :</p>
+            <ul class="listlevel3WW8Num10">
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">calculate random resizing and rotating coefficients</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">rotate and resize the whole image (to prevent border effects)</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">if you can extract a 42x42 pixels image centered on the center of the eyes from the previous rotscaled image :</p>
+                <ul class="listlevel4WW8Num10">
+                  <li>
+                    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">crop the 42x42 image and add it to the matrix where these images are saved</p>
+                  </li>
+                  <li>
+                    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">save the according data in a txt file</p>
+                  </li>
+                  <li>
+                    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">perform vertical axial rotation on the 42x42 image</p>
+                  </li>
+                  <li>
+                    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">save the new image</p>
+                  </li>
+                  <li>
+                    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">save the according data</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="color:#000000" xml:lang="en-US">Adding the vertical axial rotation is another trick to make sure that the detector will detect faces slightly facing right as well as slightly facing left.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="font-weight:bold;color:#000000">TIP</span>
+      <span style="color:#000000"> : The random resizing is done with a coefficient between 1/sqrt(sqrt(2)) Â and sqrt(sqrt(2)), and the rotating coefficient is between -30Â° and 30Â°. You don't need to change the rescaling min and max factors (see âbuilding the detectorâ), but if you are thinking about changing the rotating max coefficient (to detect objects whatever their angle), it might be a better idea to create more object categories (for example âface looking downâ, âface looking upâ and so forth) or your feature maps will be too generic et your detector won't provide useful results.</span>
+    </p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="color:#000000">As you may note, the </span>
+      <span style="color:#0000ff">extract_face</span>
+      <span style="color:#000000"> function also provides a mean to just append the new extracted images to existing ones, by providing a existing .mat file (.mat is not compulsory, you can save your matrices in any format, but this one seems somewhat more appropriate, if only as a reminder of its content...). This allows you to extract images from several directories, but be careful either to not mix different categories in the same matrix, or to carefully keep trace of the corresponding labels.</span>
+    </p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="color:#000000" xml:lang="en-US">Last, we haven't implemented the function to extract background 42x42 patches, but the algorithm is very similar :</p>
+    <ul class="listlevel1WW8Num9">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">for each line in the information file</p>
+        <ul class="listlevel2WW8Num9">
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">extract the name of the image to open with lineparser</p>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">open the image</p>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">do 20 times :</p>
+            <ul class="listlevel3WW8Num9">
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">calculate random coordinates, with respect to 42 pixels margin right and down</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">crop the 42x42 image and add it to the matrix where these images are saved</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">save the according data in a txt file</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0;color:#000000" xml:lang="en-US">The chances to find a perfect face in these random patches is extremely small, and having partial faces as background will help your detector to place any face it finds more accurately.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <h1 dir="ltr" id="toc5"><span class="SectionNumber">III.</span>Training your net</h1>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"> For the rest of this tutorial we will mostly rely on Facenet source code, with hints as to how to handle more than 2 categories, but we also encourage you to look at the Detector2D example provided in the eblearn library.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">We will decompose this phase in 3 parts : creating your network, creating the sets of data from the matrices previously built and finally training your network.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc6"><span class="SectionNumber">1.</span>Creating the network</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Let's have a look at the facenet class (at least what we need of it at the moment):</p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">class</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> facenet : </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">public</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> net_cscscf {</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">public</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">:</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US"> parameter  *theparam;</p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US"> Idx&lt;intg&gt; Â Â table0, table1, table2;</p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US"> Idx&lt;ubyte&gt; Â *labels;</p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> Idx&lt;</span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">&gt; *targets;</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> Idx&lt;</span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">&gt; smoothing_kernel, highpass_kernel;</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#3f5fbf">//! creates the net</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#3f5fbf">//! </span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#7f9fbf">@param</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#3f5fbf"> paramfile is the file containing the weights, if your net has already been trained.</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> facenet(</span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">const</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">char</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> *paramfile = NULL);</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#000000">~facenet</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">();</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US">}</p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The facenet class is a net_cscscf, which is a ready-to-use net provided by the eblearn library. Should you want to create your own structure, take a look at the Net.h and Net.cpp files.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The parameter is the memory space where the weights will be stored; the tables are connection tables for the c-layers and contain the complete list of which input feature map is connected to which output feature map; the labels vector is a list of the categories of objects (usually only referred to as '0', '1', etc.) and targets is a matrix with 1.5 on diagonal terms and -1.5 on all the other terms : it is used to determine the reward of the network for each proposed output during the training. Finally, the 2 kernels are used to pre-treat the training images.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The constructor of facenet follows the following algorithm:</p>
+    <ul class="listlevel1WW8Num8">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">create a new parameter with enough place to store all the weights (make it large...)</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">create the labels and targets</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">create the tables needed for the c-layers</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">initiate the net (see the net_cscscf functions for the details)</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">load some weights if needed (we don't need to for training, but it is useful to avoid training  each time you want to use the detector)</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">create the kernels</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : As you can see, the constructor is pretty straightforward, but you <span style="font-weight:bold">CANNOT</span> switch the initiation of the net and the loading of precalculated weights. The reason is that when you initiate the net, each layer will reserve some space in the parameter and fill it with zeros, even if there were Â weights in this space. So be sure that if you want to load weights, you load them after initiating the net.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"><span style="font-weight:bold">TIP </span>: we provide 2 functions to generate tables for the c-layers : <span style="color:#0000ff">full_table </span>and <span style="color:#0000ff">custom_table</span>.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"><span style="color:#0000ff">full_table</span> will provide a full table (pretty obvious, isn't it ?): for full_table(1, 6), the connections are 0-&gt;0, 0-&gt;1, 0-&gt;2, 0-&gt;3, 0-&gt;4 and 0-&gt;5.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"><span style="color:#0000ff">custom_table</span>(6, 16) provides the connections :</p>
+    <table cellspacing="0" dir="ltr" id="Table17Ctable" style="margin-top:0;margin-bottom:0;margin-right:auto;width:645.6px;border-collapse:separate;border-spacing:0;table-layout:fixed">
+      <col style="width:49.9968px" />
+      <col style="width:34.0032px" />
+      <col style="width:33.0048px" />
+      <col style="width:34.1376px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.737595px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:37.804794px" />
+      <col style="width:38.064px" />
+      <col style="width:2.8704px" />
+      <tbody>
+        <tr>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">in\out</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.3344px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">0</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.335999px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">1</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.4688px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">2</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">3</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">4</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">5</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">6</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.068794px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">7</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">8</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">9</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">10</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">11</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">12</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">13</p>
+          </td>
+          <td dir="ltr" style="border-top:1.3343999px solid #000000;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.135994px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">14</p>
+          </td>
+          <td colspan="2" dir="ltr" style="border:1.3343999px solid #000000;padding:3.6671999px;vertical-align:middle">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">15</p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">0</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">1</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">2</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">3</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">4</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+        <tr>
+          <td dir="ltr" style="border-top:none;border-bottom:1.3343999px solid #000000;border-left:1.3343999px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:41.328px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">5</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.6688px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:24.670399px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:25.8032px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.403194px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.470394px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+          <td dir="ltr" style="border-top:none;border-bottom:1.0px solid #000000;border-left:1.0px solid #000000;border-right:none;padding:3.6671999px;vertical-align:middle;width:29.729599px">
+            <p class="Contenudetableau" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">x</p>
+          </td>
+          <td style="border-top:none;border-bottom:none;border-left:1.0px solid #000000;border-right:none;padding:0;vertical-align:top;width:1.8704px">
+            <p style="margin:0;font-size:1px">Â </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">That prevents to have too much connections by always using full tables, and helps to create different feature maps. You may also note that some feature maps share the same connection table. That is not really important, since they will be in turn connected to different feature maps by the next c-layer. Of course, you are also welcome to design your own connection tables.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc7"><span class="SectionNumber">2.</span>Creating the sets of data</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">What we need in order to train accurately the network, and to measure how well the training went, is to build 2 sets of data : a training set and a validation set. Each of these sets must have images from all the categories (preferably the same number of each) and the associated labels.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Let's have a look at the facenet_datasource class, which will be used to handle the sets :</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">class</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> facenet_datasource : </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">public</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> LabeledDataSource&lt;</span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">, ubyte&gt; {</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">public</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">:</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">int</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> width, height;</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> mymean, mydeviation;</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US">
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> facenet_datasource(Idx&lt;</span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">&gt; *inputs, Idx&lt;ubyte&gt; *labels, </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> m = 0, </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">double</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> d = 0, </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">bool</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000"> pretreatment = </span>
+      <span style="font-family:Monospace;font-weight:bold;font-size:13.333334px;color:#7f0055">false</span>
+      <span style="font-family:Monospace;font-size:13.333334px;color:#000000">);</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left;font-family:Monospace;font-size:13.333334px;color:#000000" xml:lang="en-US">} </p>
+    <p class="Standard" dir="ltr" lang="en-US" style="text-align:left" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">(There are other functions, but we will let you have a look at it by yourself)</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US">The main interest of the <span style="color:#0000ff">LabeledDataSource</span> class is that it stores pointers to the data N*height*width idx (here, images in doubles) and to the corresponding labels idx (N*1 ubytes).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US">The constructor takes directly the pointers to these structures, but can pre-treat them (high-pass filtering and normalization) Â if you want. You can also store the resulting idxs so that you don't have to do the pretreatment each time (it can be quite time-consuming, since you should have more than 20,000 42x42 images of each category to treat).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : Pre-treating the data is very important : the high-pass filtering will underline the edges of the images, helping your network to focus on important features, and normalization will put your raw images (with bit values from -255 to 255 after the filtering) to a range much more acceptable as an input for your detector (around -2.5 to 2.5, therefor saved in doubles). Keep in mind that after each Â layer, a squashing function is used to keep the values of the intermediate outputs between -1.5 and 1.5 . For more hints on pretreatment, have a look at <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf"><span class="Internetlink">http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf</span></a>.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US">Now that we know how to handle the 2 sets of data, we need Â to create them. That is what the <span style="color:#0000ff">facenet::build_databases</span> is doing. Here is the algorithm used :</p>
+    <ul class="listlevel1WW8Num7">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">load the matrices of faces and background and the according labels (just a lot a ones for the  faces and zeros for the background) in 4 idxs of the appropriate types</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">initiate the training and validation data and labels idxs</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">for each pair of face/background images until min(number of face images, number of background images)</p>
+        <ul class="listlevel2WW8Num7">
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">if random &lt; ratio</p>
+            <ul class="listlevel3WW8Num7">
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">append the face image to the training data idx, and the according label to the    training labels idx</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">append the background image to the training data idx, and the according label    to the training labels idx</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">else (when random &gt; ratio)</p>
+            <ul class="listlevel3WW8Num7">
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">append the face image to the validation data idx, and the according label to    the validation labels idx</p>
+              </li>
+              <li>
+                <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">append the background image to the validation data idx, and the according    label to the validation labels idx</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">create the 2 facenet_datasource with the pretreatment option on</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US">save the idxs (so that you only have to do this once, as it also is time consuming)</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US">The ratio is a mean to determine how much of your images will go in each set. You won't need a huge validation set (3000 images of each categories should be sufficient).</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : Note that we alternate images from each category. <span style="font-weight:bold">It is very important to alternate categories</span>, at least in the training set. If you do not alternate, the first few images will overtrain the weights into producing the same output whatever the input, and the rest of the images won't be sufficient to get out of this dead-end. If you fall in such case, you'll know it immediately after the first testing session (see âtrainingâ) : you will have 1/NofCategories of your images well-classified, while the rest won't be .</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc8"><span class="SectionNumber">3.</span>Training your network</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Now that we have a network and the data, we are ready to begin the training. We created 2 functions to do that : <span style="color:#0000ff">facenet::train</span> and <span style="color:#0000ff">facenet::train_online</span>.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The first function is the main training function : it creates the high-level structures that will be used to train and test the network, loads the training and validation databases, and finally calls <span style="color:#0000ff">train_online</span>.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Before going deeper into<span style="color:#0000ff"> train_online</span>, let's have a look at the structures used for the training : </p>
+    <ul class="listlevel1WW8Num11">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The idx3_supervised_module is a âsuper netâ, which means it includes your net, and add to it a classifier (the max_classer) and a module that will calculate the error between the output of the net and the desired output (euclidean distance).</p>
+      </li>
+    </ul>
+    <div style="text-align:center">
+      <img alt="graphics2" class="frameGraphics" id="graphics27Cgraphics" src="Howto-img2.png" style="border:none;padding:1.0px;background-color:#ffffff;width:313.7376px;height:299.0016px" />
+    </div>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <ul class="listlevel1WW8Num11">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The supervised_gradient is the structure that will perform the training: compute the diagonal hessian matrix, then perform the forward and backward propagation and the according update of the weights.</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The classifier_meter is a structure that measures the performance of the set of weights on a dataset.</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"><span style="color:#0000ff">train_online</span> is the function used to perform a one-pass training on the training dataset, then to measure the performance of the set of weights produced on the training dataset, then on the validation dataset, using the previous structures. Finally it saves the current weights as a .mat.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">We then have to design a <span style="font-weight:bold">training scheme</span> : usually at the beginning we will choose a high adaptation parameter (around 10Â¯<span style="font-size:58%;vertical-align:super">4</span><span style="font-size:16.0px;vertical-align:0%">) to get quickly some results, perform a few passes with train_online, then decrease the </span>parameter by a factor of 5 or 10 to finely tune the training and perform some more passes, and so on. Â Usually the performances will increase at the beginning, up to the moment where it will begin to decrease : this means that we have overtrained our network. You can look at the<span style="color:#0000ff"> train</span> function for a basic example, but you should also look at the gd_param class of the eblearn library, which provides a lot of options to tune your training scheme.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : the training is time consuming, so you might want to make sure that it is working before going for the full training scheme : try to run it on on pass only to see if you don't have a problem with your data (see previous tip about alternating the categories...)</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : remember that before each training (at the beginning of<span style="color:#0000ff"> train</span> ), the weights are randomly initialized, so the same training scheme will not give the same results when run twice (even if it should be of the same order). For this reason, try to run your design a second time before radically changing it because you are not satisfied with the results...</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="font-weight:bold">FINAL TIP ON THE TRAINING : </span>
+      <span style="font-weight:normal">Remember that the performance measured by the classifier_meters is </span>
+      <span style="font-weight:bold">not relevant to compare to any other network design</span>
+      <span style="font-weight:normal"> : it is only provided to help you choose between several sets of weight for the given network. You will only know the real performances of your network after using it on full scale images, which leads us to the creation of the detector.</span>
+    </p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Just as a hint of what you should be able to achieve, we could quite easily train a net that had less than 8% error rate on both the training and validation set.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:0" xml:lang="en-US"></p>
+    <h1 dir="ltr" id="toc9"><span class="SectionNumber">IV.</span>Building the detector </h1>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"> Now, you have a trained network, and of course you want to use it on full-scale images. It's time to build the detector.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc10"><span class="SectionNumber">1.</span>Presentation of the algorithm</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Let's make a list of everything the detector should do :</p>
+    <ul class="listlevel1WW8Num12">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">take a picture as input, whatever the size of the picture</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">be able to spot faces (or objects) everywhere on the picture, whatever the size of these objects, and be able to tell us where they are</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">give us accurate results (where we will most likely find faces (or objects, and which category))</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">For the first point, we do not need to change anything, as the different layers are able to deal with inputs of whatever size you need, they just change the sizes of their output. Example : if you give a 200x200 pixels input to the C0 layer, the output of this layer will be 6 feature maps 196x196, and the final output out the network will be 2 âimagesâ 40x40 containing the output scores for the 2 categories âfaceâ and âbackgroundâ, each âpixelâ corresponding to a 42x42 patch in the image, separated from its neighboring patches by 4 pixels.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">For the other points, however, there is much more work to do. You might remember that we trained the network with random size shifts on the face pictures, to make it robust to size change. This is useful, but it's not robust enough to provide us with the ability to detect any face whatever the size. For that, we will have to run the detector at multiple sizes of the picture : every 1/sqrt(2) size factor, beginning at the full-scale image and finishing at the minimum size (42x42 pixels in the case of facenet). So as long as we know how to detect a face at one scale, we only have to run the same algorithm multiple times to detect faces at every scales.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">The algorithm to detect faces at one scale is quite simple :</p>
+    <ul class="listlevel1WW8Num13">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">pre-treat the image we are going to feed the network with</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">perform a forward propagation on the image</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">find the local maxima of the output (and the corresponding category if it's relevant), corresponding to the probable faces on the picture</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">calculate the corresponding coordinates on the input image</p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"><span style="font-weight:bold">TIP</span> : it is vital to perform the<span style="font-weight:bold"> exact same pretreatment</span> on the input that you performed on the training dataset (in our case, high-pass filtering, then normalization). Indeed, the network is trained on a certain type of input, so if you change that type of input, you won't get good results...</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Once we have fed our network with multiple-scale inputs, we have N lists of possible locations for faces, one per scale : we have to merge them, as faces are more likely to be where multiple scales had a maximum.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">Â As the algorithm is quite straightforward, we will now see how we implemented it for facenet.</p>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc11"><span class="SectionNumber">2.</span>Implementation</h2>
+    <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">We assume that you have created your net using the constructor previously described, but this time giving it your stored weights file as argument.</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">The main function of the detector is <span style="color:#0000ff">facenet::detect</span>. It first creates the inputs, outputs and results structures, that will be stored as a vector of state_idxs for the inputs and outputs (one per scale), and a vector of idxs for the results. It then calls <span style="color:#0000ff">facenet::multi_res_prep</span>, which prepares and pretreats the images at each scale. The next step is calling <span style="color:#0000ff">facenet::multi_res_fprop</span>, which performs the forward propagation at each scale, selects the maxima at each scale and merge the results. Finally <span style="color:#0000ff">detect</span> draws rectangles on the input pictures where faces have been detected. </p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"><span style="color:#0000ff">facenet::multi_res_prep</span> is quite easy to understand : </p>
+    <ul class="listlevel1WW8Num14">
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">it first resizes your image either to its own size or to the biggest size the network has to work on, whichever the biggest of the 2 sizes, and stores it in <span style="color:#b80047">display</span>, so that you can keep a clean version of it.</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">Then for each given size, it :</p>
+        <ul class="listlevel2WW8Num14">
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">resizes the image to the right size</p>
+          </li>
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">high-pass filters it (by a convolution with a high-pass kernel)</p>
+          </li>
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">normalizes it</p>
+          </li>
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">stores it in the input vector at the right place</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"><span style="color:#0000ff">facenet::multi_res_fprop</span> does the following :</p>
+    <ul class="listlevel1WW8Num15">
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">it performs a forward propagation at each scale, the outputs being stored in the output vector</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">it calls <span style="color:#0000ff">facenet::postprocess_output</span>, which extract results for each scale</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">it then calls <span style="color:#0000ff">facenet::prune</span>, which merge the results of each scale into one single list of results</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">Finally it prints the previous list</p>
+      </li>
+    </ul>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"><span style="color:#0000ff">facenet::postprocess_output</span> runs the following algorithm :</p>
+    <ul class="listlevel1WW8Num16">
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">for each output</p>
+        <ul class="listlevel2WW8Num16">
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">smooth it (by a convolution with a smoothing kernel)</p>
+          </li>
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">call <span style="color:#0000ff">mark_maxima</span> on it to get a list of local maxima, stored in the results vector</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">create a global result list</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">for each list of result</p>
+        <ul class="listlevel2WW8Num16">
+          <li>
+            <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">for each result in the list</p>
+            <ul class="listlevel3WW8Num16">
+              <li>
+                <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">if the score of the face (or object) category is better than a chosen threshold, put it in the global list, along with the calculated position (taking the scale into account) and the calculated size of the face</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">return the global list</p>
+      </li>
+    </ul>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"><span style="color:#0000ff">facenet::mark_maxima</span> just looks at each point : if its score for the âfaceâ category is superior to the scores of its 8 neighbors in the output idx, then copy this score in the result idx. However, if you are building a multiple-objects detector, this function should first determine which category has the highest score for the considered output pixel, then compare it to the score of its neighbors for the same category.</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">Finally, <span style="color:#0000ff">facenet::prune</span> is called on the global result list and, for each result in it, it compares it to all the other results : if there is another result which score is better and which rectangle is overlapping the one of the result we are considering by more than a given percentage, we discard the result we were considering. This way we can prevent very close peaks, that are very likely to represent the same face : we only keep the best of its neighborhood. There is here no consideration of type of object : 2 close peaks are likely to be for the same object, so we consider that if there are multiple hits around it, then the highest score is the right category.</p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">As you can see, the previous algorithm is followed very closely. Here are a few way to tune the detector :</p>
+    <ul class="listlevel1WW8Num17">
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">The <span style="font-weight:bold">threshold</span> is the main parameter to control the number of results your network will consider as viable. The most radical way is to create a network that will only return the best result. This way you don't need to worry about the threshold. Otherwise, there is no way to know beforehand what threshold is the most appropriate : you will have to run the detector on several images to find which threshold suits you best. A more scientific way to proceed is to run the detector on several images and find what threshold enables most of the detection of faces while minimizing the false positive (a high score where there is no face).</p>
+      </li>
+      <li>
+        <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">If you run the detector on images with faces quite close to each other, it might be a good idea to change in <span style="color:#0000ff">prune</span> the <span style="font-weight:bold">percentage of overlapping</span> rectangles above which a result is discarded.</p>
+      </li>
+    </ul>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">As you will see, we also provide a function, <span style="color:#0000ff">facenet::calc_sizes</span>, to calculate the sizes of the different scale. This function does not provide the sizes of the inputs but the sizes of the output. From a general point of view, be extra-careful when dealing with position or sizes of the inputs and outputs. Don't forget that you âlooseâ some pixels due to border effects in the forward propagation :</p>
+    <div style="text-align:center">
+      <img alt="graphics3" class="frameGraphics" id="graphics37Cgraphics" src="Howto-img3.png" style="border:none;padding:1.0px;background-color:#ffffff;width:380.17923px;height:246.2016px" />
+    </div>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">At a 1:1 scale (which means the face will be the same size as the ones used to train the system), a high score in the red pixel of the output matrix means that there is a face in the 42x42 red square in the input image, which is not an intuitive result. So when the scale is different, be careful when you're calculating the place of the face in the input (for our system it's<span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px"> </span><span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000">(23 + (4 * j)) * scale, where j is the place of the output pixel (on either axis)).</span></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-weight:bold;font-size:16.0px;color:#000000">TIP</span>
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000"> : the X and Y axis are not the same when displaying the image and when storing it in an idx, so </span>
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000">be careful when drawing the rectangles (see</span>
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#0000ff"> detect</span>
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000"> ).</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US"></p>
+    <h2 dir="ltr" id="toc12"><span class="SectionNumber">3.</span>Visualizing what's going on</h2>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="color:#000000">To visualize the result, the best way is to use the eblearn_gui library (see it's readme for installation help and a tutorial on how to use it). You can very easily display the image with the rectangles around the faces by using the </span>
+      <span style="color:#0000ff">ebwindow</span>
+      <span style="color:#000000"> class and its </span>
+      <span style="color:#0000ff">gray_draw_matrix</span>
+      <span style="color:#000000"> method.</span>
+    </p>
+    <p class="Standard" dir="ltr" lang="en-US" xml:lang="en-US">
+      <span style="color:#000000">We also created the</span>
+      <span style="color:#0000ff"> facenet::show_net </span>
+      <span style="color:#000000">method, which provides a display of either the different calculated kernels, or of the intermediate outputs in the network, or both. Note that if you want to visualize the outputs for a given size, you will have to run the network with this size as last given size, since the </span>
+      <span style="color:#0000ff">show_net</span>
+      <span style="color:#000000"> method only displays the last calculated intermediate results.</span>
+    </p>
+    <div style="text-align:center">
+      <img alt="graphics4" class="frameGraphics" id="graphics47Cgraphics" src="Howto-img4.png" style="border:none;padding:1.0px;background-color:#ffffff;width:642.4032px;height:117.12961px" />
+    </div>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">Output of the c0-layer</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center;font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US"><img alt="graphics5" class="frameGraphics" id="graphics57Cgraphics" src="Howto-img5.png" style="border:none;padding:1.0px;background-color:#ffffff;width:642.4032px;height:72.1536px;float:left;margin-left:0in" /><img alt="graphics6" class="frameGraphics" id="graphics67Cgraphics" src="Howto-img6.png" style="border:none;padding:1.0px;background-color:#ffffff;width:642.4032px;height:67.728px;float:left;margin-left:0in" />9 of the 16 outputs of the c1-layer</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center;font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US"><img alt="graphics7" class="frameGraphics" id="graphics77Cgraphics" src="Howto-img7.png" style="border:none;padding:1.0px;background-color:#ffffff;width:155.8656px;height:87.9456px;float:left;margin-left:2.5339in" />9 of the 80 outputs of the c2-layer</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="text-align:center" xml:lang="en-US">
+      <img alt="graphics8" class="frameGraphics" id="graphics87Cgraphics" src="Howto-img8.png" style="border:none;padding:1.0px;background-color:#ffffff;width:226.12799px;height:221.5968px;float:left;margin-left:2.1681in" />
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-weight:bold;font-size:16.0px;color:#000000">outputs of the network</span>
+      <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000"> : scores for the background (left) and for the faces (right), and corresponding rectangles on the input image (under)</span>
+    </p>
+    <h1 dir="ltr" id="toc13"><span class="SectionNumber">V.</span>Conclusion</h1>
+    <p class="Textbody" dir="ltr" lang="en-US" style="font-family:&#39;Nimbus Sans L&#39;, Arial,sans-serif;font-size:21.333334px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US"> You should now have a working face (or whatever kind of objects you chose) detector. The next step is to automatize the detection to whole set of images, and then compare the result you're Â obtaining to the best world result !</p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US">However if you're like us, you are likely to notice that your detector is returning a lot of false positives (it tells you there are objects where there aren't) or bad categorization. The solutions to these problems are :</p>
+    <ul class="listlevel1WW8Num18">
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US">having a bigger training dataset : the more different examples of each category you have, the better your detector will be able to differentiate them</p>
+      </li>
+      <li>
+        <p class="Textbody" dir="ltr" lang="en-US" xml:lang="en-US">
+          <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000">run your detector on a set of images where you know there is none of the objects it is trained to detect, and add all the patches of images that trigger high scores to the background category (which is a category that you </span>
+          <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-weight:bold;font-size:16.0px;color:#000000">must</span>
+          <span style="font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000"> have, since it is the category in which all that is not a known object will be classified). This way, you will decrease the number of false positives (which will be correctly classified as background instead of object).</span>
+        </p>
+      </li>
+    </ul>
+    <p class="Textbody" dir="ltr" lang="en-US" style="font-family:&#39;Nimbus Sans L&#39;, Arial,sans-serif;font-size:21.333334px" xml:lang="en-US"></p>
+    <p class="Textbody" dir="ltr" lang="en-US" style="margin-top:0;margin-bottom:7.9391994px;font-family:&#39;Nimbus Roman No9 L&#39;, &#39;Times New Roman&#39;,serif;font-size:16.0px;color:#000000" xml:lang="en-US">We hope this tutorial has helped you in discovering how the eblearn C++ library works !</p>
+  </body>
+</html>

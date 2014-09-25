@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>EBLearn: Getting started</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>Getting started</h2>
+      <p>
+      </p>
+      <ol>
+	<h4>Installation</h4>
+	<li><b>Download, compile and install</b> by following instructions for
+	  <a href="install.shtml#linux">Linux</a>, 
+	  <a href="install.shtml#windows">Windows</a> or
+	  <a href="install.shtml#mac">Mac</a>.
+	  Note that core components are compilable without external dependencies
+	  but some tool components require appropriate dependencies to be
+	  installed (e.g. GUI).
+	</li>
+	<li>Make sure everything works on your system by
+	  <b>running the tester</b> (all tests
+	  should pass). For a complete test, be sure to install all external
+	  libraries required by tester (see install section). Note that the
+	  tester can still check basic components without external libraries.
+	</li>
+	<br>
+	<h4>Programming with EBLearn</h4>
+	<li>To understand the core tensor library, have a look at the
+	  <a href="demos/simple/index.shtml">simple demo</a>
+	  and the <a href="tutorials/libidx/index.shtml">libidx tutorial</a>.
+	  </li>
+	<li>To understand the core learning library, have a look at the
+	  <a href="demos/mnist/index.shtml">mnist demo</a> and the
+	  <a href="tutorials/libidx/index.shtml">libeblearn tutorial</a>.</li>
+	<li>If necessary, implement your own modules and feed them
+	  to the existing training and classification/detection tools.</li>
+	<br>
+	<p><b>The following steps do not involve any programming but rather
+	    mere modification of existing scripts and configuration files.
+	    All necessary
+	  <a href="tools/tools.shtml">tools</a>
+	  are already coded, from dataset compiling
+	  to training and classification/detection.</b></p>
+	<h4>Train</h4>
+	<li>To train a model (e.g. an object classifier/detector),
+	  proceed similarly
+	  to the <a href="demos/face/index.shtml">face demo</a>:
+	  <ol><li>create your dataset using the
+	      <a href="tools/dscompile.shtml">dscompile</a>,
+	      <a href="tools/dscompile.shtml">dsmerge</a> and
+	      <a href="tools/dscompile.shtml">dssplit</a> tools,
+	      or modify this <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/tools/demos/pedestrians/inria/dsprepare.py?view=markup">dsprepare.py</a> script.</li>
+	    <li>design your network in a configuration file similar
+	      to <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/tools/demos/pedestrians/inria/inria3_meta.conf?view=markup">
+		pedestrians.conf</a>.</li>
+	    <li>train your network with the
+	      <a href="tools/train.shtml">train</a> tool by calling
+	      'train face.conf' or 'metarun face.conf' if your configuration
+	      file contains several possible configurations to be run
+	      concurrently.</li>
+	  </ol>
+	  <br>
+	  <h4>Detect</h4>
+	  <li>To use your trained object classifier as a detector,
+	    use the <a href="tools/detect.shtml">detect</a> tool by calling:
+	    'detect face.conf' and make sure the trained network file
+	    was specified in the configuration, as well as the input source.
+	  </li>
+      </ol>
+
+    </div>
+   </body></html>

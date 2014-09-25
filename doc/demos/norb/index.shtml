@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>EBLearn: NORB Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" type="text/css" href="../../web/styles.css" 
+	  media="all">
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+    <div id="globalWrapper">
+      <h1 id="firstHeading" class="firstHeading"><b>NORB demo:</b> Object recognition using the eblearn C++ library</h1>
+      <h3 id="siteSub">By <a href="http://sermanet.free.fr">Pierre Sermanet</a> and <a href="http://yann.lecun.com/">Yann LeCun</a> (New York University)</h3><br><br>
+      <p>Here we demonstrate a Lenet7 neural network that was trained on the <a href="http://www.cs.nyu.edu/~ylclab/data/norb-v1.0/">NORB dataset</a>.</p>
+      <p>The eblearn (energy-based learning) C++ library <b>libeblearn</b> contains machine learning algorithms which can be used for computer vision.
+      The library has a generic and modular architecture, allowing easy prototyping and building of different algorithms 
+      (supervised or unsupervised learning) and configurations
+      from basic modules. Those algorithms were used for a variety for applications, including robotics with the 
+      <a href="http://www.cs.nyu.edu/~yann/research/lagr/">Learning Applied to Ground Robots</a> DARPA project (LAGR).</p>
+
+      <h2>Example with internal neural network states</h2>
+      <br>
+      <img src="img/norb_plane.png">
+      
+  </body>
+</html>

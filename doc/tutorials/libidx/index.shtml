@@ -1,0 +1,687 @@
+<html><head>
+    
+    <title>EBLearn: libidx tutorial</title>
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/styles.css" type="text/css" 
+	  media="all">
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+    
+    <div id="globalWrapper">
+      <h2 id="firstHeading" class="firstHeading">libidx
+	tutorial</h2> 
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (January 10th, 2011)</h4><br><br> 
+
+      <p>The idx library provides support for tensor description and
+	manipulation. It is self-contained and the foundation for the eblearn
+	learning library. In addition to generic tensor operations,
+	it provides a set of operations specific to images, which are
+	described as 3-dimensional tensors.</p>
+      
+      <table class="toc" style="width: 250px;" summary="Contents">
+	<tbody><tr><td><div id="toctitle"><h2>Contents</h2></div>
+	      <ul>
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#idx">1 Tensors</a></li>
+		<ul>
+		  <li><a href="#descriptors">1.1 Descriptor</a></li>
+		  <li><a href="#accessors">1.2 Accessors</a></li>
+		  <li><a href="#shallow">1.3 Shallow manipulators</a></li>
+		</ul>
+		<li><a href="#idxops">2 Tensor operations</a></li>
+		<li><a href="#image">3 Image operations</a></li>
+		<li><a href="#idxIOr">4 Tensor I/O</a></li>
+		<li><a href="#gui">5 Tensor display (libidxgui)</a></li>
+	      </ul>
+	  </tr>
+      </tbody></table>
+
+      <a name="overview"></a>
+      <h2>Overview</h2>
+      <p>The idx library (libidx) provides tensor (multi-dimensional arrays)
+	descriptors and manipulators, basis to the eblearn library. This core
+	library along with libeblearn is self-contained and templated,
+	allowing compilation for any type and on any platform. Headers (.h) and
+	templates (.hpp) files are located in core/libidx/include,
+	source files (.cpp) in core/libidx/src.</p>
+
+      <p>There are five main components to the library:</p>
+      <ol>
+	<li><b>Tensor descriptors and iterators:</b> they constitute the shallow
+	  and inexpensive tensor operations,
+	  declared in <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/core/libidx/include/idx.h?revision=HEAD&view=markup">idx.h</a>.</li>
+	<li><b>Tensor content operators:</b> these are generic deep operators
+	  that modify the actually data pointed to by the descriptor, declared
+	  in <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/core/libidx/include/idxops.h?revision=HEAD&view=markup">idxops.h</a>.</li>
+	<li><b>Image operators:</b> these apply image-specific and deep
+	  operations such as rotations or edge extraction, declared in
+	  <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/core/libidx/include/image.h?revision=HEAD&view=markup">image.h</a>.</li>
+	<li><b>Tensor I/O:</b> the loading and saving operations for
+	  tensors and images, declared in
+	  <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/core/libidx/include/idxIO.h?revision=HEAD&view=markup">idxIO.h</a> and
+	  <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/core/libidx/include/imageIO.h?revision=HEAD&view=markup">imageIO.h</a>.</li>
+	<li><b>Tensor display:</b> draw tensors on a 2-dimensional GUI,
+	  implemented as a separate library called libidxgui in 
+	  <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/tools/libidxgui/include/">tools/libidxgui/</a> in order to keep core libraries
+	  self-contained and indepedent of GUIs.</li>
+      </ol>
+      <p></p>
+
+      <a name="idx"></a>
+      <h2>Tensors</h2>
+
+      <!----------------------------------------------------------------------->
+      <a name="descriptors"></a>
+      <h4>Descriptor</h4>
+
+      <p>The idx class can represent tensors up to 8 dimensions.
+	It is templated in order to be compiled to work with any data type.
+	For a floating point 8 by 4 matrix can be created as follow:</p>
+
+      <div id="vc_markup"><pre>
+	  idx&lt;float&gt; m(8, 4);              // create a 2-dimensional float matrix</pre></div>
+
+      <p>idx objects only describe tensors, they do not actually contain data.
+	They can therefore be copied at low computation cost. Multiple tensors
+	with different orders and dimensions
+	can point to the same data, e.g.:
+      
+      <div id="vc_markup"><pre>
+	  idx&lt;float&gt; m2 = m;               // same size and pointing to the same data as m
+	  idx&lt;float&gt; m3 = m.select(0,0);   // a 1D slice of m pointing to the same data</pre></div>
+
+      <p>In the above examples, m, m2 and m3 all point to the same data storage.
+	A storage keeps a reference counter so that even if m, the idx which
+	created it is deleted, it stays allocated until all refering idx
+	(m2 and m3) are deleted.</p>
+      
+      <!----------------------------------------------------------------------->
+      <a name="accessors"></a>
+      <h4>Accessors</h4>
+      <p>One can assign or retrieve the value of a tensor element via set()
+	and get() methods:</p>
+      <div id="vc_markup"><pre>
+	  m.set(34.7, 7, 1);        // set value of element (7,1) to 34.7
+	  float x = m.get(7, 1);    // get value of element (7, 1)</pre></div>
+
+      <!----------------------------------------------------------------------->
+      <a name="shallow"></a>
+      <h4>Shallow manipulators</h4> 
+
+      <p>Shallow idx operations allow for example to slice or resize an existing
+	idx, only modifying its dimensions or offsets. They are shallow in the
+	sense that the pointed data is never modified and remain therefore
+	efficient to compute. They merely derive new idx objects from existing
+	ones to access the data in new ways.</p>
+      <ul>
+	<li><b>select:</b> return a new idx corresponding to a slice of the current idx with slice i in dimension d. In other words, if m is an idx of order 2 of size (10,4), the call idx p = m.select(0,3) will set p to an idx or order 1 containing the 4-th row of m.
+	  <div id="vc_markup"><pre>
+	      idx<T> slice = M.select(d , i)//Syntax:where d is the dimension and i the slice in that dimension
+		//It returns a result with one dimension less than source or ith slice
+	  </pre></div>
+	  <p>For example:
+	    Suppose a  rgb image, I of dimension 75 x 100. Effectively, the dimension of matrix containing colour information for image is 75 x 100 x 3, where first two dimension represent index of pixel and three is for r, g, & b for each pixel. Now, to only select information about green color for every pixel, you can select the 2nd slice in last dimension:</p>
+	  <div id="vc_markup"><pre>
+	      //Result is 75x100 matrix
+	      idx<ubyte> slice_green = I.select(2, 1) // slice[1] of last dimension[2]
+	      </pre></div>
+	</li>			
+	<li><b>narrow:</b> returns a clone of idx m where the size in the n -th
+	  dimension is reduced to s elements , offset by o . This can be used to select
+	  bands or rectangular areas in matrices.
+	  <p> 
+	    So, the user can narrow a dimension d to size s starting at position p to create a 3-dimensional subset of the 3d tensor t:</p>
+	  <div id="vc_markup"><pre>
+	      idx &lt;double&gt; subset3d = t.narrow(d, s, p);
+	      //d:dimension, s:size required, p:offset position
+
+	      For colored image I, 75x100x3, bottom half of image is:
+	      idx&lt;ubyte> bottom_half = I.narrow(0, 37, 38);
+	  </pre></div>
+	</li>
+	
+	<li><p><b>transpose:</b> It is merely changing the order of dimension of tensor i.e to change the way elements of the tensor are accessed via the get and set methods. It is inexpensive operation as no data is actually moved around, this merely manipulates the idx structure itself.</p>
+	      <p>For example:</p>
+	      <div id="vc_markup"><pre>
+		  Image I, 75x100x3 can be changed to 
+		  3x75x100, via transpose method.
+		  int p[] = {2, 0, 1}
+		  idx&lt;ubyte&gt;image_transpose = I.transpose(p); //p is array containing changed order of dimension
+	    </pre></div></li>
+
+	<li><p><b>unfold:</b>returns an idx with an added dimension at the end of m obtained by âunfoldingâ n -th dimension. More explicitely , successive rows in the last dimension will contain successive, possibly overlapping , subsets of size ksize of consecutive elements in the n -th dimension. The separation between successive subsets is step . Here is an example:</p>
+	  <div id="vc_markup"><pre>
+	      Suppose M is vector [0 1 2 3 4 5 6 7]:
+	      M.unfold(0, 3, 1);  //unfold(n ksize step)
+	      [[ 0.00 1.00 2.00 ]
+	      [ 1.00 2.00 3.00 ]
+	      [ 2.00 3.00 4.00 ]
+	      [ 3.00 4.00 5.00 ]
+	      [ 4.00 5.00 6.00 ]
+		  [ 5.00 6.00 7.00 ]]
+	  </pre></div>
+	  <p>No data is copied or replicated in the process , i.e. the three occurences of the number 2 in the above example actually come from a single memory location. The size of the new dimension is ksize . If dimn is the size of the  n -th dimension of m , the size of the returned idx in the n -th dimension is (dimn-ksize)/step + 1 . The values of dimn, ksize, and step must be such that the new size is an integer.</p>
+	  <p> This essentially manipulates the mod array to make convolutions look like matrix-vector multiplies.The unfold function essentially allows to reduce a discrete convolution to a matrix-vector product.
+	    Here is an example:</p>
+	  
+	  <div id="vc_markup"><pre>
+	      vector M = [ 1 1 0 2 3 4 2 0 ] and 
+	      vector kernel = [-1 2 -1]
+	      
+	      idx<double> U = M.unfold(0 3 1);
+		    idx_m2dotm1( U kernel output);
+		
+		So, output = [ 1.00 -3.00 1.00 0.00 3.00 0.00 ]
+		
+		A subsampled convolution can be implemented by unfolding with a step larger than 1:
+		Let m = [0 1 2 3 4 5 6 7 8] & kernel =  [1 2 1];
+		idx&lt;double&gt; z = m.unfold(0, 3, 2);
+		= [[ 0.00 1.00 2.00 ]
+		    [ 2.00 3.00 4.00 ]
+		[ 4.00 5.00 6.00 ]
+		[ 6.00 7.00 8.00 ]]
+		    idx-m2dotm1( z, kernel, output);
+		Finally, output  = [ 4.00 12.00 20.00 28.00 ]
+	  </pre></div>
+	  Naturally , there is no real need for most programmers to use the unfold construct because the idx library contains efficient 1D and 2D convolutions.
+	  </li>
+      </ul>
+
+      
+      <div id="vc_markup"><pre>
+	  idx&lt;float&gt; m(8, 4);       // create a 2-dimensional float matrix
+	  m.set(34.7, 7, 1);        // set value of element (7,1) to 34.7
+	  float x = m.get(7, 1);    // get value of element (7, 1)</pre></div>
+
+      <p>All of these functions to create matrices take 0 to 8 integer argument that are the sizes in each dimension. LIBIDX provides variety of operation from basic advance to cover all commonly used linear algebra operations to operate on matrix. It also provides large variety of iterators to loop over  for slices/elements of matrix.</p>
+      <p>  </p>
+      <p>An idx is merely an access structure that points to the data. Several idx can point to the same data. Underlying implementation used for implementing tensor really composed of two separate entities:
+	<ol><li><b>storage or srg:</b> which contains the following fields: a pointer to the actual data , an element type identifier (and the size thereof).</li><li> <b>index or idx points:</b> to a srg and contains the following fields: the number of dimensions of the tensor , the size each dimension , the address increment from one element to the next in each dimension (called modulo ) , and the offset of the first tensor element in the storage . This structure allows multiple idx to point to the same srg thereby allowingthe data to be accessed in multiple ways without copying.</li></ol>
+      <p>For example <b>metadata</b> stored for matrice M(10, 8, 4) in memory is:</p>
+      <div id="vc_markup"><pre>
+	  idx: at address -1234116112
+	  storage=-1243605552 (size=320)
+	  idxspec -1234116104
+	  ndim=3 offset=0
+	  dim=[ 10, 8, 4] mod=[ 32, 4, 1]
+	  footprint= 320 contiguous= yes</pre></div>
+
+      <p>This is basic information which is maintained/updated for every idx(tensor) at any point of time.</p>
+
+      <p>Basic information which is maintained/updated for every idx(tensor) at any point of time.</p>
+      <p><ul>
+	  <li><b>Storage(Srg):</b>We have starting address of storage at any point of time and number of elements stored inside that storage. Srg is a container for arrays of data. It contains a pointer to a dynamically allocated chunk of data, and a reference counter.  Reference counter maintains the no of active idx currently pointing to storage. Storage is always allocated with new operator i.e. it is always maintained on heap. Because storage is always on heap it help in various size manipulation function of matrices such as resize etc. which is very commonly needed.</li>
+	  <li><b>Index(or idxspec):</b>It contains all the characteristics of an idx, except the storage. It includes the order (number of dimensions) the offset, and the dim and mod arrays. having an idxspec class separate from idx allows us to write generic manipulation functions that do not depend on the type of the storage. Noting two idx can point to same storage but still can have very different characteristics.</li>
+	  <br></ul></p>
+
+      <p>Important charatrerstics/values are:
+	<ol><li>
+	    <b>OFFSET(offset)</b>:It represent the numeric distance between first element of storage and index of first element  in storage pointed by that matrix</li> object.
+	  <li><b>No. of Dimension(ndim)</b>:No. of Dimension</li>
+
+	  <li><b>No. of elements</b>: Product of element in each Dimension</li>
+
+	  <li><b>Modulo</b>:the address increment from one element to the next in each dimension (called modulo )</li>
+
+	  <li><b>FOOTPRINT</b>:Index one past of last element in storage of matrix can be calculated as: mod[0] * dim[0] + offset;
+	    For footprint of ith dimension: offset + mod[i]*dim[i]</li>
+
+	  <li><b>Contigous</b>: Is memory contigously allocated or not. We will observe that not all matrices used by 
+	    us are contigously allocated eg. resultant matrice produce as result of select() function on matrice.</li>
+      </ol></p>
+
+      <a name="storage"></a>
+      <h2>Working with Storages</h2>
+      <p>srg and idx can be created independently of each other. When directly accessing storage elements , storages behave like 1D idx (vectors).</p>
+
+      <p>For example:</p>
+      <div id="vc_markup"><pre>
+ 	  //creates a storage for double elements with size = 8 & refcount = 0;
+	  Srg&lt;double&gt; *srg_m = new Srg<double>(8); </pre></div>
+
+      <p>Creating an idx on a particular storage s can be done with:</p>
+      <div id="vc_markup"><pre>
+	  //Constructor for idx: idx(Srg&lt;T&gt; *srg, intg o, intg n1, intg n2) where o is the offset.
+	  idx&lt;double&gt; mat(srg_m, 0, 4, 3); </pre></div>
+      <p>This resizes the storage to 12 elements (if it has less than that), and creates an idx of size (4, 3) on this storage. Creating other indxes on the same storage allows to access the same piece of data in multiple ways.</p>
+
+      <a name="tensmanip"></a>
+      <h2>Tensor Manipulation</h2>
+      <p>
+	Several functions are provided to create and manipulate the âidxâ structure and its various fields.</p>
+      <ol><li>
+	  <p><b>IDX(Constructors):</b></p>
+	  <p>LIBIDX has large number of constructors provides the flexibility to create completely new idx or idx using characteristics of existing idx such as storage, dim, offset, mod etc;</p>
+	  <p><b>generic constructor</b></p>
+       	  <div id="vc_markup"><pre>
+	      //generic constructor with dims and mods creates the storage and set offset to zero
+	      idx(int n, intg *dims, intg *mods);</pre></div>		
+	  <p><b>Specific constructors for each number of dimensions</b></p>
+	  <p>creates an idx of any order using from 0 to 8 using
+  	    For example:</p>
+	  <div id="vc_markup"><pre>
+	      //idx(intg s0, intg s1, intg s2, intg s3, intg s4=-1, intg s5=-1, intg s6=-1,intg s7=-1);
+	      idx&lt;int&gt; M(3, 4 , 5, 6, 7) //creates five dimensional tensor of integers.</pre></div>
+
+	  <p>Observe intg is used for array indexing, hence should be defined as long if you want very large arrays on 64 bit machines(where intg is basically othername for type long: typedef long intg;)</p>
+
+	  <p><b>Constructors from existing Srg and offset</b></p>
+	  <p>For example:</p>
+	  <div id="vc_markup"><pre>//idx(Srg&lt;T&gt; *srg, intg o, const idxdim &d);
+	      //where srg is existing storage, o is offset
+	      //Third parameter is idxdim, array of dimensions
+	      idxdim d(M); //Create an idxdim based on the information found in an idx M
+	      idx&lt;int&gt; N(srg, 0, d); //Remeber storage is resized if needed</pre></div>
+	  
+	  <p><b>Constructors initialized with an array</b></p>
+	  <p>For example:</p>
+	  <div id="vc_markup"><pre>
+ 	      //creates an idx2 of size (s0, s1) and fills it with mat, expected to be of size (s0, s1).
+	      //idx(const T *mat, intg s0, intg s1);
+	      float f_arr = new float(10); //array of float of 10
+	      idx<float> M_arr(f_arr, 5, 2); //note: nelements of tensor must be equal to size of array</pre></div>
+
+	  <p><b>Copy constructor</b></p>
+     	  <div id="vc_markup"><pre>idx&lt;float&gt; New(&Old);</pre></div>
+	</li>
+	<li>
+	  <p><b>Field access functions</b>:Idx contains number of methods to enquire about the state of idx at any point and data you need to access from existing structure:</p>
+
+	  <p>For example:<br>
+	    Let idx&lt;ubyte&gt; M(3,4,5); //Creation of three dimensional tensor of type ubyte</p>
+
+	  <p><ol>
+	      <li>Srg&lt;ubyte&gt; *s = M.getstorage(); //return pointer to storage</li>
+	      <li>M.dim(2) // return size of idx in d-th dimension</li>
+	      <li>M.dims() // return an const pointer to array of dims of idx</li>
+	      <li>M.mod(1) // return number of elements that separate two successive elements in the dimension</li>
+	      <li>M.mods() //return pointer containing array of strides(modulo) of each dimension</li>
+	      <li>M.order() //return an order of idx</li>
+	      <li>M.offset() //return index of offset of M in current storage</li>
+	      <li>intg ne = M.nelements() //return total number of elements</li>
+	      <li>intg f = M.footprint() //return total footprint in the storage (index after last cell occupied in the storage)</li>
+	      <li>bool flag = M.contiguousp() // return true if elements of idx are contiguous in memory.</li>
+	      <li>M.getidxdim(idxdim&amp; d)  //copies order and dimensions of this idx into the passed idxdim d</li>
+	      <li>bool flag = M.same_dim(idxdim &d) //return true if this idx has same order and dimensions as idxdim d. i.e. if all their dimensions are equal (regardless of strides).</li>
+	      <li>bool flag = M.same_dim(3, 2, 5) // return true if this idx has same order and dimensions s0 .. s7</li>
+	  </ol></p>
+	</li>
+
+	<li>
+	  <p><b>Data access functions:</b> These are methods which are used to get pointer or value to/of actual data available to idx.</p>	
+	  <p>For example:<br>
+	    Let idx&lt;double&gt; M(3, 4, 5); //M is three dimensional idx access structure</p>
+
+	  <p><ol>
+	      <li>double *pdata = M.idx_ptr(); //return pointer on data chunk (on first element) i.e after taking care of offset</li>
+	      <li>double *pdElement = M.ptr(1, 2, 3); //return pointer to element with passed value of index</li>
+	      <li>double value = M.get(1, 2, 3); //return the value stored for index taking care of mod & dim itself</li>
+	      <li>M.set(13.5, 1, 2, 3); //set the value at particular index</li>
+	  </ol></p>
+
+	</li>
+      </ol>
+
+      <a name="tensiter"></a>
+      <h2>Tensor Iterator</h2>
+
+      <p>While tensor elements can be accessed individually via set and get methods, one will mostly need to loop over entire dimensions or entire tensors. For that effect, iterator classes can be used for each tensor to iterate on. However looping macros make it even easier allowing to loop over multiple tensors of any type but of the same size at the same time.</p>
+
+      <p>For instance, the idx aloop2 macro loops over all elements of 2 tensors, the idx bloop3 macro loops over the first dimensions of 3 tensors while the idx eloop1 loops over the last dimension of 1 tensor. For each tensor to be iterated, one must specify in order the name of the new lower-ordertensor, the name of the original tensor, and its type. </p>
+
+      <p>Thus to compute the sum of multiple tensors we could write:</p>
+      <div id="vc_markup"><pre>
+	  idx&lt;double&gt; td3d(32, 32, 3);
+	  idx&lt;int&gt;  ti2d(32, 32);
+	  int total = 0;
+
+	  //sum of multiple tensors using bloop Macro
+	  idx_bloop2(td2d, td3d, double, ti1d, ti2d, int) {
+	  idx_bloop2(td1d, td2d, double, ti0d, ti1d, int) {
+	  total += ti0d.get();
+	  idx_bloop1(td0d, td1d, double)
+	  total += (int) td0d.get(); }}
+
+	  Or simply:
+
+	  //same sum can be calculated using aloop macro as:
+	  idx_aloop1(td0d, td3d, double) total += td0d.get();
+	  idx_aloop1(ti0d, ti2d, int) total += ti0d.get();
+      </pre></div>
+
+      <p>Two kinds of iterator facility provided by LIBIDX:</p>
+
+      <ol>
+	<li><p><b>ScalarIterator:</b>allows to iterate over all elements of an idx.</p>
+	  <p>For Example:</p>
+
+	  <div id="vc_markup"><pre>
+	      //This can be use to traverse all the elements of idx
+	      idx&lt;double&gt; src0(3, 4, 5);
+	      ScalarIter<double> itr0(src0);
+
+		//Iterator Declaration
+		for ( ; itr0.notdone(); ++itr0) // For loop declaration		
+		{
+		printf("%g ",*itr0); //body of loop
+		}
+	  </pre></div>
+
+	  <p>iterator such as itr0 above is very useful to traverse over all the elements of source idx without being taken care is contiguous or non-contiguous. It provides support for very useful operators such as:</p>
+	  <ul>
+	    <li>++(both post or pre-increment ) operator to get over to the next element</li>
+	    <li>- - (both post & pre-decrement operator)</li>
+	    <li>* (Dereference operator to get the value of current element pointed by iterator)</li>
+	    <li>- > (Pointer dereference operator to get pointer to current element pointed by iterator)</li>
+	  </ul>
+
+	  <p>Alternatively, aloopX macro can be used which loops over all elements of an idx. These macros uses other scalar iterator class implemented as subclass inside idx&lt;T&gt; itself and instantiated with dummy iterator. This provides us to all the idx access & manipulation functions.</p>
+
+	  <div id="vc_markup"><pre>
+	      #define idx_aloop1(itr0,src0,type0)		\
+	      idxiter<type0> itr0;				\
+		idx_aloop1_on(itr0,src0)
+	  </pre></div>
+
+	  <p>
+	    Remember: It is advisable to encase every loop in its own scope to prevent name clashes if the same loop variable is use multiple times in a scope.
+	    {
+	    idx_aloop1(itr0, src0, double) // aloopX macro combines declaration of iterator and for loop
+	    {printf("%g ",*itr0);}//body of loop
+	    }
+	  </p>
+
+	  <p>Other utility of aloopX macros comes when you want to traverse over 2 or more tensors simultaneously.
+	    For Example: </p>
+	  <div id="vc_markup"><pre>
+	      //when you want to apply some function on each element of one tensor and store it in other tensor
+	      { idx_aloop2(itr0, src0, double, itr1, src1, double)
+	      { *itr1 = 2 * (*itr0) }
+	      }
+
+	      //when you want to make sum of elements of two tensors and add to third
+	      { idx_aloop3(itr0, src0, double, itr1, src1, double, itr2, src2, double)
+	      { *itr2 = *itr0 + * itr1; }
+	      }
+	  </pre></div>
+
+	  <p>For aloopX, X depend on number of matrix you want to pass together or loop together and matrices pass together does not matter, it is really the no. of elements
+	    /*At any point during the loop, the indices of the element being worked on is stored in idx.d[k] for k=0 to idx.order()-1.
+	    Two things to take care when using Macros are:
+	    <br>
+	    Note 1: Remember to include #include &lt;cppunit/extensions/HelperMacros.h&gt;<br>
+	    Note 2: //! It's advisable to encase every loop in its own scope to prevent name clashes if the same loop variable is used multiple times in a scope.
+	  </p>
+	</li>
+
+	<li><p><b>DimensionIterator:</b> allows to iterate over one of the dimension rather than every element. After each iteration it points to next element in that one particular dimension. It derives from class idx&l;T&gt;, so uses all available manipulation/access functions. It returns sub-tensor after each iteration which is ith slice along the given dimension. 
+	    For example:</p>
+	  <div id="vc_markup"><pre>
+	      //This is to show the properties of sub-tensor produced as result each iteration
+	      idx&lt;double&gt; src(3, 4);
+	      //It takes two argument: src idx&lt;T&gt; and the index of the dimension being iterated over
+	      DimIter&lt;double&gt; dim_itr(src,1); //Iterator Declaration
+
+	      for ( ; dim_itr.notdone(); ++dim_itr) // For loop declaration	
+	      {dim_itr.pretty(pFile);} //body of loop using pretty function on produced dimension iterator
+	      // sub tensor is idx in itself and can use all available idx support	
+	      **************************************************************************************************************
+	      Properties of source idx:	 	     Properties of produced Dimension iterator:
+
+	      idx: at address -1235713720 		idx: at address -1235714276
+	      storage=141662608 (size=12) 	 storage=141662608 (size=12)
+	      idxspec -1235713712			 idxspec -1235714268
+	      ndim=2//source is two dimensional    ndim=1 //sub tensor is always one dimension less than source
+	      offset=0				  offset=0
+	      dim=[ 3, 4]				  dim=[ 3]
+	      mod=[ 4, 1]				  mod=[ 4]
+	      footprint= 12				  footprint= 9
+	      contiguous= yes			  contiguous= no  //mostly it is non-contigous
+	      *************************************************************************************************************************
+	  </pre></div>
+	  <p>
+	    Similar to scalar iterator it support all the operator as (post & pre)++ and - -, *(Dereference), - > (Pointer Dereference). Additionally, as it is inherited from idx&lt;T&gt; class itself and being a sub-tensor you can use all available support for idx&lt;T&gt; on dimension iterator as well.</p>
+	  <p>
+	    Alternatively, bloopX macro can be used in place of dimension iterator. This is equivalent to explicitly declaring a dimension iterator to loop over dimension 0 i.e first dimension. Similar to aloopX, it can take one or more argument together for simultaneous iteration on more than one idx, given that they have same number of elements in iterating dimension i.e 0 in this case.</p>
+	  <p>For example:</p>
+	  <div id="vc_markup"><pre>
+	      idx_bloop2(dst0,src0,type0,dst1,src1,type1) is equivalent to
+
+	      idx_checkdim2_all(src0, src1, 0); 	// Check both idx has same no. of elements in first dimension	
+	      DimIter<type0> dst0(src0,0);	//Dim-Iter for first			
+		DimIter<type1> dst1(src1,0);	//Dim-Iter for second	
+
+		  for ( ; dst0.notdone(); ++dst0, ++dst1)  //For loop to iterate over each element of first dimension
+	  </pre></div>
+	  <p>A similar function idx-eloop iterates on the last dimension of a tensor instead of the first dimension.</p>
+	  <p>For example , the matrix product operation C = A*B can be written as follows:</p>
+
+	  <div id="vc_markup"><pre>
+	      //For C=A*B idx-m2timesm2 (A B C), although it is already provided as library function
+	      {
+	      idx_eloop2(Bj, B, float,Cj, C, float)
+	      { idx_m2dotm1(A, Bj, Cj); }
+	      }
+	  </pre></div>
+
+	  <a name="idxmanip"></a>
+
+
+	  <h2>Images</h2>
+
+	  <h3>Tensor Operators: Content Manipulation</h3>
+
+	  While idx descriptors are inexpensive pointers, the idx content operators work with the actual tensor data (also allowed to modify it) yielding more expensive operations. We now describe a few important operators among others: 
+
+	  Simple Operations 
+
+	  1. Copy Operator: copy the content of idx src to dst (they must have the same dimensions), automatically casting
+
+	  he source type into the destination type: 
+
+	  idx<double> src(32, 32, 3);
+
+	    // source idx of doubles
+
+	    idx<float> dst(32, 32, 3);
+
+	      // destination idx of floats, same dimension as source
+
+	      idx_copy(src, dst); // it performs automatic typecasting of source to destination 
+
+	      2. I/O operators: saving or loading tensors from memory to file & vice versa can be done easily with save & load operations:
+
+	      save_matrix(src, "im.mat");
+
+	      //files are saved in .mat format
+
+	      idx<float> dst = load_matrix<float>("im.mat");
+
+		  // .mat files can be read 
+
+		  3. Additions, summations operators: add two tensors
+
+		  into another or compute the sum of all elements: 
+
+		  idx_add(f1, f2, f1);
+
+		  //operand1 , operand2, result
+
+		  float sum = idx_sum(f1);
+
+		  //sums all the elements of idx and return back scalar result 
+
+		  4. Product operators: the dot product between two tensors or the matrix-vector multiplication:
+
+		  float dot = idx_dot(f1, f2);
+
+		  // take two input tensors and write
+
+		  the result in a scalar 
+
+		  idx<float> f3(32, 16), f4(16), f5(32);
+
+		    
+
+		    idx_m2dotm1(f3, f4, f5);
+
+		    //matrix-vector multiply, put result in f5 
+
+		    5. Non-linearity operators: apply the hyperbolic tangent function to all elements of f1 and put result in f2.
+
+		    idx_tanh(f1, f2); 
+		    
+
+		    Tensor-based Image Operators 
+
+		    In libidx, images are seen and can be manipulated like
+
+		    tensors. Here are some key operators specific to image tensors 
+
+		    1. Image I/O operators: load or save images,
+
+		    
+
+		    For example is suppose loaded image is 100 * 75 pixel and 22.0 KB (22553 bytes) in size
+
+		    , it takes filename as argument, put result in im, resultant idx is ndim=3, dim=[ 75, 100, 3], mod=[ 300, 3, 1] , footprint= 22500 
+
+		    pnm_fread_into_rgbx(imgfile.c_str(), im); //Reading pnm image bytes from file into 3D                 //idx<ubyte> tensor  
+
+		      idx<float> im = load_image<float>("im.jpg");
+
+			  save_image(im, "im.png");
+
+			  
+
+			  2. Image Resizing: with bilinear interpolation, modes of resizing as preserves the aspect ratio or width by height scaling
+
+			  im = image_resize(im, 16, 16); // By default resizing preserves do w/h scaling 
+
+			  3. Image filtering: you can apply <filter> on image such as local, global or Mexican-hat normalization
+
+			    idx<float> im2 = idx_copy<float>(im);
+
+				//normalization: zero-mean and divided by standard deviation
+
+				image_global_normalization(im);
+
+				image_local_normalization(im, im2, 9);
+
+				//applies a mexican filter <filter> with parameters(s, n)
+
+				  on <in> and puts the results in <out>
+
+				      image_mexican_filter(im2, im, 5, 9); 
+				      
+				      
+				      <h2>GUI</h2>
+
+				      Graphic User Interface: GUI descriptors 
+
+				      Eblearn also provides a support to display idx on GUI window or white board which support idx based I/O. Libidxgui library provides set of classes which work together QT based graphics & libidx to provide the multithreaded gui support. 
+
+				      It provides the global variable
+
+				      ebl::idxgui gui; //global gui object 
+
+				      This can be conveniently used as gui stream object and can be used just like std::cout to display images & text. You can simply display RGB & grayscale images with help of as many windows as possible. 
+
+				      For example to display a image stored in file to window: 
+
+				      ################################################################################# 
+
+				      #include "libidxgui.h" //include the libidxgui library 
+
+				      //Replace a normal main with macro provided in library
+
+				      //Basically, QT takes over the main thread and runs your code in a thread. 
+
+				      #ifdef __GUI__
+
+				      MAIN_QTHREAD(int, argc, char **, argv) { // macro to enable multithreaded gui
+
+				      #else
+
+				      int main(int argc, char **argv) { // regular main without gui
+
+				      #endif 
+
+				      //Declaring ubyte image matrix to read values & specifying directory for image 
+
+				      idx<ubyte> im(1, 1, 1); 
+
+					string imgfile = "/home/user/eblearn/data"; 
+
+					imgfile += "/pnm/hat_P6.ppm"; 
+
+					//Reading pnm image bytes from file into 3D idx<ubyte> tensor
+
+					  pnm_fread_into_rgbx(imgfile.c_str(), im); 
+
+					  //Global pointer to gui, allows to call for example
+
+					  gui.draw_matrix() from anywhere in the code. 
+
+					  //call for new window, it returns a window id, you can create more than one window
+
+					  unsigned int wid = gui.new_window("GUI_test"); 
+
+					  //draw image matrix on window with draw_matrix function
+
+					  gui << at(30,40) << "Drawing Image" << endl; //Adding text to window
+
+										 gui.draw_matrix(im, 30, 40, 4, 4, (ubyte)10, (ubyte)100);  
+
+										 return 0; }
+
+										 ###################################################################################
+										 
+										 <h2>debugging</h2>
+										 Using gdb, one can inspect variables and call most functions
+										 in an interative manner. For example, call ./debug.sh at the
+										 root of the eblearn directory. This will start a debugging
+										 environment in emacs and gdb. Gdb is configured not to stop
+										 all threads when a tread stops (see .gdbinit), so you need
+										 to switch to the thread that stopped, e.g.:
+										 thread 2
+										 
+										 To get information about an idx 'a' (order, dimensions, etc),
+										 you can call:
+										 p a.pretty()
+										 
+										 If you want to display an idx, call draw_matrix, e.g.:
+										 p draw_matrix_float(a, 0, 0, 1, 1, 0, 255)
+
+										 If you need to manipulate the idx, for example if you want
+										 to display only 1 layer of the RGB image 'a', you can use
+										 global debug idx variables:
+										 set gdb_idx_float1 = a.select(2, 0)
+										 p draw_matrix_float(gdb_idx_float1, 0, 0, 1, 1, 0,
+										 255)
+
+										 Note: gdb does not accept calls to template functions, one
+										 needs to declare instantiations in the code first
+										 (e.g. draw_matrix_float instead of draw_matrix<float>).
+										   Some of those instantiations are available in the
+										   libeblearntools, link with this library to use them. 
+
+										   p new_window(0, 42,42);
+										   p clear_window()
+
+										   Note: if this does not work, the debug symbols might not be available,
+										   try a make clean and recompile in debug mode (make debug).
+										   Note: if you are outside of the ebl scope, add "ebl::" in front of
+										   your function calls.
+										   Note: gdb requires all parameters to be specified, even default ones.
+										   Note: draw_matrix_float and gdb_idx_float1 are located in the
+										   libeblearntools library, you need to link with this library
+										   to gain access to those.
+
+</body></html>
+

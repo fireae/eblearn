@@ -1,0 +1,67 @@
+TODO list for eblearn
+(in addition/complement to list returned by calling ./todo.sh)
+
+________________________________________________________________________________
+Libraries:
+
+- in libeblearn, module_1_1<T> is a specialization of
+ module_1_1_gen<T1> with T1 = state_idx<T>. same with layers_n and
+ layers_n_gen. but now layers_n does not derive from module_1_1
+ anymore, rather from module_1_1_gen, which is supposed to be hidden
+ from the user. hence, one needs to cast a layers_n into module_1_1 to
+ avoid compilation error. todo: find a way to have layers_n derive
+ from module_1_1 and leave code in layers_n_gen.
+- bug: possible to copy 2 idx with same number of elements but
+ different dimensions
+- getting NaN when inputs are too big (typically 0 .. 255) and not
+ rescaled: add warning for too big inputs? 
+- when checking for input size compatibility, use exceptions to come
+ back to start and display correct input size and entire structure
+- rename blas* into idx_ops* ?
+- check include dependencies to reduce compilation time, e.g. include
+ "idx.h" should be avoided. 
+- check that everything compiles and issue warnings when libs missing (xml, etc)
+- write classification energy classes, not requiring targets to be given by user
+- write state_idx versions of module_1_*, ebm*, etc to lightened notation
+- remove view_as_order? -> user replicable macro for linear
+- rename nn_layer_conv to conv_layer, euclidean_cost to euclidean_energy
+- ajouter loss modules pour energy_loss et energy modules pour l'inference
+- implement Idx<T> load_matrix<T>("file") (using throw/catch)
+- perceptron tutorial / demo
+- write supervised_trainer as derivation of stochastic_gd_trainer (rename this
+  shorter)
+- port libraries to Windows libraries using mingw and win32api
+- uvc webcam with v4l2: http://staticwave.ca/source/uvccapture/
+- add switch in cmake to compile in either static or shared libraries
+- use intel's TBB for threads (cross-platform, open-source)
+  http://www.threadingbuildingblocks.org/
+- imageIO.hpp, popen not working with Windows.
+- patch_dataset.hpp: this only saves into individual files, requires
+  subsequent call to dscompiler to make a dataset, add possibility
+  to save directly into dataset. pb: does not know in advance number of samples,
+  keep list of extracted files and allocated at the end?
+________________________________________________________________________________
+Guis:
+
+- when simple program is fast, new_window doesnt have time to initiate
+ and programs quits before. 
+- idxgui: hide bottom msg if window too small or hide it always?
+ module. why do order change cause nasty bugs? unfold also conflicts
+ with this.
+- video gui generation
+- multi-threaded windows
+
+________________________________________________________________________________
+Tutorials:
+
+- tutorial explain image conventions: hxwxchannels
+- specify in tutorial that intg should be used whenever refering
+  dimension sizes
+- tutorial for gui
+
+________________________________________________________________________________
+Speed optimizations:
+
+- add inplace addc, which can be used for speed up in
+       bias modules for example where output is the input
+- give same buffer in output in layers for modules that can work inplace.

@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <title>EBLearn: Simple Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" type="text/css" href="../../web/styles.css" 
+	  media="all">
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+    <style type="text/css">
+      .comment { color: #999999; font-style: italic; }
+      .pre { color: #000099; }
+      .string { color: #009900; }
+      .char { color: #009900; }
+      .float { color: #996600; }
+      .int { color: #999900; }
+      .bool { color: #000000; font-weight: bold; }
+      .type { color: #FF6633; }
+      .flow { color: #FF0000; }
+      .keyword { color: #990000; }
+      .operator { color: #663300; font-weight: bold; }
+      .operator { color: #663300; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+    <div id="globalWrapper">
+      <h1 id="firstHeading" class="firstHeading">Simple demo</h1> 
+      <h3 id="siteSub">By <a href="http://sermanet.free.fr">Pierre
+      Sermanet</a></h3><br><br> 
+      
+      <p>This very simple demos shows how to use libidx
+	and libidxgui. We first load an image with load_image(), display it,
+      then select the blue channel and multiply it by 0.5 and display
+      the image again.<br>
+      </p>
+	
+      <h3>Code</h3>
+
+<pre><span class="pre">#include "eblearn/libidx.h"
+#include "eblearn/libidxgui.h"
+</span><span class="keyword">
+using namespace</span> std<span class="operator">;</span><span class="keyword">
+using namespace</span> ebl<span class="operator">;</span>
+
+MAIN_QTHREAD<span class="operator">(</span><span class="type">int</span><span class="operator">,</span> argc<span class="operator">,</span><span class="type"> char</span><span class="operator"> **,</span> argv<span class="operator">) {</span><span class="comment"> // macro to enable multithreaded gui
+</span><span class="flow">  try</span><span class="operator"> {</span><span class="comment">
+    // paths
+</span>    string ebl<span class="operator"> =</span><span class="string"> "/home/pierre/eblearn/"</span><span class="operator">;</span><span class="comment"> // set your eblearn root
+</span>    string image<span class="operator"> =</span> ebl<span class="operator">;</span>
+    image<span class="operator"> &lt;&lt;</span><span class="string"> "tools/data/barn.png"</span><span class="operator">;</span><span class="comment">
+
+    // load and display image
+</span>    idx<span class="operator">&lt;</span><span class="type">float</span><span class="operator">&gt;</span> m<span class="operator"> =</span> load_image<span class="operator">&lt;</span><span class="type">float</span><span class="operator">&gt;(</span>image<span class="operator">);</span>
+    draw_matrix<span class="operator">(</span>m<span class="operator">);</span>
+    gui<span class="operator"> &lt;&lt;</span><span class="string"> "original image"</span><span class="operator">;</span><span class="comment">
+
+    // reduce blue in image
+</span>    idx<span class="operator">&lt;</span><span class="type">float</span><span class="operator">&gt;</span> blue<span class="operator"> =</span> m<span class="operator">.</span>select<span class="operator">(</span><span class="int">2</span><span class="operator">,</span><span class="int"> 2</span><span class="operator">);</span><span class="comment"> // select blue channel
+</span>    idx_dotc<span class="operator">(</span>blue<span class="operator">,</span><span class="float"> .5</span><span class="operator">,</span> blue<span class="operator">);</span><span class="comment"> // multiply blue channel by .5
+</span>    draw_matrix<span class="operator">(</span>m<span class="operator">, (</span>uint<span class="operator">)</span><span class="int"> 0</span><span class="operator">,</span> m<span class="operator">.</span>dim<span class="operator">(</span><span class="int">1</span><span class="operator">) +</span><span class="int"> 5</span><span class="operator">);</span>
+    gui<span class="operator"> &lt;&lt;</span> at<span class="operator">(</span><span class="int">0</span><span class="operator">,</span> m<span class="operator">.</span>dim<span class="operator">(</span><span class="int">1</span><span class="operator">) +</span><span class="int"> 5</span><span class="operator">) &lt;&lt;</span><span class="string"> "50% blue"</span><span class="operator">;
+    
+  }</span> eblcatch<span class="operator">();</span><span class="flow">
+  return</span><span class="int"> 0</span><span class="operator">;
+}</span>
+</pre>
+
+  <h3>Makefile</h3>
+
+<pre><span class="pre"># This makefile assumes eblearn headers are installed on the system
+# (using make install)
+</span>
+includes<span class="operator"> = -</span>I<span class="operator">/</span>usr<span class="operator">/</span>include<span class="operator">/</span>qt4<span class="operator"> \
+	   -</span>I<span class="operator">/</span>usr<span class="operator">/</span>include<span class="operator">/</span>qt4<span class="operator">/</span>Qt<span class="operator"> \
+	   -</span>I<span class="operator">/</span>usr<span class="operator">/</span>include<span class="operator">/</span>qt4<span class="operator">/</span>QtGui<span class="operator"> \
+	   -</span>I<span class="operator">/</span>usr<span class="operator">/</span>include<span class="operator">/</span>qt4<span class="operator">/</span>QtCore
+
+links<span class="operator"> = -</span>lidx<span class="operator"> -</span>lidxgui
+
+options<span class="operator"> = -</span>D__IMAGEMAGICK__ # let eblearn know that image magick is present
+
+all<span class="operator">:</span>
+
+	g<span class="operator">++</span> simple<span class="operator">.</span>cpp $<span class="operator">{</span>links<span class="operator">}</span> $<span class="operator">{</span>includes<span class="operator">}</span> $<span class="operator">{</span>options<span class="operator">}</span></pre>
+
+  <h3>Output</h3>
+
+  <img src="img/example.png">
+  
+  </body>
+</html>

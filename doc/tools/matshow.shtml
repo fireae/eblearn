@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>EBLearn: matshow</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>matshow</h2>
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (January 11th, 2011)</h4><br><br> 
+      <p>
+	matshow can display any image type as well as .mat image files.
+	It can also display weights contained in a network weights file
+	(see '-conf' option). User can zoom, pan, show multiple images
+	at once, display image informations and change display range
+	(see controls section).
+	</p>
+      
+      <h4>Calls</h4>
+      <ul>
+	<li><code>./matshow &lt;file(s)&gt; [options]</code></li><br>
+	<li>Display all .mat images in current directory:<br>
+	  <code>./matshow *.mat</code></li><br>
+	<li>Display all .jpg images in current directory:<br>
+	  <code>./matshow *.jpg</code></li><br>
+	<li>Display all network weight in current directory which
+	  structure is defined in 'best.conf' configuration file,
+	  zooming on weights slices with a factor of 2.0,
+	  displaying them from the -1.5,1.5 range:<br>
+	  <code>./matshow *.mat -conf best.conf -zoom 2.0 -range -1.5,1.5</code>
+	</li><br>
+      </ul>
+
+      <h4>Controls</h4>
+      <ul>
+	<li><b>pan</b>: left-click and move mouse around to pan the image.</li>
+	<li><b>zoom</b>: use mouse wheel to zoom in and out.</li>
+	<li><b>multiple images</b>: multiple images can be shown at the same
+	  time using x or z keys to show more or less images horizontally,
+	  or y and t keys vertically.</li>
+	<li><b>previous/next</b>:
+	  user can show images back and forth
+	  using left/right or backspace/space keys.</li>
+	<li><b>image information</b>: display image informations
+	  such as size by pressing i.</li>
+	<li><b>help</b>: key controls can be shown by pressing h.</li>
+	<li><b>autorange</b>: enable/disable automatic input range
+	  by pressing a. Automatic range will map the minimum and maximum
+	  input range to the 0,255 display extrema.</li>
+      </ul>
+      
+      <h4>Options</h4>
+      <ul>
+	<li><b>-conf</b> &lt;filename&gt;<br>
+	  Show a trained network's weights.</li>
+	<li><b>-zoom</b> &lt;factor&gt;<br>
+	  Zoom on weights by this factor.</li>
+	<li><b>-range</b> &lt;range, e.g.: -1,1&gt;<br>
+	  Input range to map to display range (0 - 255).</li>
+	<li><b>-video</b><br>
+	  Display and save all input images in a video_&lt;timestamp&gt;
+	  directory, than can later be compile into a video.</li>
+	
+      </ul>
+	  
+    </div>
+   </body></html>

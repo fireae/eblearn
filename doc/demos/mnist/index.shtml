@@ -1,0 +1,396 @@
+<html>
+  <head>
+    <title>EBLearn: MNIST Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" type="text/css" href="../../web/styles.css" 
+	  media="all">
+    <link rel="shortcut icon" href="../../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+    <div id="globalWrapper">
+      <h1 id="firstHeading" class="firstHeading"><b>MNIST demo:</b>
+      handwritten digits recognition using the eblearn C++
+      library</h1> 
+      <h3 id="siteSub">By <a href="http://sermanet.free.fr">Pierre
+      Sermanet</a> and <a href="http://yann.lecun.com/">Yann LeCun</a>
+      (New York University)</h3><br><br> 
+      
+      <p>The eblearn (energy-based learning) C++
+      library <b>libeblearn</b> contains machine learning algorithms
+      which can be used for computer vision. 
+      The library has a generic and modular architecture, allowing
+      easy prototyping and building of different algorithms  
+      (supervised or unsupervised learning) and configurations
+      from basic modules. Those algorithms were used for a variety for
+      applications, including robotics with the  
+      <a href="http://www.cs.nyu.edu/~yann/research/lagr/">Learning
+      Applied to Ground Robots</a> DARPA project (LAGR).</p> 
+
+      <p>In this demo, we show how to train a convolutional neural
+      network to identify the digit value in images of handwritten
+      digits. 
+      For that purpose, we use
+      the <a href="http://yann.lecun.com/exdb/mnist/">MNIST
+      dataset</a> which contains 60,000 images of handwritten digits
+      for training and  
+      10,000 for testing.</p>
+
+      <h2>Dataset and classification</h2>
+      <p>This is the visualization of the dataset. The right part
+      shows the hardest examples, the .9% samples that the network did
+      not manage to classify correctly in this demo.</p>
+
+      <a name="figb"></a>
+      <div class="thumb">
+	<div class="thumbinner" style="width:800px;">
+	  <a href="img/mnist_datasets.png" class="image" title="internal states">
+	    <img src="img/mnist_datasets.png" width="800" border="0" class="thumbimage" />
+	  </a>
+	  <div class="thumbcaption">First 100 samples of the MNIST
+	    testing dataset with groundtruth at the left,
+	    correct and incorrect answers at the middle (incorrect are
+	    boxed but none are here in the first 100 samples) and
+	    incorrect only samples on the right.</div></div></div> 
+
+      
+      <h2>Internal Neural Network states</h2>
+      <br>
+      <p>The internal states of the first two samples of the MNIST
+      full testing set (10,000 samples), before and after training.<p>
+
+	<table>
+	  <tr><td width="390">
+	      <a name="figa"></a>
+	      <div class="thumb">
+		<div class="thumbinner" style="width:377px;">
+		  <a href="img/mnist_fprop0.png" class="image" title="internal states">
+		    <img src="img/mnist_fprop0.png" width="377" border="0" class="thumbimage" />
+	</a>
+		  <div class="thumbcaption">a. before training</div></div></div> 
+	    </td>
+	    <td>
+	      
+	      <a name="figb"></a>
+	      <div class="thumb">
+		<div class="thumbinner" style="width:377px;">
+		  <a href="img/mnist_fprop1.png" class="image" title="internal states">
+		    <img src="img/mnist_fprop1.png" width="377" border="0" class="thumbimage" />
+		  </a>
+		  <div class="thumbcaption">b. after training down to 0.9%
+		    error rate.</div></div></div> 
+      </td>
+	  </tr>
+	</table>
+      
+      <table class="toccolours" style="margin: 0pt 0pt 1em 1em; padding: 0px; width: 170px;" align="left">
+	<tr>
+	    <h2><span class="mw-headline">Quick training and testing demo</span></h2>
+	    <p>Here we quickly go through the main components of the demo so that you can experiment yourself with the library as fast as possible.</p>
+
+<div id="vc_markup"><pre><a id="l_1"></a><span class="hl line">    1 </span><span class="hl dir">#include</span> <span class="hl dstr">"libeblearn.h"</span><span class="hl dir"></span>
+<a id="l_2"></a><span class="hl line">    2 </span>
+<a id="l_3"></a><span class="hl line">    3 </span><span class="hl dir">#ifdef __GUI__</span>
+<a id="l_4"></a><span class="hl line">    4 </span><span class="hl dir">#include</span> <span class="hl dstr">"libeblearngui.h"</span><span class="hl dir"></span>
+<a id="l_5"></a><span class="hl line">    5 </span><span class="hl dir">#endif</span>
+<a id="l_6"></a><span class="hl line">    6 </span>
+<a id="l_7"></a><span class="hl line">    7 </span><span class="hl kwa">using namespace</span> std<span class="hl sym">;</span>
+<a id="l_8"></a><span class="hl line">    8 </span><span class="hl kwa">using namespace</span> ebl<span class="hl sym">;</span> <span class="hl slc">// all eblearn objects are under the ebl namespace</span>
+<a id="l_9"></a><span class="hl line">    9 </span>
+<a id="l_10"></a><span class="hl line">   10 </span><span class="hl slc">// argv[1] is expected to contain the directory of the mnist dataset</span>
+<a id="l_11"></a><span class="hl line">   11 </span><span class="hl dir">#ifdef __GUI__</span>
+<a id="l_12"></a><span class="hl line">   12 </span><span class="hl kwd">MAIN_QTHREAD</span><span class="hl sym">() {</span> <span class="hl slc">// this is the macro replacing main to enable multithreaded gui</span>
+<a id="l_13"></a><span class="hl line">   13 </span><span class="hl dir">#else</span>
+<a id="l_14"></a><span class="hl line">   14 </span><span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl sym">(</span><span class="hl kwb">int</span> argc<span class="hl sym">,</span> <span class="hl kwb">char</span> <span class="hl sym">**</span>argv<span class="hl sym">) {</span> <span class="hl slc">// regular main without gui</span>
+<a id="l_15"></a><span class="hl line">   15 </span><span class="hl dir">#endif</span>
+<a id="l_16"></a><span class="hl line">   16 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">"* MNIST demo: learning handwritten digits using the eblearn"</span><span class="hl sym">;</span>
+<a id="l_17"></a><span class="hl line">   17 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">" C++ library *"</span> <span class="hl sym">&lt;&lt;</span> endl<span class="hl sym">;</span>
+<a id="l_18"></a><span class="hl line">   18 </span>  <span class="hl kwa">if</span> <span class="hl sym">(</span>argc <span class="hl sym">!=</span> <span class="hl num">2</span><span class="hl sym">) {</span>
+<a id="l_19"></a><span class="hl line">   19 </span>    cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">"Usage: ./mnist &lt;my mnist directory&gt;"</span> <span class="hl sym">&lt;&lt;</span> endl<span class="hl sym">;</span>
+<a id="l_20"></a><span class="hl line">   20 </span>    <span class="hl kwd">eblerror</span><span class="hl sym">(</span><span class="hl str">"MNIST path not specified"</span><span class="hl sym">);</span>
+<a id="l_21"></a><span class="hl line">   21 </span>  <span class="hl sym">}</span>
+<a id="l_22"></a><span class="hl line">   22 </span>  <span class="hl kwd">init_drand</span><span class="hl sym">(</span><span class="hl kwd">time</span><span class="hl sym">(</span>NULL<span class="hl sym">));</span> <span class="hl slc">// initialize random seed</span>
+<a id="l_23"></a><span class="hl line">   23 </span>
+<a id="l_24"></a><span class="hl line">   24 </span>  intg trsize <span class="hl sym">=</span> <span class="hl num">60000</span><span class="hl sym">;</span> <span class="hl slc">// maximum training set size: 60000</span>
+<a id="l_25"></a><span class="hl line">   25 </span>  intg tesize <span class="hl sym">=</span> <span class="hl num">10000</span><span class="hl sym">;</span> <span class="hl slc">// maximum testing set size:  10000</span>
+<a id="l_26"></a><span class="hl line">   26 </span>
+<a id="l_27"></a><span class="hl line">   27 </span>  <span class="hl slc">//! load MNIST datasets: trize for training set and tesize for testing set</span>
+<a id="l_28"></a><span class="hl line">   28 </span>  mnist_datasource<span class="hl sym">&lt;</span>ubyte<span class="hl sym">,</span>ubyte<span class="hl sym">&gt;</span> train_ds<span class="hl sym">,</span> test_ds<span class="hl sym">;</span>
+<a id="l_29"></a><span class="hl line">   29 </span>  <span class="hl kwd">load_mnist_dataset</span><span class="hl sym">(</span>argv<span class="hl sym">[</span><span class="hl num">1</span><span class="hl sym">],</span> train_ds<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> trsize<span class="hl sym">,</span> tesize<span class="hl sym">);</span>
+<a id="l_30"></a><span class="hl line">   30 </span>
+<a id="l_31"></a><span class="hl line">   31 </span>  <span class="hl slc">//! create 1-of-n targets with target 1.0 for shown class, -1.0 for the rest</span>
+<a id="l_32"></a><span class="hl line">   32 </span>  idx<span class="hl sym">&lt;</span><span class="hl kwb">double</span><span class="hl sym">&gt;</span> targets <span class="hl sym">=</span> <span class="hl kwd">create_target_matrix</span><span class="hl sym">(</span><span class="hl num">1</span><span class="hl sym">+</span><span class="hl kwd">idx_max</span><span class="hl sym">(</span>train_ds<span class="hl sym">.</span>labels<span class="hl sym">),</span> <span class="hl num">1.0</span><span class="hl sym">);</span>
+<a id="l_33"></a><span class="hl line">   33 </span>
+<a id="l_34"></a><span class="hl line">   34 </span>  <span class="hl slc">//! create the network weights, network and trainer</span>
+<a id="l_35"></a><span class="hl line">   35 </span>  idxdim <span class="hl kwd">dims</span><span class="hl sym">(</span>train_ds<span class="hl sym">.</span><span class="hl kwd">sample_dims</span><span class="hl sym">());</span> <span class="hl slc">// get order and dimensions of sample</span>
+<a id="l_36"></a><span class="hl line">   36 </span>  parameter <span class="hl kwd">theparam</span><span class="hl sym">(</span><span class="hl num">60000</span><span class="hl sym">);</span> <span class="hl slc">// create trainable parameter</span>
+<a id="l_37"></a><span class="hl line">   37 </span>  lenet5 <span class="hl kwd">l5</span><span class="hl sym">(</span>theparam<span class="hl sym">,</span> <span class="hl num">32</span><span class="hl sym">,</span> <span class="hl num">32</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">120</span><span class="hl sym">,</span> targets<span class="hl sym">.</span><span class="hl kwd">dim</span><span class="hl sym">(</span><span class="hl num">0</span><span class="hl sym">));</span>
+<a id="l_38"></a><span class="hl line">   38 </span>  supervised_euclidean_machine <span class="hl kwd">thenet</span><span class="hl sym">(</span>l5<span class="hl sym">,</span> targets<span class="hl sym">,</span> dims<span class="hl sym">);</span>
+<a id="l_39"></a><span class="hl line">   39 </span>  supervised_trainer<span class="hl sym">&lt;</span>ubyte<span class="hl sym">,</span>ubyte<span class="hl sym">&gt;</span> <span class="hl kwd">thetrainer</span><span class="hl sym">(</span>thenet<span class="hl sym">,</span> theparam<span class="hl sym">);</span>
+<a id="l_40"></a><span class="hl line">   40 </span>  supervised_trainer_gui stgui<span class="hl sym">;</span> <span class="hl slc">// the gui to display supervised_trainer</span>
+<a id="l_41"></a><span class="hl line">   41 </span>
+<a id="l_42"></a><span class="hl line">   42 </span>  <span class="hl slc">//! a classifier-meter measures classification errors</span>
+<a id="l_43"></a><span class="hl line">   43 </span>  classifier_meter trainmeter<span class="hl sym">,</span> testmeter<span class="hl sym">;</span>
+<a id="l_44"></a><span class="hl line">   44 </span>
+<a id="l_45"></a><span class="hl line">   45 </span>  <span class="hl slc">//! initialize the network weights</span>
+<a id="l_46"></a><span class="hl line">   46 </span>  forget_param_linear <span class="hl kwd">fgp</span><span class="hl sym">(</span><span class="hl num">1</span><span class="hl sym">,</span> <span class="hl num">0.5</span><span class="hl sym">);</span>
+<a id="l_47"></a><span class="hl line">   47 </span>  thenet<span class="hl sym">.</span><span class="hl kwd">forget</span><span class="hl sym">(</span>fgp<span class="hl sym">);</span>
+<a id="l_48"></a><span class="hl line">   48 </span>
+<a id="l_49"></a><span class="hl line">   49 </span>  <span class="hl slc">// learning parameters</span>
+<a id="l_50"></a><span class="hl line">   50 </span>  gd_param <span class="hl kwd">gdp</span><span class="hl sym">(</span><span class="hl com">/* double leta*/</span> <span class="hl num">0.0001</span><span class="hl sym">,</span>
+<a id="l_51"></a><span class="hl line">   51 </span>	       <span class="hl com">/* double ln */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_52"></a><span class="hl line">   52 </span>	       <span class="hl com">/* double l1 */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_53"></a><span class="hl line">   53 </span>	       <span class="hl com">/* double l2 */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_54"></a><span class="hl line">   54 </span>	       <span class="hl com">/* int dtime */</span> 	<span class="hl num">0</span><span class="hl sym">,</span>
+<a id="l_55"></a><span class="hl line">   55 </span>	       <span class="hl com">/* double iner */</span><span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_56"></a><span class="hl line">   56 </span>	       <span class="hl com">/* double a_v */</span> <span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_57"></a><span class="hl line">   57 </span>	       <span class="hl com">/* double a_t */</span> <span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_58"></a><span class="hl line">   58 </span>	       <span class="hl com">/* double g_t*/</span> 	<span class="hl num">0.0</span><span class="hl sym">);</span>
+<a id="l_59"></a><span class="hl line">   59 </span>  infer_param infp<span class="hl sym">;</span>
+<a id="l_60"></a><span class="hl line">   60 </span>
+<a id="l_61"></a><span class="hl line">   61 </span>  <span class="hl slc">// estimate second derivative on 100 iterations, using mu=0.02</span>
+<a id="l_62"></a><span class="hl line">   62 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">"Computing second derivatives on MNIST dataset: "</span><span class="hl sym">;</span>
+<a id="l_63"></a><span class="hl line">   63 </span>  thetrainer<span class="hl sym">.</span><span class="hl kwd">compute_diaghessian</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> <span class="hl num">100</span><span class="hl sym">,</span> <span class="hl num">0.02</span><span class="hl sym">);</span>
+<a id="l_64"></a><span class="hl line">   64 </span>
+<a id="l_65"></a><span class="hl line">   65 </span>  <span class="hl slc">// first show classification results without training</span>
+<a id="l_66"></a><span class="hl line">   66 </span>  thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>
+<a id="l_67"></a><span class="hl line">   67 </span>  thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>test_ds<span class="hl sym">,</span> testmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>
+<a id="l_68"></a><span class="hl line">   68 </span>  stgui<span class="hl sym">.</span><span class="hl kwd">display_datasource</span><span class="hl sym">(</span>thetrainer<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> infp<span class="hl sym">,</span> <span class="hl num">10</span><span class="hl sym">,</span> <span class="hl num">10</span><span class="hl sym">);</span>
+<a id="l_69"></a><span class="hl line">   69 </span>  stgui<span class="hl sym">.</span><span class="hl kwd">display_internals</span><span class="hl sym">(</span>thetrainer<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> infp<span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">);</span>
+<a id="l_70"></a><span class="hl line">   70 </span>
+<a id="l_71"></a><span class="hl line">   71 </span>  <span class="hl slc">// now do training iterations</span>
+<a id="l_72"></a><span class="hl line">   72 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">"Training network on MNIST with "</span> <span class="hl sym">&lt;&lt;</span> train_ds<span class="hl sym">.</span><span class="hl kwd">size</span><span class="hl sym">();</span>
+<a id="l_73"></a><span class="hl line">   73 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">" training samples and "</span> <span class="hl sym">&lt;&lt;</span> test_ds<span class="hl sym">.</span><span class="hl kwd">size</span><span class="hl sym">() &lt;&lt;</span> <span class="hl str">" test samples:"</span> <span class="hl sym">&lt;&lt;</span> endl<span class="hl sym">;</span>
+<a id="l_74"></a><span class="hl line">   74 </span>  <span class="hl kwa">for</span> <span class="hl sym">(</span><span class="hl kwb">int</span> i <span class="hl sym">=</span> <span class="hl num">0</span><span class="hl sym">;</span> i <span class="hl sym">&lt;</span> <span class="hl num">100</span><span class="hl sym">; ++</span>i<span class="hl sym">) {</span>
+<a id="l_75"></a><span class="hl line">   75 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">train</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> gdp<span class="hl sym">,</span> <span class="hl num">1</span><span class="hl sym">);</span>	         <span class="hl slc">// train</span>
+<a id="l_76"></a><span class="hl line">   76 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>	         <span class="hl slc">// test</span>
+<a id="l_77"></a><span class="hl line">   77 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>test_ds<span class="hl sym">,</span> testmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>	                 <span class="hl slc">// test</span>
+<a id="l_78"></a><span class="hl line">   78 </span>    stgui<span class="hl sym">.</span><span class="hl kwd">display_datasource</span><span class="hl sym">(</span>thetrainer<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> infp<span class="hl sym">,</span> <span class="hl num">10</span><span class="hl sym">,</span> <span class="hl num">10</span><span class="hl sym">);</span> <span class="hl slc">// display</span>
+<a id="l_79"></a><span class="hl line">   79 </span>    stgui<span class="hl sym">.</span><span class="hl kwd">display_internals</span><span class="hl sym">(</span>thetrainer<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> infp<span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">);</span>       <span class="hl slc">// display</span>
+<a id="l_80"></a><span class="hl line">   80 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">compute_diaghessian</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> <span class="hl num">100</span><span class="hl sym">,</span> <span class="hl num">0.02</span><span class="hl sym">);</span> <span class="hl slc">// recompute 2nd der</span>
+<a id="l_81"></a><span class="hl line">   81 </span>  <span class="hl sym">}</span>
+<a id="l_82"></a><span class="hl line">   82 </span>  <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl sym">;</span>
+<a id="l_83"></a><span class="hl line">   83 </span><span class="hl sym">}</span>
+</pre></div>
+
+	    <h2><span class="mw-headline">Output</span></h2>
+	    <p>The output of the demo. In addition to the graphical
+	    outputs, the results are displayed on the terminal output
+	    showing the errors rates on both the training and testing
+	    set. Here we reach 0.9% error rate at the 37th
+	    iteration.</p>
+
+	    <pre>/eblearn-trunk/bin$ ./mnist ../../datasets/mnist/
+* MNIST demo: learning handwritten digits using the eblearn C++ library *
+Computing second derivatives on MNIST dataset: diaghessian inf: 0.987101 sup: 49.7794
+MNIST TRAINING set: iter# 0 [0]  sz=60000 energy=5.0819  correct=14.695% errors=85.305% rejects=0%
+MNIST TESTING set: iter# 0 [0]  sz=10000 energy=5.08783  correct=15.09% errors=84.91% rejects=0%
+Training network on MNIST with 60000 training samples and 10000 test samples:
+MNIST TRAINING set: iter# 1 [60000]  sz=60000 energy=0.0701102  correct=98.0467% errors=1.95333% rejects=0%
+MNIST TESTING set: iter# 1 [60000]  sz=10000 energy=0.0653707  correct=98.15% errors=1.85% rejects=0%
+diaghessian inf: 26.3591 sup: 49.9996
+MNIST TRAINING set: iter# 2 [120000]  sz=60000 energy=0.0546717  correct=98.47% errors=1.53% rejects=0%
+MNIST TESTING set: iter# 2 [120000]  sz=10000 energy=0.0544861  correct=98.32% errors=1.68% rejects=0%
+diaghessian inf: 33.4199 sup: 49.9999
+MNIST TRAINING set: iter# 3 [180000]  sz=60000 energy=0.0429966  correct=98.8167% errors=1.18333% rejects=0%
+MNIST TESTING set: iter# 3 [180000]  sz=10000 energy=0.0476517  correct=98.62% errors=1.38% rejects=0%
+diaghessian inf: 26.9359 sup: 50
+MNIST TRAINING set: iter# 4 [240000]  sz=60000 energy=0.0380343  correct=98.97% errors=1.03% rejects=0%
+MNIST TESTING set: iter# 4 [240000]  sz=10000 energy=0.0462413  correct=98.7% errors=1.3% rejects=0%
+diaghessian inf: 27.4113 sup: 50
+MNIST TRAINING set: iter# 5 [300000]  sz=60000 energy=0.0331095  correct=99.13% errors=0.87% rejects=0%
+MNIST TESTING set: iter# 5 [300000]  sz=10000 energy=0.0469152  correct=98.72% errors=1.28% rejects=0%
+diaghessian inf: 25.9917 sup: 50
+MNIST TRAINING set: iter# 6 [360000]  sz=60000 energy=0.0354568  correct=99.0633% errors=0.936667% rejects=0%
+MNIST TESTING set: iter# 6 [360000]  sz=10000 energy=0.0507304  correct=98.6% errors=1.4% rejects=0%
+diaghessian inf: 31.1135 sup: 49.9999
+MNIST TRAINING set: iter# 7 [420000]  sz=60000 energy=0.0300788  correct=99.2267% errors=0.773333% rejects=0%
+MNIST TESTING set: iter# 7 [420000]  sz=10000 energy=0.0458589  correct=98.73% errors=1.27% rejects=0%
+diaghessian inf: 31.014 sup: 50
+MNIST TRAINING set: iter# 8 [480000]  sz=60000 energy=0.0256149  correct=99.34% errors=0.66% rejects=0%
+MNIST TESTING set: iter# 8 [480000]  sz=10000 energy=0.0434282  correct=98.72% errors=1.28% rejects=0%
+diaghessian inf: 31.8147 sup: 50
+MNIST TRAINING set: iter# 9 [540000]  sz=60000 energy=0.0205026  correct=99.485% errors=0.515% rejects=0%
+MNIST TESTING set: iter# 9 [540000]  sz=10000 energy=0.0401836  correct=98.82% errors=1.18% rejects=0%
+diaghessian inf: 33.4823 sup: 50
+MNIST TRAINING set: iter# 10 [600000]  sz=60000 energy=0.0218916  correct=99.4783% errors=0.521667% rejects=0%
+MNIST TESTING set: iter# 10 [600000]  sz=10000 energy=0.0430964  correct=98.79% errors=1.21% rejects=0%
+diaghessian inf: 31.214 sup: 50
+MNIST TRAINING set: iter# 11 [660000]  sz=60000 energy=0.0167645  correct=99.57% errors=0.43% rejects=0%
+MNIST TESTING set: iter# 11 [660000]  sz=10000 energy=0.0386548  correct=98.89% errors=1.11% rejects=0%
+diaghessian inf: 36.5078 sup: 50
+MNIST TRAINING set: iter# 12 [720000]  sz=60000 energy=0.0184436  correct=99.5317% errors=0.468333% rejects=0%
+MNIST TESTING set: iter# 12 [720000]  sz=10000 energy=0.0410647  correct=98.86% errors=1.14% rejects=0%
+diaghessian inf: 42.0382 sup: 50
+MNIST TRAINING set: iter# 13 [780000]  sz=60000 energy=0.0181611  correct=99.5883% errors=0.411667% rejects=0%
+MNIST TESTING set: iter# 13 [780000]  sz=10000 energy=0.0421034  correct=98.88% errors=1.12% rejects=0%
+diaghessian inf: 44.4364 sup: 50
+MNIST TRAINING set: iter# 14 [840000]  sz=60000 energy=0.0196715  correct=99.5183% errors=0.481667% rejects=0%
+MNIST TESTING set: iter# 14 [840000]  sz=10000 energy=0.0441488  correct=98.78% errors=1.22% rejects=0%
+diaghessian inf: 37.5865 sup: 50
+MNIST TRAINING set: iter# 15 [900000]  sz=60000 energy=0.0139162  correct=99.665% errors=0.335% rejects=0%
+MNIST TESTING set: iter# 15 [900000]  sz=10000 energy=0.0395798  correct=98.98% errors=1.02% rejects=0%
+diaghessian inf: 46.7421 sup: 50
+MNIST TRAINING set: iter# 16 [960000]  sz=60000 energy=0.0125451  correct=99.6933% errors=0.306667% rejects=0%
+MNIST TESTING set: iter# 16 [960000]  sz=10000 energy=0.0391716  correct=98.89% errors=1.11% rejects=0%
+diaghessian inf: 41.7718 sup: 50
+MNIST TRAINING set: iter# 17 [1020000]  sz=60000 energy=0.0134095  correct=99.66% errors=0.34% rejects=0%
+MNIST TESTING set: iter# 17 [1020000]  sz=10000 energy=0.0409884  correct=98.78% errors=1.22% rejects=0%
+diaghessian inf: 31.8297 sup: 50
+MNIST TRAINING set: iter# 18 [1080000]  sz=60000 energy=0.00921904  correct=99.7717% errors=0.228333% rejects=0%
+MNIST TESTING set: iter# 18 [1080000]  sz=10000 energy=0.0371163  correct=98.95% errors=1.05% rejects=0%
+diaghessian inf: 34.3347 sup: 50
+MNIST TRAINING set: iter# 19 [1140000]  sz=60000 energy=0.00918398  correct=99.7683% errors=0.231667% rejects=0%
+MNIST TESTING set: iter# 19 [1140000]  sz=10000 energy=0.0373996  correct=98.92% errors=1.08% rejects=0%
+diaghessian inf: 47.2771 sup: 50
+MNIST TRAINING set: iter# 20 [1200000]  sz=60000 energy=0.00964223  correct=99.7617% errors=0.238333% rejects=0%
+MNIST TESTING set: iter# 20 [1200000]  sz=10000 energy=0.0383149  correct=98.87% errors=1.13% rejects=0%
+diaghessian inf: 45.1764 sup: 50
+MNIST TRAINING set: iter# 21 [1260000]  sz=60000 energy=0.00844604  correct=99.7817% errors=0.218333% rejects=0%
+MNIST TESTING set: iter# 21 [1260000]  sz=10000 energy=0.0377095  correct=98.86% errors=1.14% rejects=0%
+diaghessian inf: 48.9093 sup: 50
+MNIST TRAINING set: iter# 22 [1320000]  sz=60000 energy=0.00752063  correct=99.8217% errors=0.178333% rejects=0%
+MNIST TESTING set: iter# 22 [1320000]  sz=10000 energy=0.0367743  correct=98.93% errors=1.07% rejects=0%
+diaghessian inf: 41.4839 sup: 50
+MNIST TRAINING set: iter# 23 [1380000]  sz=60000 energy=0.0063252  correct=99.835% errors=0.165% rejects=0%
+MNIST TESTING set: iter# 23 [1380000]  sz=10000 energy=0.0353768  correct=98.99% errors=1.01% rejects=0%
+diaghessian inf: 45.3013 sup: 50
+MNIST TRAINING set: iter# 24 [1440000]  sz=60000 energy=0.00708443  correct=99.8183% errors=0.181667% rejects=0%
+MNIST TESTING set: iter# 24 [1440000]  sz=10000 energy=0.0383037  correct=98.94% errors=1.06% rejects=0%
+diaghessian inf: 42.3925 sup: 50
+MNIST TRAINING set: iter# 25 [1500000]  sz=60000 energy=0.00498736  correct=99.8517% errors=0.148333% rejects=0%
+MNIST TESTING set: iter# 25 [1500000]  sz=10000 energy=0.0368142  correct=99% errors=1% rejects=0%
+diaghessian inf: 47.6495 sup: 50
+MNIST TRAINING set: iter# 26 [1560000]  sz=60000 energy=0.00692641  correct=99.83% errors=0.17% rejects=0%
+MNIST TESTING set: iter# 26 [1560000]  sz=10000 energy=0.0393558  correct=98.89% errors=1.11% rejects=0%
+diaghessian inf: 28.1664 sup: 50
+MNIST TRAINING set: iter# 27 [1620000]  sz=60000 energy=0.00449746  correct=99.8667% errors=0.133333% rejects=0%
+MNIST TESTING set: iter# 27 [1620000]  sz=10000 energy=0.0357185  correct=99.01% errors=0.99% rejects=0%
+diaghessian inf: 49.2415 sup: 50
+MNIST TRAINING set: iter# 28 [1680000]  sz=60000 energy=0.00619437  correct=99.8367% errors=0.163333% rejects=0%
+MNIST TESTING set: iter# 28 [1680000]  sz=10000 energy=0.0376879  correct=98.92% errors=1.08% rejects=0%
+diaghessian inf: 49.585 sup: 50
+MNIST TRAINING set: iter# 29 [1740000]  sz=60000 energy=0.00482012  correct=99.8583% errors=0.141667% rejects=0%
+MNIST TESTING set: iter# 29 [1740000]  sz=10000 energy=0.0360403  correct=98.97% errors=1.03% rejects=0%
+diaghessian inf: 48.43 sup: 50
+MNIST TRAINING set: iter# 30 [1800000]  sz=60000 energy=0.00421703  correct=99.8683% errors=0.131667% rejects=0%
+MNIST TESTING set: iter# 30 [1800000]  sz=10000 energy=0.035505  correct=98.98% errors=1.02% rejects=0%
+diaghessian inf: 47.8533 sup: 50
+MNIST TRAINING set: iter# 31 [1860000]  sz=60000 energy=0.00565429  correct=99.845% errors=0.155% rejects=0%
+MNIST TESTING set: iter# 31 [1860000]  sz=10000 energy=0.0369994  correct=98.89% errors=1.11% rejects=0%
+diaghessian inf: 49.3615 sup: 50
+MNIST TRAINING set: iter# 32 [1920000]  sz=60000 energy=0.00464666  correct=99.8667% errors=0.133333% rejects=0%
+MNIST TESTING set: iter# 32 [1920000]  sz=10000 energy=0.0368726  correct=98.98% errors=1.02% rejects=0%
+diaghessian inf: 49.3121 sup: 50
+MNIST TRAINING set: iter# 33 [1980000]  sz=60000 energy=0.00354118  correct=99.88% errors=0.12% rejects=0%
+MNIST TESTING set: iter# 33 [1980000]  sz=10000 energy=0.0347413  correct=99.08% errors=0.92% rejects=0%
+diaghessian inf: 49.6058 sup: 50
+MNIST TRAINING set: iter# 34 [2040000]  sz=60000 energy=0.0034331  correct=99.885% errors=0.115% rejects=0%
+MNIST TESTING set: iter# 34 [2040000]  sz=10000 energy=0.034873  correct=99.05% errors=0.95% rejects=0%
+diaghessian inf: 49.4398 sup: 50
+MNIST TRAINING set: iter# 35 [2100000]  sz=60000 energy=0.00347821  correct=99.8833% errors=0.116667% rejects=0%
+MNIST TESTING set: iter# 35 [2100000]  sz=10000 energy=0.0352945  correct=99.06% errors=0.94% rejects=0%
+diaghessian inf: 49.5109 sup: 50
+MNIST TRAINING set: iter# 36 [2160000]  sz=60000 energy=0.00326626  correct=99.885% errors=0.115% rejects=0%
+MNIST TESTING set: iter# 36 [2160000]  sz=10000 energy=0.0349153  correct=99.07% errors=0.93% rejects=0%
+diaghessian inf: 49.5637 sup: 50
+MNIST TRAINING set: iter# 37 [2220000]  sz=60000 energy=0.00321661  correct=99.885% errors=0.115% rejects=0%
+MNIST TESTING set: iter# 37 [2220000]  sz=10000 energy=0.0347334  correct=99.1% errors=0.9% rejects=0%</pre>
+	    
+
+	    <h2><span class="mw-headline">Detailed explanation</span></h2>
+	    <p>Here we quickly go through the main components of the demo so that you can experiment yourself with the library as fast as possible.</p>
+
+<div id="vc_markup"><pre><a id="l_1"></a><span class="hl line">    1 </span><span class="hl dir">#include</span> <span class="hl dstr">&quot;libeblearn.h&quot;</span><span class="hl dir"></span>
+<a id="l_2"></a><span class="hl line">    2 </span>
+<a id="l_3"></a><span class="hl line">    3 </span><span class="hl kwa">using namespace</span> std<span class="hl sym">;</span>
+<a id="l_4"></a><span class="hl line">    4 </span><span class="hl kwa">using namespace</span> ebl<span class="hl sym">;</span> <span class="hl slc">// all eblearn objects are under the ebl namespace</span>
+<a id="l_5"></a><span class="hl line">    5 </span>
+<a id="l_6"></a><span class="hl line">    6 </span><span class="hl slc">// argv[1] is expected to contain the directory of the mnist dataset</span>
+<a id="l_7"></a><span class="hl line">    7 </span><span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl sym">(</span><span class="hl kwb">int</span> argc<span class="hl sym">,</span> <span class="hl kwb">char</span> <span class="hl sym">**</span>argv<span class="hl sym">) {</span>
+<a id="l_8"></a><span class="hl line">    8 </span>  cout <span class="hl sym">&lt;&lt;</span> endl <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot;* MNIST demo: learning handwritten digits using the eblearn&quot;</span><span class="hl sym">;</span>
+<a id="l_9"></a><span class="hl line">    9 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot; C++ library *&quot;</span> <span class="hl sym">&lt;&lt;</span> endl<span class="hl sym">;</span>
+<a id="l_10"></a><span class="hl line">   10 </span>  <span class="hl kwd">init_drand</span><span class="hl sym">(</span><span class="hl kwd">time</span><span class="hl sym">(</span>NULL<span class="hl sym">));</span> <span class="hl slc">// initialize random seed</span>
+<a id="l_11"></a><span class="hl line">   11 </span>
+<a id="l_12"></a><span class="hl line">   12 </span>  intg trsize <span class="hl sym">=</span> <span class="hl num">2000</span><span class="hl sym">;</span> <span class="hl slc">// maximum training set size: 60000</span>
+<a id="l_13"></a><span class="hl line">   13 </span>  intg tesize <span class="hl sym">=</span> <span class="hl num">1000</span><span class="hl sym">;</span> <span class="hl slc">// maximum testing set size:  10000</span>
+<a id="l_14"></a><span class="hl line">   14 </span>
+
+</pre> Details. <pre>
+
+<a id="l_15"></a><span class="hl line">   15 </span>  <span class="hl slc">// load MNIST datasets: trize for training set and tesize for testing set</span>
+<a id="l_16"></a><span class="hl line">   16 </span>  MnistDataSource<span class="hl sym">&lt;</span>ubyte<span class="hl sym">,</span>ubyte<span class="hl sym">&gt;</span> train_ds<span class="hl sym">,</span> test_ds<span class="hl sym">;</span>
+<a id="l_17"></a><span class="hl line">   17 </span>  <span class="hl kwd">load_mnist_dataset</span><span class="hl sym">(</span>argv<span class="hl sym">[</span><span class="hl num">1</span><span class="hl sym">],</span> train_ds<span class="hl sym">,</span> test_ds<span class="hl sym">,</span> trsize<span class="hl sym">,</span> tesize<span class="hl sym">);</span>
+
+</pre> Details. <pre>
+
+<a id="l_18"></a><span class="hl line">   18 </span>
+<a id="l_19"></a><span class="hl line">   19 </span>  <span class="hl slc">// create 1-of-n targets with target 1.0 for shown class, -1.0 for the rest</span>
+<a id="l_20"></a><span class="hl line">   20 </span>  Idx<span class="hl sym">&lt;</span><span class="hl kwb">double</span><span class="hl sym">&gt;</span> targets <span class="hl sym">=</span> <span class="hl kwd">create_target_matrix</span><span class="hl sym">(</span><span class="hl num">1</span><span class="hl sym">+</span><span class="hl kwd">idx_max</span><span class="hl sym">(</span>train_ds<span class="hl sym">.</span>labels<span class="hl sym">),</span> <span class="hl num">1.0</span><span class="hl sym">);</span>
+<a id="l_21"></a><span class="hl line">   21 </span>
+
+</pre> Details. <pre>
+
+<a id="l_22"></a><span class="hl line">   22 </span>  <span class="hl slc">// create the network weights, network and trainer</span>
+<a id="l_23"></a><span class="hl line">   23 </span>  IdxDim <span class="hl kwd">dims</span><span class="hl sym">(</span>train_ds<span class="hl sym">.</span>data<span class="hl sym">.</span>spec<span class="hl sym">);</span> <span class="hl slc">// get order and dimenions from data</span>
+<a id="l_24"></a><span class="hl line">   24 </span>  parameter <span class="hl kwd">theparam</span><span class="hl sym">(</span><span class="hl num">60000</span><span class="hl sym">);</span> <span class="hl slc">// create trainable parameter</span>
+<a id="l_25"></a><span class="hl line">   25 </span>  lenet5 <span class="hl kwd">l5</span><span class="hl sym">(</span>theparam<span class="hl sym">,</span> <span class="hl num">32</span><span class="hl sym">,</span> <span class="hl num">32</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">5</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">2</span><span class="hl sym">,</span> <span class="hl num">120</span><span class="hl sym">,</span> targets<span class="hl sym">.</span><span class="hl kwd">dim</span><span class="hl sym">(</span><span class="hl num">0</span><span class="hl sym">));</span>
+<a id="l_26"></a><span class="hl line">   26 </span>  supervised_euclidean_machine <span class="hl kwd">thenet</span><span class="hl sym">(</span>l5<span class="hl sym">,</span> targets<span class="hl sym">,</span> dims<span class="hl sym">);</span>
+<a id="l_27"></a><span class="hl line">   27 </span>  supervised_trainer<span class="hl sym">&lt;</span>ubyte<span class="hl sym">,</span>ubyte<span class="hl sym">&gt;</span> <span class="hl kwd">thetrainer</span><span class="hl sym">(</span>thenet<span class="hl sym">,</span> theparam<span class="hl sym">);</span>
+<a id="l_28"></a><span class="hl line">   28 </span>
+<a id="l_29"></a><span class="hl line">   29 </span>  <span class="hl slc">// a classifier-meter measures classification errors</span>
+<a id="l_30"></a><span class="hl line">   30 </span>  classifier_meter trainmeter<span class="hl sym">,</span> testmeter<span class="hl sym">;</span>
+<a id="l_31"></a><span class="hl line">   31 </span>
+
+</pre> Details. <pre>
+
+<a id="l_32"></a><span class="hl line">   32 </span>  <span class="hl slc">// initialize the network weights</span>
+<a id="l_33"></a><span class="hl line">   33 </span>  forget_param_linear <span class="hl kwd">fgp</span><span class="hl sym">(</span><span class="hl num">1</span><span class="hl sym">,</span> <span class="hl num">0.5</span><span class="hl sym">);</span>
+<a id="l_34"></a><span class="hl line">   34 </span>  thenet<span class="hl sym">.</span><span class="hl kwd">forget</span><span class="hl sym">(</span>fgp<span class="hl sym">);</span>
+<a id="l_35"></a><span class="hl line">   35 </span>
+<a id="l_36"></a><span class="hl line">   36 </span>  <span class="hl slc">// learning parameters</span>
+<a id="l_37"></a><span class="hl line">   37 </span>  gd_param <span class="hl kwd">gdp</span><span class="hl sym">(</span><span class="hl com">/* double leta*/</span> <span class="hl num">0.0001</span><span class="hl sym">,</span>
+<a id="l_38"></a><span class="hl line">   38 </span>	       <span class="hl com">/* double ln */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_39"></a><span class="hl line">   39 </span>	       <span class="hl com">/* double l1 */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_40"></a><span class="hl line">   40 </span>	       <span class="hl com">/* double l2 */</span> 	<span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_41"></a><span class="hl line">   41 </span>	       <span class="hl com">/* int dtime */</span> 	<span class="hl num">0</span><span class="hl sym">,</span>
+<a id="l_42"></a><span class="hl line">   42 </span>	       <span class="hl com">/* double iner */</span><span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_43"></a><span class="hl line">   43 </span>	       <span class="hl com">/* double a_v */</span> <span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_44"></a><span class="hl line">   44 </span>	       <span class="hl com">/* double a_t */</span> <span class="hl num">0.0</span><span class="hl sym">,</span>
+<a id="l_45"></a><span class="hl line">   45 </span>	       <span class="hl com">/* double g_t*/</span> 	<span class="hl num">0.0</span><span class="hl sym">);</span>
+<a id="l_46"></a><span class="hl line">   46 </span>
+
+</pre> Details. <pre>
+
+<a id="l_47"></a><span class="hl line">   47 </span>  <span class="hl slc">// estimate second derivative on 100 iterations, using mu=0.02</span>
+<a id="l_48"></a><span class="hl line">   48 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot;Computing second derivatives on MNIST dataset: &quot;</span><span class="hl sym">;</span>
+<a id="l_49"></a><span class="hl line">   49 </span>  thetrainer<span class="hl sym">.</span><span class="hl kwd">compute_diaghessian</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> <span class="hl num">100</span><span class="hl sym">,</span> <span class="hl num">0.02</span><span class="hl sym">);</span>
+<a id="l_50"></a><span class="hl line">   50 </span>
+
+</pre> Details. <pre>
+
+<a id="l_51"></a><span class="hl line">   51 </span>  <span class="hl slc">// do training iterations</span>
+<a id="l_52"></a><span class="hl line">   52 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot;Training network on MNIST with &quot;</span> <span class="hl sym">&lt;&lt;</span> train_ds<span class="hl sym">.</span><span class="hl kwd">size</span><span class="hl sym">();</span>
+<a id="l_53"></a><span class="hl line">   53 </span>  cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot; training samples and &quot;</span> <span class="hl sym">&lt;&lt;</span> test_ds<span class="hl sym">.</span><span class="hl kwd">size</span><span class="hl sym">() &lt;&lt;</span> <span class="hl str">&quot; test samples&quot;</span> <span class="hl sym">&lt;&lt;</span> endl<span class="hl sym">;</span>
+<a id="l_54"></a><span class="hl line">   54 </span>  <span class="hl kwa">for</span> <span class="hl sym">(</span><span class="hl kwb">int</span> i <span class="hl sym">=</span> <span class="hl num">0</span><span class="hl sym">;</span> i <span class="hl sym">&lt;</span> <span class="hl num">5</span><span class="hl sym">; ++</span>i<span class="hl sym">) {</span>
+<a id="l_55"></a><span class="hl line">   55 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">train</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> gdp<span class="hl sym">,</span> <span class="hl num">1</span><span class="hl sym">);</span>
+<a id="l_56"></a><span class="hl line">   56 </span>    cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot;training: &quot;</span> <span class="hl sym">&lt;&lt;</span> flush<span class="hl sym">;</span>
+<a id="l_57"></a><span class="hl line">   57 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">);</span>
+<a id="l_58"></a><span class="hl line">   58 </span>    trainmeter<span class="hl sym">.</span><span class="hl kwd">display</span><span class="hl sym">();</span>
+<a id="l_59"></a><span class="hl line">   59 </span>    cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot; testing: &quot;</span> <span class="hl sym">&lt;&lt;</span> flush<span class="hl sym">;</span>
+<a id="l_60"></a><span class="hl line">   60 </span>    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>test_ds<span class="hl sym">,</span> testmeter<span class="hl sym">);</span>
+<a id="l_61"></a><span class="hl line">   61 </span>    testmeter<span class="hl sym">.</span><span class="hl kwd">display</span><span class="hl sym">();</span>
+<a id="l_62"></a><span class="hl line">   62 </span>  <span class="hl sym">}</span>
+<a id="l_63"></a><span class="hl line">   63 </span>  <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl sym">;</span>
+<a id="l_64"></a><span class="hl line">   64 </span><span class="hl sym">}</span>
+</pre></div>
+
+</td></tr></table>
+	</tr>
+	</table>
+  </body>
+</html>

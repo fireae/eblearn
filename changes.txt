@@ -1,0 +1,10 @@
+This file contains the latest major changes.
+
+2011-01-05 sermanet ------------------------------------------------------------
+- moved tools (dscompiler, objtrain, mtdetect, etc) from
+  eblearn/tools/libeblearntools/src to eblearn/tools/tools/src/
+- renamed 'objtrain' tool to 'train'
+- renamed 'objdetect' tool to 'stdetect' (for single-threaded detect)
+- renamed 'mtdetect' tool to 'detect' (multi-threaded is now the default)
+- renamed 'dscompiler' tool to 'dscompile'
+--------------------------------------------------------------------------------

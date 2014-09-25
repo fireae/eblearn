@@ -1,0 +1,182 @@
+# directories ##################################################################
+root=${HOME}/face/ds
+
+# network ######################################################################
+net = cscsc # net archictecture
+color = 0 # use color or not
+manual_load = 0 # manually load weights for individual modules
+
+arch = ${arch_${net}} # global architecture
+mirror = 0 # mirror instead of zero-padding (default)
+nonlin = tanh # stdsig # non-linearity module
+
+# layers
+c0 = conv0,addc0,${nonlin}0,abs0,wstd0
+s1 = subs1,addc1,${nonlin}1
+c2 = conv2,addc2,${nonlin}2,abs2,wstd2
+s3 = subs3,addc3,${nonlin}3
+c4 = conv4,addc4,${nonlin}4
+f5 = linear5,addc5,${nonlin}5
+
+# machines
+arch_cscsc = ${pp_detect},${c0},${s1},${c2},${s3},${c4}
+arch_cscscf = ${pp_detect},${c0},${s1},${c2},${s3},${c4},${f5}
+
+answer = class_answer
+
+background_name = bg
+
+# preprocessing modules
+pp_y = rgb_to_y0
+pp_yuv = rgb_to_yuv0
+pp_yp = rgb_to_yp0
+pp_ypuv = rgb_to_ypuv0
+rgb_to_ypuv0_kernel = 7x7
+rgb_to_ypuv0_mirror = 1
+rgb_to_yp0_kernel = 7x7
+rgb_to_yp0_mirror = 1
+rgb_to_yp0_global_norm = 0
+resizepp0_pp = rgb_to_yp0
+#resizepp0_fovea = ${fovea}
+resizepp0_zpad = 
+pp_train = #rgb_to_ypuv0 #mschan0
+pp_detect = resizepp0
+
+# modules parameters
+conv0_kernel = 5x5 # convolution kernel
+conv0_stride = 1x1 # convolution stride
+conv0_table = #${table0_color${color}} # convolution table (optional)
+conv0_table_in = 1 # conv input max, used if table file not defined
+conv0_table_out = ${table0_max} # features max, used if table file not defined
+wstd0_kernel = 5x5 # normalization kernel
+wstd0_gaussian_coeff = 0 # normalization kernel coeffcient
+subs1_kernel = 2x2 # subsampling kernel
+subs1_stride = ${subs1_kernel} # subsampling stride
+addc1_weights = # weights to be loaded if manual_load = 1
+conv2_kernel = 5x5 # convolution kernel
+conv2_stride = 1x1 # convolution stride
+conv2_table = ${table1} # convolution table (optional)
+conv2_table_in = thickness # use current thickness as max table input
+conv2_table_out = ${table1_max} # features max, used if table file not defined
+conv2_weights = #${wroot1}${sp0}${sp1}_layer1_convolution_kernel.mat
+addc2_weights = #${wroot1}${sp0}${sp1}_layer2_bias_bias.mat
+diag2_weights = #${wroot1}${sp0}${sp1}_layer4_diag_coeff.mat
+wstd2_kernel = 5x5 # normalization kernel
+wstd2_gaussian_coeff = 0 # normalization kernel coeffcient
+subs3_kernel = 2x2 # subsampling kernel
+subs3_stride = ${subs3_kernel} # subsampling stride
+addc3_weights = # weights to be loaded if manual_load = 1
+conv4_kernel = 5x5 # convolution kernel
+conv4_stride = 1x1 # convolution stride
+conv4_table_in = thickness # use current thickness as max table input
+conv4_table_out = noutputs # use number of classes as max table output
+linear5_in = 10 # linear module input features size
+linear5_out = noutputs # use number of classes as max table output
+
+# tables #######################################################################
+
+tblroot = ${root} # location of table files
+# conv0
+table0_max = 6 #64 # full table output max (overridden if table file defined)
+table1 = ${tblroot}/table_6_16_connect_60.mat
+
+# preprocessing ################################################################
+resize=mean
+normalization_size=7
+
+# detection ####################################################################
+weights=${root}face.mat
+classes=${root}face_classes.mat
+gain=1
+input_dir = ${root2}
+input_list = nens.gif
+#show_conf = 1
+input_height=-1#120#480
+input_width=-1#160#640
+#input_min=100
+input_max=800
+# multi-scaling type. 0: manually set each scale sizes, 1: manually set each
+# scale step, 2: number of scales between min and max, 3: step factor between
+# min and max, 4: 1 scale, the original image size.
+scaling_type = 3
+# scaling ratio between scales
+scaling = 1.3
+# scale factor of maximum resolution of the original resolution
+max_scale = 1.0
+# scale factor of minimum resolution of the original resolution
+min_scale = 1.0
+# number of detection threads
+nthreads = 1
+# randomize image input list (only works for 'directory' camera).
+input_random = 0
+# number of passes on the image input list (only works for 'directory' camera).
+input_npasses = 1
+# height factor to apply to bounding boxes
+bbhfactor = 1
+# width factor to apply to bounding boxes
+bbwfactor = 1
+# prune overlapping bounding boxes or not
+pruning = 1
+# minimum height ratio with smallest bbox to declare overlap
+bbh_overlap = .67
+# minimum width ratio with smallest bbox to declare overlap
+bbw_overlap = 0
+hzpad = .5 # vertical zero padding on each side
+wzpad = .5 # horizontal zero padding on each side
+mem_optimization = 1
+confidence_type = 2 # 0: sqrdist 1: single output 2: max other (recommended)
+
+# detection display ############################################################
+# output saving and display
+save_detections=0
+# save each classified frame and make a video out of it
+save_video=0
+# fps at which video should be constructed
+save_video_fps=1
+# if loaded a video and equal to 1, reuse video's fps
+use_original_fps=0
+# enable or disable display
+display = 1
+display_threads = 1 # each thread displays on its own
+# only show classified input
+minimal_display = 0
+silent = 0 # minimize outputs to be printed
+sync_outputs = 0 # synchronize output between threads
+# display internal states of network
+display_states = 0
+display_min = -1.7
+display_max = 1.7
+display_in_min = 0 # input image min display range
+display_in_max = 255 # input image max display range
+display_bb_transparency = 0 #0.3
+display_sleep = 100000 # sleep in milliseconds after displaying
+ninternals=1
+
+# camera options: v4l2 opencv shmem video directory
+camera = directory # v4l2 #opencv # directory
+
+threshold=.3
+pre_threshold = -1
+post_threshold = ${threshold}
+nms = 3
+pre_hfact             = 1   # bbox height factor before nms
+pre_wfact             = 1   # bbox width factor before nms
+post_hfact            = 1   # bbox height factor after nms
+post_wfact            = 1   # bbox width factor after nms
+woverh                = 1   # set width to be h * woverh if different than 1.0
+max_overlap           = .2  # regular, bboxes match when overlap less than this
+max_hcenter_dist      = .3  # regular, bboxes match when hcenter dist below this
+max_wcenter_dist      = .3  # regular, bboxes match when wcenter dist below this
+vote_max_overlap      = .5  # voting, bboxes match when overlap less than this
+vote_max_hcenter_dist = .5  # voting, match when hcenter dist below this
+vote_max_wcenter_dist = .3  # voting, match when wcenter dist below this
+
+display_sleep = 10000000 # sleep in milliseconds after displaying
+scaling = 1.2 #2.2 1.9 1.6 1.3 1.1
+# multi-scaling type. 0: manually set each scale sizes, 1: manually set each
+# scale step, 2: number of scales between min and max, 3: step factor between
+# min and max, 4: 1 scale, the original image size.
+scaling_type = 3
+max_scale = 1
+#input_max = 288
+show_extracted = 2

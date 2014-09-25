@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>EBLearn: Tools</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>Tools</h2>
+      <p>
+	The eblearn tools help to create datasets, train models and run
+	them.<br>
+	Their code is located in eblearn/tools/tools/src and binaries are built
+	into eblearn/bin, and installed on the system with 'make install'.<br>
+	They can all be compiled by calling 'make tool', or simply 'make'.<br>
+	Most tools will show a brief help when called without arguments.<br>
+      </p>
+      <h4>Dataset tools</h4>
+      <ul>
+	<li><strong><a href="dscompile.shtml">dscompile:</a></strong>
+	  preprocess and compile images into a dataset ready for training.</li>
+	<li><strong>dssplit:</strong>
+	  split a dataset in two (e.g. validation and training).</li>
+	<li><strong>dsmerge:</strong>
+	  merge two datasets into one (e.g. positive and negative datasets).
+	</li>
+	<li><strong>dsdisplay:</strong>
+	  show samples and labels contained in a dataset.</li>
+      </ul>
+      <h4>Training tools</h4>
+      <ul>
+	<li><strong>train:</strong>
+	  train a model given a configuration file.</li>
+	<li><strong>maketable:</strong>
+	  create a table matrix for convolutional connections.</li>
+      </ul>
+      <h4>Detection tools</h4>
+      <ul>
+	<li><strong><a href="detect.shtml">detect</a>:</strong>
+	  find bounding boxes around objects in images given a trained
+	  model (multi-threaded version).</li>
+	<li><strong>track:</strong>
+	  find and track objects in video inputs given a trained
+	  model.</li>
+	<li><strong>stdetect:</strong>
+	  single-threaded version of detect.</li>
+	<li><strong>mpidetect:</strong>
+	  cluster multi-threaded version of detect, using MPI.</li>
+      </ul>
+      <h4>Jobs tools</h4>
+      <ul>
+	<li><strong><a href="metarun.shtml">metarun:</a></strong>
+	  run multiple jobs in parallel or in sequence,
+	  given all possible configurations in a
+	  configuration file with multi-values variables. metarun analyzes
+	  outputs and sends emails with reports and curves at different
+	  iterations. It can also be used with clusters (using MPI).</li>
+	<li><strong>metaparse:</strong>
+	  parse the output files and directories of metarun, analyze results and
+	  send reports and curves.</li>
+      </ul>
+      <h4>Display tools</h4>
+      <ul>
+	<li><strong><a href="matshow.shtml">matshow</a>:</strong>
+	  display images of any type and .mat matrix types. matshow can
+	  show multiple images at the same time. It can also
+	  display weights of a stored model.
+	</li>
+      </ul>
+      <h4>Capture tools</h4>
+      <ul>
+	<li><strong>capture:</strong>
+	  capture images from camera for training.</li>
+      </ul>
+
+    </div>
+   </body></html>

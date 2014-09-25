@@ -1,0 +1,62 @@
+( dims
+  10
+  10 10
+  2 2 2 2 2 2 2 2
+  10 10 10 10
+  1000 10 10
+  1000 1000
+  10000000
+  1000 1000 100
+)
+( n_total
+  100000000
+)
+( n_tests_min
+  5
+)
+( functions
+  copy           idx_copy          io   8u16u16s32s32f
+  clear          idx_clear         r    8u16u16s32s32f
+  fill           idx_fill          rs   8u16u16s32s32f
+  add_ip         idx_add           ir   8u16u16s32f
+  add_nip        idx_add           iio  8u16u16s32f
+  addc           idx_addc          iso  8u16u16s32f
+  addc_bounded   idx_addc_bounded  iso  8u16u16s32f
+  sub            idx_sub           iio  8u16u16s32f
+  subc_bounded   idx_subc_bounded  iso  8u16u16s32f
+  minus          idx_minus         io   8u16u16s32f
+  mul            idx_mul           iio  8u16u16s32f
+  dotc           idx_dotc          iso  8u16u16s32f
+  dotc_bounded   idx_dotc_bounded  iso  8u16u16s32f
+  div            idx_div           izo  8u16u16s32f
+# inv            idx_inv           zo   32f
+  abs            idx_abs           io   16s32f
+  threshold_ip   idx_threshold     rs   8u16u16s32f
+  threshold_nip  idx_threshold     iso  8u16u16s32f
+  threshold_vip  idx_threshold     rss  8u16u16s32f
+  threshold_vnip idx_threshold     isso 8u16u16s32f
+  sqrt           idx_sqrt          po   8u16u16s32f
+  exp            idx_exp           r    8u16u16s32f
+  sum            idx_sum           i    8u16u16s32f
+  sumabs         idx_sumabs        i    8u16u16s32f
+  l2norm         idx_l2norm        i    8u16u16s32f
+  mean           idx_mean          i    8u16u16s32f
+# std_normalize  idx_std_normalize r    32f
+  dot            idx_dot           ii   8u8s16u16s32u32s32f
+  max            idx_max           i    8u16u16s32f
+  min            idx_min           i    8u16u16s32f
+  maxevery_ip    idx_max           ir   8u16u16s32f
+  maxevery_nip   idx_max           iio  8u16u16s32f
+  indexmax       idx_indexmax      i    8u16u16s32f
+  indexmin       idx_indexmin      i    8u16u16s32f
+  sqrdist        idx_sqrdist       ii   8u16u16s32f
+)
+
+( convolution
+  1000 32   1000 60000
+  500  64   500  30000
+  100  256  100  6000
+  50   512  50   1000
+  10   1025 10   100
+  8u16u16s32f
+)

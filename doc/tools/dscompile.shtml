@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <title>EBLearn: dscompile</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>dscompile</h2>
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (January 10th, 2011)</h4><br><br> 
+      <p>
+	dscompile assembles preprocessed samples for training and testing
+	purposes. It accepts a variety of input format, from simple directory
+	structure to Xml files describing objects bounding boxes (e.g. PASCAL
+	VOC format). See an example of sample extraction in this
+	<a href="dscompile_video.shtml">video</a>.</p>
+      
+      <h4>Calls</h4>
+      <ul>
+	<li><code>./dscompile &lt;images root&gt; [options]</code></li>
+      </ul>
+
+      <h4>Outputs</h4>
+      <p>Output files (datasets/images) are saved by default in the calling
+	directory or in the directory specified via '-out' option.
+	The outputs can be saved either as single-file datasets (default) or
+	individual files for each sample (can be set via '-save' option).</p>
+      <p>When saving a dataset in single-file mode, the following files are
+	created (with a dataset named 'ds'):</p>
+      <ul>
+	<li><strong>ds_data.mat:</strong> a matrix of dimensions
+	  (nsamples x nchannels x height x width), with precision determined
+	  by the '-precision' option (default is float).</li>
+	<li><strong>ds_labels.mat:</strong> a matrix of dimensions (nsamples)
+	  containing the class index of each sample.</li>
+	<li><strong>ds_classes.mat:</strong> a matrix of dimensions
+	  (nclasses x max class name length) containing the names of each
+	  class.</li>
+      </ul>
+	  
+      <h4>Examples</h4>
+      <ul>
+	<li><strong>Jitter (all kinds):</strong>
+	  to add jitter to a dataset, i.e. original images deformed with
+	  translation, scaling or rotations, use the 'jitter' option.
+	  E.g. to add 7 jittered examples for each original input,
+	  randomly chosen among all possible jitters,
+	  with height translation range of 1, width translation range of 2,
+	  3 scale steps in a +/- .2 scale factor range, 5 rotation steps within
+	  a +/- 30 degree range around original orientation:<br>
+	  <code>./dscompile &lt;root&gt; -jitter 1,2,3,.4,5,60,7</code></li>
+	<li><strong>Jitter (rotations):</strong>
+	  to add rotation jitter to a dataset,
+	  i.e. original images and rotations of those,
+	  use the 'jitter' option with rotation variables only.
+	  E.g. to add 7 rotated examples for each original input,
+	  randomly chosen among 30 possible angles in a 60 degree range
+	  (step of 2 degrees),
+	  i.e. 30 rotation steps within
+	  a +/- 30 degree range around original orientation:<br>
+	  <code>./dscompile &lt;root&gt; -jitter 0,0,0,0,30,60,7</code></li>
+	<li><strong>Complete example in INRIA pedestrian scripts:</strong>
+	  <ul><li><a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/tools/demos/pedestrians/inria/dsprepare.sh?revision=HEAD&&content-type=text/plain">inria dsprepare shell
+		scripts</a></li>
+	    <li><a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/tools/demos/pedestrians/inria/dsprepare.py?revision=HEAD&view=markup">inria dsprepare python
+		scripts</a></li>
+	    </ul>
+      </ul>
+
+      <h4>Options</h4>
+      <ul>
+	<li><strong>-type</strong>
+	  &lt;regular(default)|patch|pascal|pascalbg|pascalfull|grid&gt;
+	  <ul>
+	    <li><strong>regular:</strong> compile images labeled by their
+	      top folder name</li>
+	    <li><strong>patch:</strong> extract random (position & scale)
+	      patches from images</li>
+	    <li><strong>pascal:</strong> compile images labeled by xml files
+	      (PASCAL challenge)</li>
+	    <li><strong>pascalbg:</strong> compile background images of PASCAL
+	      challenge</li>
+	    <li><strong>pascalclear:</strong> clear objects from original
+	      images of PASCAL challenge</li>
+	    <li><strong>pascalfull:</strong> copy full original PASCAL images
+	      into outdir (allows to exclude some classes, then call regular
+	      compiler)</li>
+	    <li><strong>grid:</strong> extract non-overlapping cells from each
+	      image. Cell sizes are determined by -gridsz option</li>
+	</ul></li>
+	<li><strong>-precision</strong> &lt;float(default)|double|ubyte&gt;</li>
+	<li><strong>-annotations</strong> &lt;directory&gt;</li>
+	<li><strong>-image_pattern</strong> &lt;pattern&gt;<br>
+	    default: .*[.](png|jpg|jpeg|PNG|JPG|JPEG|bmp|BMP|ppm|PPM|pnm|PNM|pgm|PGM|gif|GIF|mat|MAT)</li>
+	<li><strong>-channels</strong> &lt;channel&gt;<br>
+	    channels are: RGB (default), YpUV, HSV, Yp (Yp only in YpUV)</li>
+	<li><strong>-disp</strong><br>Display extraction</li>
+	<li><strong>-nopp</strong><br>
+	  No preprocessing, i.e. no resizing or conversion.</li>
+	<li><strong>-sleep</strong> &lt;delay in ms&gt;<br>
+	  Sleep between frame display.</li>
+	<li><strong>-shuffle</strong></li>
+	<li><strong>-usepose</strong><br>
+	  Separate classes with pose if available.</li>
+	<li><strong>-stereo</strong></li>
+	<li><strong>-stereo_lpattern</strong> &lt;pattern&gt;</li>
+	<li><strong>-stereo_rpattern</strong> &lt;pattern&gt;</li>
+	<li><strong>-outdir</strong> &lt;directory (default=images_root)&gt;</li>
+	<li><strong>-load</strong> &lt;dataset name&gt;<br>
+	  This loads the dataset instead of compiling
+	  it from images found in root.</li>
+	<li><strong>-save</strong> &lt;dataset(default)|mat|ppm|png|jpg|...&gt;</li>
+	<li><strong>-dname</strong> &lt;name&gt;</li>
+	<li><strong>-maxperclass</strong> &lt;integer&gt;</li>
+	<li><strong>-maxdata</strong> &lt;integer&gt;</li>
+	<li><strong>-kernelsz</strong> &lt;integer&gt;</li>
+	<li><strong>-mexican_hat_size</strong> &lt;integer&gt;</li>
+	<li><strong>-deformations</strong> &lt;integer&gt;</li>
+	<li><strong>-dims</strong> &lt;dimensions (default: 96x96x3)&gt;</li>
+	<li><strong>-mindims</strong> &lt;dimensions (default: 1x1)&gt;<br>
+	  Exclude inputs for which one dimension is less than specified.</li>
+	<li><strong>-scales</strong> &lt;scales (e.g: 1.5,2,4)&gt;</li>
+	<li><strong>-bboxfact</strong> &lt;float factor&gt;<br>
+	  Multiply bounding boxes by a factor.</li>
+	<li><strong>-bboxhfact</strong> &lt;float factor&gt;<br>
+	  Multiply bboxes height by a factor.</li>
+	<li><strong>-bboxwfact</strong> &lt;float factor&gt;<br>
+	  Multiply bboxes width by a factor.</li>
+	<li><strong>-bbox_woverh</strong> &lt;float factor&gt;<br>
+	  Force w to be h * this factor.</li>
+	<li><strong>-resize</strong> &lt;mean(default)|gaussian|bilinear&gt;</li>
+	<li><strong>-exclude</strong> &lt;class name&gt;<br>
+	  Include all but excluded classes,
+          exclude can be called multiple times.</li>
+	<li><strong>-include</strong> &lt;class name&gt;<br>
+	  Exclude all but included classes,
+          include can be called multiple times.</li>
+	<li><strong>-useparts</strong><br>
+	  Also extract object parts, e.g. person->(head,hand,foot.</li>
+	<li><strong>-partsonly</strong><br>
+	  Only extract object parts, e.g. person->(head,hand,foot.</li>
+	<li><strong>-ignore_difficult</strong><br>
+	  Ignore sample if "difficult" flag is on.</li>
+	<li><strong>-ignore_truncated</strong><br>
+	  Ignore sample if "truncated" flag is on.</li>
+	<li><strong>-ignore_occluded</strong><br>
+	  Ignore sample if "occluded" flag is on.</li>
+	<li><strong>-nopadded</strong><br>
+	  Ignore padded image too small for target size.</li>
+	<li><strong>-jitter</strong> &lt;h&gt;,&lt;w&gt;,&lt;nscales&gt;,&lt;scale range&gt;,
+	  &lt;nrotations&gt;,&lt;rotation range (in degrees)&gt;,&lt;n&gt;<br>
+	  Add n samples randomly jittered from spatial neighborhood hxw,
+	  nscales within scale_range and nrotations within rotation range
+	  around original location/scale)</li>
+	<li><strong>-wmirror</strong><br>
+	  Add mirrored sample using vertical-axis symmetry.</li>
+	<li><strong>-forcelabel</strong> &lt;label name&gt;</li>
+	
+      </ul>
+	  
+    </div>
+   </body></html>

@@ -1,0 +1,700 @@
+<html>
+  <head>
+    <title>EBLearn: libeblearn Tutorial</title>
+    <link rel="stylesheet" href="../../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../../web/styles.css" type="text/css" 
+	  media="all">
+  </head>
+  <body>
+    <!--#include virtual="../../nav.html" --> 
+
+    <div id="globalWrapper">
+      <h1 id="firstHeading" class="firstHeading"><b>libeblearn
+      tutorial:</b> energy-based learning in C++</h1> 
+      <h3 id="siteSub">By <a href="http://sermanet.free.fr">Pierre
+      Sermanet</a> and <a href="http://yann.lecun.com/">Yann LeCun</a>
+      (New York University)</h3><br><br> 
+
+      <p>The eblearn (energy-based learning) C++
+      library <b>libeblearn</b> contains machine learning algorithms
+      which can be used for computer vision. 
+      The library has a generic and modular architecture, allowing
+      easy prototyping and building of different algorithms  
+      (supervised or unsupervised learning) and configurations
+      from basic modules. Those algorithms were used for a variety for
+      applications, including robotics with the  
+      <a href="http://www.cs.nyu.edu/~yann/research/lagr/">Learning
+      Applied to Ground Robots</a> DARPA project (LAGR).</p> 
+      
+      <table class="toc" style="width: 250px;" summary="Contents">
+	<tr><td><div id="toctitle"><h2>Contents</h2></div>
+	    <ul>
+	      <li><a href="#eblearning">Energy-Based Learning</li>
+	      <li><a href="#modarchi">Modular Architecture</li>
+	      <ul>
+		<li><a href="#basic_modules">Basic Modules</a></li>
+		<li><a href="#layer_modules">Layer Modules</a></li>
+		<li><a href="#machine_modules">Machine Modules</a></li>
+		<li><a href="#trainable_machine_modules">
+		    Trainable Machine Modules</a></li>
+		<li><a href="#gui">GUI display</a></li>
+	      </ul>
+	      <li><a href="#suplearning">Supervised Learning</li>
+	      <ul>
+		<li><a href="#sup_build_dataset">1. Build your Dataset</a></li>
+		<li><a href="#sup_build_nn">2. Build your Neural Network</a></li>
+		<li><a href="#sup_train_nn">3. Train your Network</a></li>
+		<li><a href="#sup_run_nn">4. Run your Network</a></li>
+		<li><a href="#sup_freading">Further Reading</a></li>
+	      </ul>
+	      <li><a href="#unsuplearning">Unsupervised Learning</li>
+	      <li><a href="#semisuplearning">Semi-supervised Learning</li>
+	    </ul>
+	  </td>
+	</tr>
+      </table>
+      
+      <a name="eblearning"></a>
+      <h2>Energy-based learning</h2>
+      <p>What is the energy-based learning?<br>FIXME.</p>
+      <p>More resources on energy-based models:
+	<ul>
+	  <li><a href="http://videolectures.net/mlss05us_lecun_ebmli/">
+	      [video-lecture] Energy-based
+	  models & Learning for Invariant Image Recognition</a>:
+	    a 4-hour video of a tutorial on energy-based models by Yann LeCun at
+	  the Machine Learning Summer School in Chicago in 2005.</li>
+	  <li><a href="http://www.cs.nyu.edu/~yann/research/ebm/index.html">
+	      http://www.cs.nyu.edu/~yann/research/ebm/index.html</a>:
+	      tutorials, talks, videos and publications on EBMs.<li>
+	  <li><a href="http://yann.lecun.com/exdb/publis/index.html#lecun-06">[LeCun
+	  et al 2006]</a>: <strong>A Tutorial on Energy-Based Learning</strong>, in
+	  Bakir et al. (eds) "Predicting Structured Outputs", MIT
+	  Press 2006: a 60-page tutorial on energy-based learning,
+	  with an emphasis on structured-output models. The tutorial
+	  includes an annotated bibliography of discriminative
+	  learning, with a simple view of CRF, maximum-margin Markov
+	  nets, and graph transformer networks.</li>
+	</ul>
+      </p>
+
+      <a name="modarchi"></a>
+      <h2>Modular Architecture and Building Blocks</h2>
+      <p>Eblearn was designed to be modular so that any module can be
+	arranged is different ways with other modules to form
+	different layers and different machines. There are 2 main
+	types of modules
+	(declared in <a href="../../documentation/libeblearn_html/EblArch_8h-source.html">EblArch.h</a>):
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1module__1__1.html">module_1_1</a>: a module with 1 input and 1 output.</li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1module__2__1.html">module_2_1</a>: a module with 2 inputs and 1 output.</li>
+	</ul></p>
+      <p>Each module derives from one of those two base classes and
+	implements the fprop, bprop, bbprop and forget methods:
+	<ul>
+	  <li><strong>fprop:</strong> the
+	    forward-propagation method which propagates the input(s) through
+	    the module to the output. In the rest of this tutorial, a
+	    module will usually be described by what its fprop method does.</li>
+	  <li><strong>bprop:</strong> the backward-propagation method which
+	  propagates back the output though the module and the
+	  input(s). This method usually updates the parameters to be
+	  learned inside the module using for example derivatives, and
+	  also propagates derivatives to the input of the module so
+	  that preceding modules can also be back-propagated.</li>
+	  <li><strong>bbprop:</strong> the second-order
+	  backward-propagation 
+	  method. In the case of the Lenet networks for example, this
+	  is used to compute second-order derivatives and adapt
+	  learning rates accordingly for each parameter to speed-up
+	  the learning process.</li>
+	  <li><strong>forget:</strong> initializes the weights of the
+	  modules to random, based on a forget_param_linear object.</li>
+	</ul>
+      </p>
+      <p>Note that the type of inputs and outputs the modules
+      accept are <i>state_idx</i> objects which are temporary buffers
+      containing the results of a module's processing. For example, an
+      fprop call will fill the <i>x</i> slot of the
+      output <i>state_idx</i>, whereas a bprop call will fill
+      the <i>dx</i> slot of the input <i>state_idx</i> (using
+      the <i>dx</i> slot of the output <i>state_idx</i>).
+      </p>
+
+      <p>Next we describe some modules and show how they are
+      combined with other modules. We first talk about a few basic
+      modules, which are then used to form 
+      layers that are again used to form machines. Note that all the
+      modules that we are describing (basic modules, layers and
+      machines) derive from module_1_1 or
+      module_2_1 which means that you can write and combine your own
+      modules in your own ways, which are not restricted to the way we
+      describe here.
+      
+      <a name="basic_modules"></a>
+      <h3>Basic module examples</h3>
+      <h4>constant addition, linear, convolution and subsampling modules</h3>
+      <p>Those basic modules (found
+      in <a href="../..//documentation/libeblearn_html/EblBasic_8h-source.html">EblBasic.h</a>)
+      are used in the LeNet architecture to perform the basic
+      operations:
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1addc__module.html">addc_module</a>:
+	  this module adds a constant to each element of the input and
+	  puts the result in the output.
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1linear__module.html">linear_module</a>: this module does a linear combination of the
+	  input and its internal weights and puts the result in the output.
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1convolution__module__2D.html">convolution_module_2D</a>:
+	  convolves 2D input (dimensions 1 and 2, dimension 0 may have
+	  a size more than 1) using the internal weights as kernels
+	  and puts the result in the output. 
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1subsampling__module__2D.html">subsampling_module_2D</a>:
+	  subsamples 2D input (dimensions 1 and 2) and puts the result
+	  in the output.
+	  </li>
+	</ul>
+      </p>
+
+      <h4>non-linear modules</h3>
+      <p>These modules (<a href="../../documentation/libeblearn_html/EblNonLinearity_8h-source.html">EblNonLinearity.h</a>) perform non-linear operations:
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1tanh__module.html">tanh_module</a>:
+	  applies the hyperbolic tangent function on the input and
+	  puts the result in the output.
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1stdsigmoid__module.html">stdsigmoid_module</a>:
+	  applies the standard sigmoid function on the input and
+	  puts the result in the output.
+	  </li>
+	</ul>
+      </p>
+
+      <a name="layer_modules"></a>
+      <h3>Layer module examples</h3>
+      <p>These layers
+      (<a href="../../documentation/libeblearn_html/EblLayers_8h-source.html">EblLayers.h</a>)
+      are built by stacking the basic modules
+      described previously on top of each other to form more
+      complicated operations:
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1nn__layer__full.html">nn_layer_full</a>:
+	  a fully-connected layer which performs a linear combination
+	  of the input and the internal weights, adds a bias and
+	  applies a sigmoid. As always, the result is put in the
+	  output. This layer is build by stacking up a
+	  linear_module_replicable
+	  (see <a href="#replicability">Replicability</a>), 
+	  an addc_module and a tanh_module.
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1nn__layer__convolution.html">nn_layer_convolution</a>:
+	  a convolution layer which performs a 2D convolution
+	  on the input, adds a bias and 
+	  applies a sigmoid, putting the result in the output. This
+	  layer is build by stacking up a convolution_module_2D_replicable, 
+	  an addc_module and a tanh_module.
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1nn__layer__subsampling.html">nn_layer_subsampling</a>:
+	  a subsampling layer which subsamples the input, adds a bias and
+	  applies a sigmoid, putting the results in the output. This
+	  layer is build by stacking up a subsampling_module_2D_replicable, 
+	  an addc_module and a tanh_module.
+	  </li>
+	</ul>
+      </p>
+
+      <a name="machine_modules"></a>
+      <h3>Machine module examples</h3>
+      <p>Like the layers are built by assembling basic modules,
+      machines
+      (<a href="../../documentation/libeblearn_html/EblLayers_8h-source.html">EblMachines.h</a>)
+      can be built by assembling layers together, for instance the
+      following machines:
+
+
+      <a name="figb"></a>
+      <div class="thumb tright">
+      <div class="thumbinner" style="width:377px;">
+	<a href="img/train_machine.png" class="image" title="train_machine">
+	  <img src="img/train_machine_small.png" width="377" border="0" class="thumbimage" />
+	</a>
+	<div class="thumbcaption">b. Overview of the architecture of the
+	supervised_euclidean_machine, a module_2_1 (2 inputs and 1
+	output) that combine many module_1_1 (1 input and 1 output)
+	modules and one module_2_1, the euclidean_module. This
+	architecture is useful during the training phase where the
+	bprop method is called, whereas during the testing phase
+	only the lenet7 block will be used and only the fprop method
+	will be called. Note that state_idx::x are temporary buffers
+	containing outputs of fprops in between modules and
+	state_idx::dx contain outputs of bprops.</div></div></div> 
+
+
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1nn__machine__cscscf.html">nn_machine_cscscf</a>:
+	  a LeNet type machine which calls in order the following
+	  layers: convolution (c), subsampling (s), convolution (c),
+	  subsampling (s), convolution (c) and finally a
+	  fully-connected layer (f). This machine is parametrized by
+	  the size of the input, the sizes of the convolution and
+	  subsampling kernels, the size of the fully connected layer
+	  output and the number of outputs. 
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1lenet5.html">lenet5</a>:
+	    this machine is a nn_machine_cscscf with a particular
+	    configuration, it takes a 32x32 input, then applies 5x5
+	    convolution kernels, 2x2 subsampling kernels, 5x5
+	    convolutions, 2x2 subsamplings, 1x1 convolutions and full
+	    connections between a 120-dimensional input to 10 outputs.
+	    This specific network is used for the 10-digits handwriten
+	    caracters recognition
+	    (see <a href="../../demos/mnist/index.shtml">MNIST demo</a>). 
+	  </li>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1lenet7.html">lenet7</a>:
+	    similarly to lenet5, this machine is a nn_machine_cscscf
+	    with a particular 
+	    configuration. It takes a 96x96 input, then applies 5x5
+	    convolution kernels, 4x4 subsampling kernels, 6x6
+	    convolutions, 3x3 subsamplings, 6x6 convolutions and full
+	    connections between a 100-dimensional input to 5 outputs.
+	    This network was specifically designed for
+	    the <a href="../../demos/norb/index.shtml">NORB demo</a>
+	    but can be an inspiration for similar object recognition tasks.
+	  </li>
+
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1lenet7__binocular.html">lenet7_binocular</a>:
+	    This network is almost identical to lenet7 except that it
+	    accepts stereoscopic images as input.
+	  </li>
+	</ul>
+      </p>
+      
+      <a name="figa"></a>
+      <div class="thumbinner" style="width:500px;">
+	<a href="img/lenet7.png" class="image" title="lenet7">
+	  <img alt="" src="img/lenet7.png" width="500" border="0" class="thumbimage" /></a>
+	<div class="thumbcaption">a. The lenet7_binocular neural network
+	architecture: there are 2 stereoscopic 96x96 images as input,
+	5x5 convolutions are performed, then 4x4 subsampling, 6x6
+	convolutions, 3x3 subsampling, 6x6 convolutions and full
+	connections to the 5 outputs.</div></div>
+
+      <a name="trainable_machine_modules"></a>
+      <h3>Trainable machine modules</h3>
+      <p>The modules described in the previous sections need to be
+	encapsulated in a module_2_1 with a loss function modules in
+	order to be trained supervised. For example, to train the
+	nn_machine_cscscf machines, we combine it with a euclidean cost module:
+	<ul>
+	  <li><a href="../../documentation/libeblearn_html/classebl_1_1supervised__euclidean__machine.html">supervised_euclidean_machine</a>:
+	    a module_2_1 machine containing a module_1_1 (in the NORB
+	    demo case a lenet7 machine) and a euclidean_module. Thus
+	    this machines takes an input which is propagated in the
+	    module_1_1 and a groundtruth label as second input. The
+	    output of the module_1_1 is then compared to the
+	    groundtruth using the euclidean_module which takes the
+	    squared distance between the output and the groundtruth.
+	    During the training phase, the weights are then modified
+	    based on the gradient of the error in the back-propagation process.
+	  </li>
+	</ul>
+      </p>
+
+      <a name="replicability"></a>
+      <h3>Module Replicability</h3>
+      <p>Modules usually operate on a specific number of dimensions, for
+	example the convolution_module_2D only accepts inputs with 3
+	dimensions (because it applies 2D convolution on dimensions 1 and
+	2, dimension 0 is used according to a connection table). Thus if
+	extra dimensions are present (e.g. 4D or 5D)
+	one might want to loop over the extra dimensions and call the
+	convolution_module_2 on each 3D subsets. We call this
+	replicability because the module is replicated over the 3rd and
+	4th dimensions (the output also has 2 extra dimensions).
+      </p> 
+      <p>To make a module replicable, use the
+	DECLARE_REPLICABLE_MODULE_1_1 macro
+	(in <a href="../../documentation/libeblearn_html/EblArch_8h-source.html">EblArch.h</a>).
+	It will automatically declare
+	your module_1_1 as replicable and loop over extra
+	dimensions if present. For example, here is the code to
+	declare the convolution_module_2D as replicable:
+
+	<div id="vc_markup"><pre>
+DECLARE_REPLICABLE_MODULE_1_1(linear_module_replicable, 
+                              linear_module,
+                              (parameter &p, intg in, intg out),
+                              (p, in, out));</div></pre>
+	where <i>linear_module_replicable</i> is the name of the new module,
+	<i>linear_module</i> is the name of the base
+	module, <i>(parameter &p, intg in, intg out)</i> is the
+	prototype of the parameters to the constructor of the module
+	and <i>(p, in, out)</i> the parameters themselves.
+      </p>
+
+      <a name="figc"></a>
+      <div class="thumb tright">
+      <div class="thumbinner" style="width:377px;">
+	<a href="../../demos/mnist/img/mnist_fprop.png" class="image"
+	   title="eblearn gui">
+	  <img src="../../demos/mnist/img/mnist_fprop.png" width="377"
+	  border="0" class="thumbimage" /> 
+	</a>
+	<div class="thumbcaption">c. Example display of the eblearn
+	GUI. A call to <i>module_1_1::display_fprop</i> will display
+	all the internal feature maps and their corresponding
+	description and sizes, providing that each module implemented
+	their display method. On top are the input images, at the
+	bottom the network outputs.</div></div></div> 
+
+      <a name="gui"></a>
+      <h2>GUI display</h2>
+      <p>If the QT library is present on your system, the eblearn project
+	will automatically compile the GUI libraries corresponding to
+	libidx and libeblearn. Thus it
+	produces the libeblearngui  library which provides display
+	functions for the eblearn modules. For instance, it implements
+	the <i>display_fprop</i> methods for each <i>module_1_1</i>, thus
+	allowing to display every stage of the internal representations
+	of the neural network by calling that method on the top-level
+	module (See figure c).
+      </p>
+      <p>For more details about the GUI features, refer to the GUI
+	section in the libidx tutorial. Briefly, the libidxgui provides
+	a global object <i>"gui"</i> which can open new windows
+	(<i>gui.new_window()</i>), draw matrices
+	(<i>gui.draw_matrix()</i>), draw text 
+	(<i>gui << at(42, 42) << "42" << endl</i>) and some other
+      functionalities.</p>
+
+      <a name="suplearning"></a>
+      <h1>Supervised Learning</h1>
+      <p>Eblearn provides supervised learning algorithms as well as semi-supervised and unsupervised ones. They can be used independently or combined, we will focus on supervised algorithms only in this section.</p>
+
+      <a name="sup_build_dataset"></a>
+      <h2>1. Build your dataset</h2>
+      <h3>What data should you provide to the network?</h3>
+      <h3>Creating datasets from image directories</h3>
+      <p>Once you have grouped all your images in different directories for
+	each class, call the <a href="../../tools/dscompile.shtml">dscompile</a>
+	tool
+	to transform them into a dataset object (a matrix of images with their
+	corresponding label). This tool will extract the label information
+	from the file directory structure: at the source level,
+	each directory is a class named after the directory name.
+	Then all images found in subdirectories
+	(regardless of their names or hierarchy) are assigned
+	the same label and are added to the dataset.
+      </p>
+      <p>For example with the following directory structrure, dscompile will
+	automatically build a dataset with 2 different labels, "car" and
+	"human" and will contain 5 images in total:
+      </p>
+
+      <div id="vc_markup"><pre>/data$ ls -R *
+car:
+auto.png  car01.png
+
+human:
+human1  human2
+
+human/human1:
+img01.png
+
+human/human2:
+img01.png  img02.png</pre></div>
+	      
+      <p>dscompile will create the following files:</p>
+      <ol>
+	<li>dset_data.mat: a ubyte matrix of size <i>N x M x height x width</i>
+	  , where N is the number of images and M the number of channels which
+	  can be 1 or 3 if the input images are in greyscale or color or 2 or 6
+	  if two (stereoscopic) images are passed instead of one. Here are the
+	  possible channel configurations: <i>G or GG, RGB or RGBRGB</i>.</li>
+	<li>dset_labels.mat: an int matrix of size <i>Nclasses</i> containing
+	  labels id numbers, e.g. 0, 1, ...</li>
+	<li>dset_classes.mat: a ubyte matrix of size <i>Nclasses x 128</i>
+	  containing the names of each class.</li>
+      </ol>
+      </p>
+      <p>For more details, see the
+	<a href=../../tools/tools.shtml>tools manuals</a> of
+	<a href=../../tools/dscompile.shtml>dscompile</a>,
+	<a href=../../tools/dssplit.shtml>dssplit</a>,
+	<a href=../../tools/dsmerge.shtml>dsmerge</a>, and
+	<a href=../../tools/dsdisplay.shtml>dsdisplay</a>.</p>
+
+      <a name="figd"></a>
+      <div class="thumb tright">
+      <div class="thumbinner" style="width:500px;">
+	<a href="../../demos/mnist/img/mnist_datasets.png" class="image"
+	   title="mnist datasets">
+	  <img src="../../demos/mnist/img/mnist_datasets.png" width="500"
+	  border="0" class="thumbimage" /> 
+	</a>
+	<div class="thumbcaption">d. Example display of the MNIST
+	dataset after a call to <i>LabeledDataSource::display()</i>,
+	which displays groundtruth (left), correct and incorrect
+	answers (middle) and incorrect only (right).</div></div></div> 
+
+      <h3>Loading datasets into a LabeledDataSource object</h3>
+      <p></p>
+      
+      <a name="sup_build_nn"></a>
+      <h2>2. Build your network</h2>
+      <p>The eblearn neural networks are build by combining modules
+	together as introduced at the beginning of this
+	tutorial. Depending on your application, you may want to write
+	your own modules or combine already existing modules in
+	different ways. For example for simple applications (See
+	Perceptron demo), you may want to have just one fully-connected
+	layer in your machine. For more complex tasks, some
+	architectures are already built-in, such as the lenet5 and
+	lenet7 architectures. The lenet5 and lenet7 classes derive from
+	the nn_machine_cscscf class and only specify specific sizes for
+	the input, kernels and outputs. As
+	described <a href="#machine_modules">earlier</a>,  the lenet5
+	architecture is capable of learning handwritten caracter
+	recognition (10 categories) while the lenet7 was used for object
+	recognition (5 categories).
+      </p>
+      <p>Your application will probably be different than the MNIST or
+	NORB applications but if your goal is object recognition you
+	want to reuse the nn_machine_cscscf class and the lenet5
+	or lenet7 parameters but change a few of them (See the
+	<a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/libeblearn/src/EblMachines.cpp?view=markup"
+	target="_blank">constructors
+	of lenet5 and lenet7</a> for more details). The main 
+	changes you will have to do are:
+	<ul>
+	  <li><strong>number of outputs</strong>: for MNIST this is
+	    equal to 10 and for NORB it is 
+	    5. If you attempt to build a system that can recognize 15
+	    different categories, this value will be 15.</li>
+	  <li><strong>size of the input</strong>: this is 1x32x32 for
+	    MNIST, 1x96x96 for NORB and 
+	    2x96x96 for the binocular version of NORB. If you have
+	    multiple channels (e.g. RGB, YUV or binocular greyscale
+	    inputs), you may have to rework the connection table
+	    between the input and the first convolution layer.</li>
+	  <li><strong>connection tables</strong>: if there is no
+	    pre-configured network with the same number of input channels as
+	    you do, you have to modify the connection table with the
+	    first layer. In nn_machine_cscscf, this table is
+	    the <i>table0</i> object in the constructors in <a href="http://eblearn.svn.sourceforge.net/viewvc/eblearn/trunk/libeblearn/src/EblMachines.cpp?view=markup"
+	target="_blank">EblMachines.cpp</a>. It specifies which input
+	    channels will be convolved into which feature map. For
+	    example in lenet7, it's a full table of size 6 because the
+	    only greyscale channel is connected to all 6 features maps of
+	    the first convolution. Whereas in lenet7_binocular, we
+	    have 2 channels as input and each of the 12 feature maps may receive
+	    only 1 channel output ({0, 0}, {0, 1}, {1, 2}, {1, 3}) or
+	    combine both ({0, 4}, {1, 4}, {0, 5}, {1, 5}, {0, 6}, {1,
+	    6}, {0, 7}, {1, 7}). {1, 2} means that the channel 1 of
+	    the input is processed through the convolution layer and
+	    put in the 2nd feature map. Similarly, {0, 7} and {1, 7}
+	    mean that both channels of the input are combined into the
+	    7th feature map of the first layer.
+	  </li>
+	  <li><strong>sizes of kernels</strong>: depending on the
+	  complexity of the tasks, you may want to increase or
+	  decreases the sizes of the kernels (convolution or
+	  subsampling kernels), again specified in the constructors of
+	  the nn_machine_cscscf machines. Those sizes determine the
+	  number of parameters to learn in your network. The more
+	  complex, the more parameters are necessary.</li>
+	</ul>
+      </p>
+      <p>Remember that once you chose your network parameters and
+      trained your network, you have to reuse the exact same
+      parameters when running it. The trained network will be saved in
+      a single parameter file and to be reused correctly it needs to
+      be loaded with the exact same network it was trained with.</p>
+      <p>You now have your dataset and a network architecture, you are
+      ready to train it.</p>
+	
+      <a name="sup_train_nn"></a>
+      <h2>3. Train your network</h2>
+      <h3>a. Make your network trainable</h3>
+      <p>First you need to make your network trainable. Currently it is a
+	module_1_1 object (as shown in <a href="#figb">figure b</a>)
+	that is not trainable but only runable (e.g. lenet7). To make
+	it trainable, you need to encapsulate it in a module_2_1 with
+	a loss function module which will compute an error distance to
+	the target label (e.g. plane label) so that the network knows
+	how much it should correct its weights in order to give the
+	right answer.</p>
+      <p>For instance,
+	the <a href="../../documentation/libeblearn_html/classebl_1_1supervised__euclidean__machine.html">supervised_euclidean_machine</a>
+	class is a module_2_1 object that takes a module_1_1 in its
+	constructor and the output targets for each output class. 
+	When presented with an input image and a label, it computes
+	the network output via the fprop method and computes the
+	euclidean distance between the network output and the target
+	output. Then to learn from the errors (or minimize the
+	energies), the bprop method is 
+	called and backpropagates the gradients of the errors all the
+	way back through the network.	
+      </p>
+      <h3>b. Create a trainer</h3>
+      <p>The training procedure can be handled in the supervised case by
+	the  <a href="../../documentation/libeblearn_html/classebl_1_1supervised__trainer.html">supervised_trainer</a>
+	class. This class takes a trainable machine (a module_2_1) and
+	a <a href="../../documentation/libeblearn_html/DataSource_8h-source.html">LabeledDataSource</a> to train and test on the dataset.
+      </p>
+      <h3>c. Compute the second derivatives (bbprop)</h3>
+      <p>The second derivatives are used to set individual learning
+	rates for each parameter of the network, to help speed-up the
+	learning process and also improve the quality of the learning.
+	The second derivatives are computed over say a hundred
+	iterations once before starting the 
+	training. They are back-propagated through the bbprop
+	methodes.</p>
+      <p>To compute the second derivatives, call the
+	compute_diaghessian method of the trainer as follow:
+	<div id="vc_markup"><pre>
+thetrainer.compute_diaghessian(train_ds, iterations, 0.02);</pre></div>
+	where <i>train_ds</i> is your training
+	dataset, <i>iterations</i> is the number of iterations,
+	typically 100.
+
+      <h3>d. Train and test</h3>
+      After computing the second derivatives, you can iteratively train and test
+      the network. By testing the results on both the training and the
+      testing sets after each training iteration, you will get a sense
+      of the convergence of the training. Here is an example of
+      training for 100 iterations and displaying the training-set and
+      testing-set results at each step:
+
+      <div id="vc_markup"><pre>
+<span class="hl kwa">for</span> <span class="hl sym">(</span><span class="hl kwb">int</span> i <span class="hl sym">=</span> <span class="hl num">0</span><span class="hl sym">;</span> i <span class="hl sym">&lt;</span> <span class="hl num">100</span><span class="hl sym">; ++</span>i<span class="hl sym">) {</span>
+    thetrainer<span class="hl sym">.</span><span class="hl kwd">train</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> gdp<span class="hl sym">,</span> <span class="hl num">1</span><span class="hl sym">);</span>
+    cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot;training: &quot;</span> <span class="hl sym">&lt;&lt;</span> flush<span class="hl sym">;</span>
+    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>train_ds<span class="hl sym">,</span> trainmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>
+    trainmeter<span class="hl sym">.</span><span class="hl kwd">display</span><span class="hl sym">();</span>
+    cout <span class="hl sym">&lt;&lt;</span> <span class="hl str">&quot; testing: &quot;</span> <span class="hl sym">&lt;&lt;</span> flush<span class="hl sym">;</span>
+    thetrainer<span class="hl sym">.</span><span class="hl kwd">test</span><span class="hl sym">(</span>test_ds<span class="hl sym">,</span> testmeter<span class="hl sym">,</span> infp<span class="hl sym">);</span>
+    testmeter<span class="hl sym">.</span><span class="hl kwd">display</span><span class="hl sym">();</span>
+  <span class="hl sym">}</span></pre></div>
+      </p>
+      <p>Here is a typical output of what you should see when training
+      your network:
+	    <pre>
+$ ./mnist /d/taf/data/mnist
+* MNIST demo: learning handwritten digits using the eblearn C++ library *
+Computing second derivatives on MNIST dataset: diaghessian inf: 0.985298 sup: 49.7398
+Training network on MNIST with 2000 training samples and 1000 test samples
+training: [ 2000]  size=2000  energy=0.19  correct=88.80%  errors=11.20%  rejects=0.00%
+ testing: [ 2000]  size=1000  energy=0.163  correct=90.50%  errors=9.50%  rejects=0.00%
+training: [ 4000]  size=2000  energy=0.1225  correct=93.25%  errors=6.75%  rejects=0.00%
+ testing: [ 4000]  size=1000  energy=0.121  correct=92.80%  errors=7.20%  rejects=0.00%
+training: [ 6000]  size=2000  energy=0.084  correct=95.45%  errors=4.55%  rejects=0.00%
+ testing: [ 6000]  size=1000  energy=0.098  correct=94.70%  errors=5.30%  rejects=0.00%
+training: [ 8000]  size=2000  energy=0.065  correct=96.45%  errors=3.55%  rejects=0.00%
+ testing: [ 8000]  size=1000  energy=0.095  correct=95.20%  errors=4.80%  rejects=0.00%
+training: [10000]  size=2000  energy=0.0545  correct=97.15%  errors=2.85%  rejects=0.00%
+ testing: [10000]  size=1000  energy=0.094  correct=95.80%  errors=4.20%  rejects=0.00%</pre>
+	</p>
+
+      <a name="sup_run_nn"></a>
+      <h2>4. Run your network</h2>
+
+      <a name="fige"></a>
+      <div class="thumb tright">
+      <div class="thumbinner" style="width:500px;">
+	<a href="../../demos/norb/img/norb_plane.png" class="image"
+	   title="mnist datasets">
+	  <img src="../../demos/norb/img/norb_plane.png" width="500"
+	  border="0" class="thumbimage" /> 
+	</a>
+	<div class="thumbcaption">e. Output display of the
+	multi-resolution detection provided by the <i>Classified2D</i>
+	class (top 2 rows, below are the internal network
+	representations). The plane is resized to different
+	resolutions to handle multiple scales and the output of each
+	class for each resolution is shown on the left. The brighter
+	the output, the stronger response for the corresponding
+	class. The 3rd row of the network outputs corresponds to the
+	plane category, which has the strongest responses in the top
+	right of the images, yielding the plane bounding box
+	classification on the right.</div></div></div> 
+
+
+      <h3>Multi-resolution detection: Classifier2D</h3>
+      <p>While the Trainer class takes a module_1_1 and trains it on a
+      dataset, the Classifier2D class takes a trained network as input
+      (loading a 'parameter' saved in an Idx file) to detect objects
+      in images of any size and at different resolution. It resizes
+      the input image to different sizes based on the passed
+      resolutions parameters and applies the network at each
+      scale. Finally, the values in the outputs of the network that
+      are higher than a certain threshold will return a positive
+      detection at the position in the image and a specific scale.</p> 
+	   
+      <div id="vc_markup">
+<pre>// parameter, network and classifier
+// load the previously saved weights of a trained network
+parameter theparam(1);
+// input to the network will be 96x96 and there are 5 outputs
+lenet7_binocular thenet(theparam, 96, 96, 5);
+theparam.load_x(mono_net.c_str());
+Classifier2D cb(thenet, sz, lbl, 0.0, 0.01, 240, 320);
+	  
+// find category of image
+Idx<double> res = cb.fprop(left.idx_ptr(), 1, 1.8, 60);</pre></div>
+
+      <a name="sup_freading"></a>
+      <h2>Further Reading</h2>
+      <p>Here are resources that might be helpful in understanding in
+	more details how the supervised convolutional neural networks
+	work:
+	<ul>
+	  <li><a href="http://yann.lecun.com/ex/research/index.html">
+	    http://yann.lecun.com/ex/research/index.html</a>: Yann
+	    LeCun's research in machine learning, contains many links
+	    to published papers about convolutional neural networks
+	    and applications.</li>
+	  <li><a href="http://yann.lecun.com/exdb/publis/index.html#lecun-98">[LeCun et al.,
+	  1998]</a>: <strong>Gradient-Based Learning Applied 
+	  to Document Recognition</strong> (Proc. IEEE 1998): A long
+	  and 
+	  detailed paper on convolutional nets, graph transformer
+	  networks, and discriminative training methods for sequence
+	  labeling. We show how to build systems that integrate
+	  segmentation, feature extraction, classification, contextual
+	  post-processing, and language modeling into one single
+	  learning machine trained end-to-end. Applications to
+	  handwriting recognition and face detection are
+	  described.</li>
+	  <li><a href="http://yann.lecun.com/exdb/publis/index.html#lecun-98b">[LeCun
+	  et al., 1998]</a>: <strong>Efficient 
+	  BackProp</strong>: all the tricks and the theory behind them
+	  to efficiently train neural networks with backpropagation,
+	  including how to compute the optimal learning rate, how to
+	  back-propagate second derivatives, and other sundries.</li> 
+	  <li><a href="http://yann.lecun.com/exdb/publis/index.html#selected">
+	      Yann LeCun's research</a></li>
+	  <li><a href="http://www.cs.nyu.edu/~yann/2008f-G22-2565-001/schedule.html">Yann LeCun's Machine Learning class at NYU</a></li>
+	  <li><a href="http://www.cs.nyu.edu/~yann/research/norb/index.html">The
+	  NORB project</a>: a 5-class object recognition system using
+	  supervised neural networks.</li>
+	  <li><a href="http://www.cs.nyu.edu/~yann/research/lagr/index.html">The
+	  LAGR project</a>: DARPA's Learning Applied to Ground Robots
+	  using supervised and unsupervised neural networks algorithms.</li>
+	</ul>
+      </p>
+	    
+      <a name="unsuplearning"></a>
+      <h1>Unsupervised Learning</h1>
+
+      <a name="semisuplearning"></a>
+      <h1>Semi-supervised Learning</h1>
+
+      
+  </body>
+</html>

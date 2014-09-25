@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>EBLearn: train</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../web/main.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/index_004.css" type="text/css" 
+	  media="screen">
+    <link rel="stylesheet" href="../web/styles.css" type="text/css" 
+	  media="all">
+    <link rel="shortcut icon" href="../web/logo2.ico">
+  </head>
+  <body>
+    <!--#include virtual="../nav.html" --> 
+    <div id="globalWrapper">
+
+      <h2>train</h2> 
+      <h4 id="siteSub">by <a href="http://sermanet.free.fr/">Pierre
+	  Sermanet</a> (March 21st, 2011)</h4><br><br> 
+      <p>
+	'train' runs the training of models described in configuration
+	files.</p>
+      
+      <h4>Calls</h4>
+      <ul>
+	<li><code>./train pedestrians.conf</code><br><br></li>
+	</ul>
+
+      <h4>Outputs</h4>
+	  
+      <h4>Required configuration variables</h4>
+      <ul>
+	<li><strong>arch:</strong>
+	  the architecture of the model.</li>
+      </ul>
+
+      <h4>Optional configuration variables</h4>
+
+    </div>
+   </body></html>
